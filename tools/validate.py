@@ -66,22 +66,22 @@ def alpha_coverage(image: Image.Image) -> tuple[int, float]:
 
 
 def figure_blob_count(image: Image.Image) -> int:
-    """Count 8-connected visible components, stopping once a second appears."""
+    """Count substantial 8-connected figure blobs, ignoring tiny keying specks."""
     alpha = image.convert("RGBA").getchannel("A")
     mask = bytearray(1 if value >= 128 else 0 for value in alpha.tobytes())
     width, height = image.size
     visited = bytearray(width * height)
+    min_figure_area = max(64, int(width * height * 0.0025))
     blobs = 0
     for start, value in enumerate(mask):
         if not value or visited[start]:
             continue
-        blobs += 1
-        if blobs > 1:
-            return blobs
         visited[start] = 1
         stack = [start]
+        area = 0
         while stack:
             index = stack.pop()
+            area += 1
             y, x = divmod(index, width)
             y0, y1 = max(0, y - 1), min(height - 1, y + 1)
             x0, x1 = max(0, x - 1), min(width - 1, x + 1)
@@ -92,6 +92,10 @@ def figure_blob_count(image: Image.Image) -> int:
                     if mask[neighbor] and not visited[neighbor]:
                         visited[neighbor] = 1
                         stack.append(neighbor)
+        if area >= min_figure_area:
+            blobs += 1
+            if blobs > 1:
+                return blobs
     return blobs
 
 
