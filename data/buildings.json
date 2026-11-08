@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "time": {
+    "secondsPerDay": 240,
+    "phases": ["dawn", "day", "evening", "night"]
+  },
+  "resources": {
+    "initial": { "scrap": 90, "water": 90, "food": 80, "power": 40, "meds": 18 },
+    "capacity": { "scrap": 500, "water": 300, "food": 300, "power": 200, "meds": 100 },
+    "colonyValuePerUnit": { "scrap": 0.8, "water": 0.8, "food": 0.7, "power": 1.2, "meds": 1.5 }
+  },
+  "economy": {
+    "drainPerPhase": { "scrap": 0, "water": 2, "food": 1, "power": 0.5, "meds": 0 },
+    "drainPerCompanionPerPhase": { "water": 0.25, "food": 0.2 },
+    "assignmentDisposition": { "matchedOnAssign": 1.5, "mismatchedOnAssign": -1.5, "unassign": -0.5, "matchedPerPhase": 0.25, "mismatchedPerPhase": -0.35 },
+    "feeding": { "foodCost": 1, "disposition": 2.5 },
+    "gifts": {
+      "resourceCost": 1,
+      "baseDisposition": 3,
+      "bonusByResource": { "scrap": 0, "water": 0, "food": 0, "power": 0, "meds": 0 },
+      "companionFavoriteBonus": 2
+    }
+  },
+  "trustGates": [
+    { "threshold": 25, "gate": 1 },
+    { "threshold": 50, "gate": 2 },
+    { "threshold": 75, "gate": 3 }
+  ],
+  "companions": [
+    { "id": "mara", "name": "Mara", "specialty": "medical", "disposition": 50, "favoriteGift": "meds", "trustScenes": ["bond_scene_mara_gate_1", "bond_scene_mara_gate_2", "bond_scene_mara_gate_3"] },
+    { "id": "sable", "name": "Sable", "specialty": "scouting", "disposition": 50, "favoriteGift": "scrap", "trustScenes": ["bond_scene_sable_gate_1", "bond_scene_sable_gate_2", "bond_scene_sable_gate_3"] },
+    { "id": "vesper", "name": "Vesper", "specialty": "trade", "disposition": 50, "favoriteGift": "food", "trustScenes": ["bond_scene_vesper_gate_1", "bond_scene_vesper_gate_2", "bond_scene_vesper_gate_3"] },
+    { "id": "ren", "name": "Ren", "specialty": "power", "disposition": 50, "favoriteGift": "power", "trustScenes": ["bond_scene_ren_gate_1", "bond_scene_ren_gate_2", "bond_scene_ren_gate_3"] },
+    { "id": "iona", "name": "Iona", "specialty": "water", "disposition": 50, "favoriteGift": "water", "trustScenes": ["bond_scene_iona_gate_1", "bond_scene_iona_gate_2", "bond_scene_iona_gate_3"] },
+    { "id": "brick", "name": "Brick", "specialty": "construction", "secondarySpecialties": ["security"], "disposition": 50, "favoriteGift": "scrap", "trustScenes": ["bond_scene_brick_gate_1", "bond_scene_brick_gate_2", "bond_scene_brick_gate_3"] },
+    { "id": "tamsin", "name": "Tamsin", "specialty": "communications", "disposition": 50, "favoriteGift": "power", "trustScenes": ["bond_scene_tamsin_gate_1", "bond_scene_tamsin_gate_2", "bond_scene_tamsin_gate_3"] },
+    { "id": "juno", "name": "Juno", "specialty": "community", "disposition": 50, "favoriteGift": "food", "trustScenes": ["bond_scene_juno_gate_1", "bond_scene_juno_gate_2", "bond_scene_juno_gate_3"] }
+  ],
+  "factions": [
+    { "id": "river_compact", "name": "River Compact", "standing": 0 },
+    { "id": "salvage_union", "name": "Salvage Union", "standing": 0 },
+    { "id": "free_caravans", "name": "Free Caravans", "standing": 0 }
+  ],
+  "factionEffects": {
+    "minimumStanding": -100,
+    "maximumStanding": 100,
+    "raidChancePerHostility": 0.08,
+    "raidChancePerAlliance": 0.04,
+    "tradeMultiplierPerStanding": 0.001
+  },
+  "raid": {
+    "baseChancePerPhase": 0.012,
+    "chancePerColonyValue": 0.00025,
+    "maximumChance": 0.4,
+    "chanceReductionPerDefense": 0.001,
+    "defensePerAssignedSecurityCompanion": 4,
+    "lossFraction": 0.08,
+    "injuryChance": 0.25,
+    "injuryDurationPhases": { "minor": 2, "major": 4 }
+  },
+  "injury": {
+    "treatmentMedsCost": 1,
+    "treatmentPhasesRemoved": 2
+  },
+  "placementGrids": [
+    { "id": "gate_controls_grid", "scene": "01_colony_gate", "hotspot": "gate_controls", "rect": [1360, 420, 200, 185], "columns": 4, "rows": 2, "allows": ["watch_post", "radio_mast"] },
+    { "id": "scrap_bench_grid", "scene": "02_scrap_yard", "hotspot": "repair_bench", "rect": [455, 265, 330, 270], "columns": 3, "rows": 2, "allows": ["salvage_bench", "generator", "storage_shed"] },
+    { "id": "water_station_grid", "scene": "03_water_pump_station", "hotspot": "main_valve", "rect": [1080, 300, 300, 420], "columns": 3, "rows": 3, "allows": ["rain_catcher", "water_pump"] },
+    { "id": "greenhouse_grid", "scene": "04_greenhouse_interior", "hotspot": "crop_bed", "rect": [420, 500, 1050, 270], "columns": 5, "rows": 2, "allows": ["greenhouse_plot"] },
+    { "id": "clinic_grid", "scene": "05_clinic", "hotspot": "medicine_cabinet", "rect": [640, 165, 460, 290], "columns": 3, "rows": 2, "allows": ["clinic", "storage_shed"] },
+    { "id": "workshop_grid", "scene": "06_workshop", "hotspot": "workbench", "rect": [390, 340, 690, 405], "columns": 4, "rows": 2, "allows": ["generator", "salvage_bench", "clinic"] },
+    { "id": "wall_grid", "scene": "07_perimeter_wall", "hotspot": "sandbag_post", "rect": [45, 340, 320, 270], "columns": 3, "rows": 2, "allows": ["watch_post", "radio_mast"] },
+    { "id": "roadside_grid", "scene": "08_wasteland_road", "hotspot": "roadside_crates", "rect": [920, 450, 340, 135], "columns": 3, "rows": 1, "allows": ["storage_shed", "salvage_bench"] },
+    { "id": "rubble_grid", "scene": "09_ruined_city_street", "hotspot": "rubble_pile", "rect": [900, 380, 500, 270], "columns": 3, "rows": 2, "allows": ["salvage_bench", "storage_shed"] },
+    { "id": "camp_grid", "scene": "10_night_campfire", "hotspot": "supply_crate", "rect": [1320, 510, 290, 190], "columns": 2, "rows": 2, "allows": ["shelter", "radio_mast"] }
+  ],
+  "buildingTypes": {
+    "salvage_bench": { "name": "Salvage Bench", "size": [2, 1], "cost": { "scrap": 12 }, "value": 20, "jobRole": "scouting", "productionPerWorker": { "scrap": 2.5 }, "upkeepPerPhase": {}, "defense": 0 },
+    "rain_catcher": { "name": "Rain Catcher", "size": [1, 1], "cost": { "scrap": 10 }, "value": 16, "jobRole": "water", "productionPerWorker": { "water": 1.5 }, "upkeepPerPhase": {}, "defense": 0 },
+    "water_pump": { "name": "Water Pump", "size": [2, 1], "cost": { "scrap": 25 }, "value": 42, "jobRole": "water", "productionPerWorker": { "water": 3.5 }, "upkeepPerPhase": { "power": 0.5 }, "defense": 0 },
+    "greenhouse_plot": { "name": "Greenhouse Plot", "size": [1, 1], "cost": { "scrap": 8 }, "value": 13, "jobRole": "community", "productionPerWorker": { "food": 2 }, "upkeepPerPhase": { "water": 0.75 }, "defense": 0 },
+    "generator": { "name": "Generator", "size": [2, 1], "cost": { "scrap": 25 }, "value": 42, "jobRole": "power", "productionPerWorker": { "power": 3 }, "upkeepPerPhase": { "scrap": 0.25 }, "defense": 0 },
+    "clinic": { "name": "Clinic", "size": [2, 2], "cost": { "scrap": 35 }, "value": 60, "jobRole": "medical", "productionPerWorker": { "meds": 1.5 }, "upkeepPerPhase": { "power": 0.5 }, "defense": 0 },
+    "watch_post": { "name": "Watch Post", "size": [2, 1], "cost": { "scrap": 22 }, "value": 38, "jobRole": "security", "productionPerWorker": {}, "upkeepPerPhase": {}, "defense": 18 },
+    "storage_shed": { "name": "Storage Shed", "size": [1, 1], "cost": { "scrap": 16 }, "value": 28, "jobRole": "trade", "productionPerWorker": {}, "upkeepPerPhase": {}, "defense": 0, "capacityBonus": { "scrap": 50, "food": 25 } },
+    "radio_mast": { "name": "Radio Mast", "size": [1, 1], "cost": { "scrap": 14 }, "value": 25, "jobRole": "communications", "productionPerWorker": {}, "upkeepPerPhase": {}, "defense": 2 },
+    "shelter": { "name": "Shelter", "size": [2, 2], "cost": { "scrap": 30 }, "value": 50, "jobRole": "community", "productionPerWorker": {}, "upkeepPerPhase": {}, "defense": 4, "capacityBonus": { "food": 10, "meds": 5 } }
+  }
+}
