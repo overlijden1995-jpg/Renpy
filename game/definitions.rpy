@@ -15,6 +15,19 @@ image alice face_smile = "images/alice/face_smile.png"
 image alice face_soft = "images/alice/face_soft.png"
 image alice face_surprise = "images/alice/face_surprise.png"
 
+image denice base_hurt = "images/denice/base_hurt.png"
+image denice base_idle = "images/denice/base_idle.png"
+image denice base_walk = "images/denice/base_walk.png"
+image denice base_work = "images/denice/base_work.png"
+image denice blush_off = "images/denice/blush_off.png"
+image denice blush_on = "images/denice/blush_on.png"
+image denice face_angry = "images/denice/face_angry.png"
+image denice face_neutral = "images/denice/face_neutral.png"
+image denice face_pain = "images/denice/face_pain.png"
+image denice face_smile = "images/denice/face_smile.png"
+image denice face_soft = "images/denice/face_soft.png"
+image denice face_surprise = "images/denice/face_surprise.png"
+
 image mc base_hurt = "images/mc/base_hurt.png"
 image mc base_idle = "images/mc/base_idle.png"
 image mc base_walk = "images/mc/base_walk.png"
@@ -54,6 +67,19 @@ image sophia face_smile = "images/sophia/face_smile.png"
 image sophia face_soft = "images/sophia/face_soft.png"
 image sophia face_surprise = "images/sophia/face_surprise.png"
 
+image tory base_hurt = "images/tory/base_hurt.png"
+image tory base_idle = "images/tory/base_idle.png"
+image tory base_walk = "images/tory/base_walk.png"
+image tory base_work = "images/tory/base_work.png"
+image tory blush_off = "images/tory/blush_off.png"
+image tory blush_on = "images/tory/blush_on.png"
+image tory face_angry = "images/tory/face_angry.png"
+image tory face_neutral = "images/tory/face_neutral.png"
+image tory face_pain = "images/tory/face_pain.png"
+image tory face_smile = "images/tory/face_smile.png"
+image tory face_soft = "images/tory/face_soft.png"
+image tory face_surprise = "images/tory/face_surprise.png"
+
 layeredimage alice:
     # Idle is the default base layer and is explicitly always displayed.
     always:
@@ -88,6 +114,41 @@ layeredimage alice:
             "alice blush_off"
         attribute on:
             "alice blush_on"
+
+layeredimage denice:
+    # Idle is the default base layer and is explicitly always displayed.
+    always:
+        "denice base_idle"
+        when idle
+
+    group base:
+        attribute idle default
+        attribute walk:
+            "denice base_walk"
+        attribute work:
+            "denice base_work"
+        attribute hurt:
+            "denice base_hurt"
+
+    group face:
+        attribute neutral default:
+            "denice face_neutral"
+        attribute smile:
+            "denice face_smile"
+        attribute soft:
+            "denice face_soft"
+        attribute surprise:
+            "denice face_surprise"
+        attribute angry:
+            "denice face_angry"
+        attribute pain:
+            "denice face_pain"
+
+    group blush:
+        attribute off default:
+            "denice blush_off"
+        attribute on:
+            "denice blush_on"
 
 layeredimage mc:
     # Idle is the default base layer and is explicitly always displayed.
@@ -193,3 +254,38 @@ layeredimage sophia:
             "sophia blush_off"
         attribute on:
             "sophia blush_on"
+
+layeredimage tory:
+    # Idle is the default base layer and is explicitly always displayed.
+    always:
+        "tory base_idle"
+        when idle
+
+    group base:
+        attribute idle default
+        attribute walk:
+            "tory base_walk"
+        attribute work:
+            "tory base_work"
+        attribute hurt:
+            "tory base_hurt"
+
+    group face:
+        attribute neutral default:
+            "tory face_neutral"
+        attribute smile:
+            "tory face_smile"
+        attribute soft:
+            "tory face_soft"
+        attribute surprise:
+            "tory face_surprise"
+        attribute angry:
+            "tory face_angry"
+        attribute pain:
+            "tory face_pain"
+
+    group blush:
+        attribute off default:
+            "tory blush_off"
+        attribute on:
+            "tory blush_on"

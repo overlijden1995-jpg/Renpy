@@ -97,6 +97,104 @@
       ]
     }
   },
+  "denice": {
+    "base_hurt": {
+      "source_canvas": [
+        720,
+        1232
+      ],
+      "bbox": [
+        19,
+        13,
+        702,
+        1214
+      ],
+      "display_offset": [
+        19,
+        13
+      ],
+      "foot_midline": [
+        360.0,
+        1213
+      ],
+      "trimmed_size": [
+        683,
+        1201
+      ]
+    },
+    "base_idle": {
+      "source_canvas": [
+        720,
+        1232
+      ],
+      "bbox": [
+        24,
+        11,
+        697,
+        1228
+      ],
+      "display_offset": [
+        24,
+        11
+      ],
+      "foot_midline": [
+        360.0,
+        1227
+      ],
+      "trimmed_size": [
+        673,
+        1217
+      ]
+    },
+    "base_walk": {
+      "source_canvas": [
+        720,
+        1232
+      ],
+      "bbox": [
+        20,
+        20,
+        701,
+        1210
+      ],
+      "display_offset": [
+        20,
+        20
+      ],
+      "foot_midline": [
+        360.0,
+        1209
+      ],
+      "trimmed_size": [
+        681,
+        1190
+      ]
+    },
+    "base_work": {
+      "source_canvas": [
+        720,
+        1232
+      ],
+      "bbox": [
+        25,
+        25,
+        696,
+        1230
+      ],
+      "display_offset": [
+        25,
+        25
+      ],
+      "foot_midline": [
+        360.0,
+        1229
+      ],
+      "trimmed_size": [
+        671,
+        1205
+      ]
+    }
+  },
   "mc": {
     "base_hurt": {
       "source_canvas": [
@@ -388,6 +486,104 @@
       "trimmed_size": [
         671,
         1203
+      ]
+    }
+  },
+  "tory": {
+    "base_hurt": {
+      "source_canvas": [
+        720,
+        1232
+      ],
+      "bbox": [
+        26,
+        26,
+        695,
+        1218
+      ],
+      "display_offset": [
+        26,
+        26
+      ],
+      "foot_midline": [
+        360.0,
+        1217
+      ],
+      "trimmed_size": [
+        669,
+        1192
+      ]
+    },
+    "base_idle": {
+      "source_canvas": [
+        720,
+        1232
+      ],
+      "bbox": [
+        26,
+        0,
+        695,
+        1218
+      ],
+      "display_offset": [
+        26,
+        0
+      ],
+      "foot_midline": [
+        360.0,
+        1217
+      ],
+      "trimmed_size": [
+        669,
+        1218
+      ]
+    },
+    "base_walk": {
+      "source_canvas": [
+        720,
+        1232
+      ],
+      "bbox": [
+        19,
+        1,
+        702,
+        1224
+      ],
+      "display_offset": [
+        19,
+        1
+      ],
+      "foot_midline": [
+        360.0,
+        1223
+      ],
+      "trimmed_size": [
+        683,
+        1223
+      ]
+    },
+    "base_work": {
+      "source_canvas": [
+        720,
+        1232
+      ],
+      "bbox": [
+        26,
+        0,
+        695,
+        1218
+      ],
+      "display_offset": [
+        26,
+        0
+      ],
+      "foot_midline": [
+        360.0,
+        1217
+      ],
+      "trimmed_size": [
+        669,
+        1218
       ]
     }
   }
