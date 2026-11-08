@@ -1,0 +1,825 @@
+{
+  "version": 1,
+  "start": "sable_salvage_report",
+  "initial_flags": {},
+  "defaults": {
+    "bond_scene_content_tier": "sfw"
+  },
+  "trust_gate_slots": {
+    "mara": {
+      "25": "bond_scene_mara_gate_1",
+      "50": "bond_scene_mara_gate_2",
+      "75": "bond_scene_mara_gate_3"
+    },
+    "sable": {
+      "25": "bond_scene_sable_gate_1",
+      "50": "bond_scene_sable_gate_2",
+      "75": "bond_scene_sable_gate_3"
+    },
+    "vesper": {
+      "25": "bond_scene_vesper_gate_1",
+      "50": "bond_scene_vesper_gate_2",
+      "75": "bond_scene_vesper_gate_3"
+    },
+    "ren": {
+      "25": "bond_scene_ren_gate_1",
+      "50": "bond_scene_ren_gate_2",
+      "75": "bond_scene_ren_gate_3"
+    },
+    "iona": {
+      "25": "bond_scene_iona_gate_1",
+      "50": "bond_scene_iona_gate_2",
+      "75": "bond_scene_iona_gate_3"
+    },
+    "brick": {
+      "25": "bond_scene_brick_gate_1",
+      "50": "bond_scene_brick_gate_2",
+      "75": "bond_scene_brick_gate_3"
+    },
+    "tamsin": {
+      "25": "bond_scene_tamsin_gate_1",
+      "50": "bond_scene_tamsin_gate_2",
+      "75": "bond_scene_tamsin_gate_3"
+    },
+    "juno": {
+      "25": "bond_scene_juno_gate_1",
+      "50": "bond_scene_juno_gate_2",
+      "75": "bond_scene_juno_gate_3"
+    }
+  },
+  "nodes": {
+    "sable_salvage_report": {
+      "id": "sable_salvage_report",
+      "speaker": "Sable",
+      "portrait_frame": "char.sable.face_neutral",
+      "text": "The west pile was picked clean, mostly. I found a coil of copper under a sink and tracks that didn't belong to the last crew. Nothing close enough to call a threat.",
+      "choices": [
+        {
+          "id": "ask_findings",
+          "text": "Give me the useful version.",
+          "next": "sable_findings",
+          "requires": {},
+          "disposition_deltas": {
+            "sable": 1
+          },
+          "flags": {
+            "set": {
+              "sable_report_requested": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "rush_scout",
+          "text": "Next time, be faster than the weather.",
+          "next": "sable_pushback",
+          "requires": {},
+          "disposition_deltas": {
+            "sable": -2
+          },
+          "flags": {
+            "set": {
+              "sable_rushed": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "invite_caution",
+          "text": "Take your time. What made you turn back?",
+          "next": "sable_caution",
+          "requires": {
+            "disposition": {
+              "sable": {
+                "min": 50
+              }
+            },
+            "flags": {
+              "none": [
+                "sable_rushed"
+              ]
+            }
+          },
+          "disposition_deltas": {
+            "sable": 2
+          },
+          "flags": {
+            "set": {
+              "sable_caution_shared": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      }
+    },
+    "sable_findings": {
+      "id": "sable_findings",
+      "speaker": "Sable",
+      "portrait_frame": "char.sable.face_neutral",
+      "text": "Copper's usable if Ren has a quiet hour. The tracks went north and doubled back. Could be a pair of scavengers; could be somebody making sure we noticed.",
+      "choices": [
+        {
+          "id": "close_report",
+          "text": "Good work. Log the tracks and keep the copper dry.",
+          "next": "sable_report_end",
+          "requires": {
+            "flags": {
+              "all": [
+                "sable_report_requested"
+              ]
+            }
+          },
+          "disposition_deltas": {
+            "sable": 1
+          },
+          "flags": {
+            "set": {
+              "sable_report_closed": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "ask_for_followup",
+          "text": "Mark it for a daylight look, not a chase.",
+          "next": "sable_report_end",
+          "requires": {},
+          "disposition_deltas": {
+            "sable": 0.5
+          },
+          "flags": {
+            "set": {
+              "north_tracks_marked": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      }
+    },
+    "sable_pushback": {
+      "id": "sable_pushback",
+      "speaker": "Sable",
+      "portrait_frame": "char.sable.face_neutral",
+      "text": "I was fast enough to come back with the news. If you want a sprint, send somebody who doesn't have to read the ground on the way out.",
+      "choices": [
+        {
+          "id": "respect_boundary",
+          "text": "Fair. I need the scout, not a racehorse.",
+          "next": "sable_report_end",
+          "requires": {},
+          "disposition_deltas": {
+            "sable": 1.5
+          },
+          "flags": {
+            "set": {
+              "sable_boundary_respected": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "end_after_pushback",
+          "text": "Understood. We'll leave it there.",
+          "next": "sable_report_end",
+          "requires": {},
+          "disposition_deltas": {},
+          "flags": {
+            "set": {},
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      }
+    },
+    "sable_caution": {
+      "id": "sable_caution",
+      "speaker": "Sable",
+      "portrait_frame": "char.sable.face_neutral",
+      "text": "The prints were too even for a tired crew. Somebody walked the same stretch twice, then left by the creek bed. I didn't like being invited to follow.",
+      "choices": [
+        {
+          "id": "back_the_call",
+          "text": "Then we don't follow blind. Thanks for bringing it in.",
+          "next": "sable_report_end",
+          "requires": {
+            "flags": {
+              "all": [
+                "sable_caution_shared"
+              ]
+            }
+          },
+          "disposition_deltas": {
+            "sable": 1.5
+          },
+          "flags": {
+            "set": {
+              "sable_caution_respected": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "defer_route",
+          "text": "We'll check the creek from the wall tomorrow.",
+          "next": "sable_report_end",
+          "requires": {},
+          "disposition_deltas": {
+            "sable": 0.5
+          },
+          "flags": {
+            "set": {
+              "creek_route_deferred": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      }
+    },
+    "sable_report_end": {
+      "id": "sable_report_end",
+      "speaker": "Narrator",
+      "portrait_frame": null,
+      "text": "The report is logged. The copper goes to the workshop; the tracks stay on the board until there is daylight to spare.",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "sable_first_report_closed": true
+        },
+        "clear": []
+      },
+      "terminal": true
+    },
+    "bond_scene_mara_gate_1": {
+      "id": "bond_scene_mara_gate_1",
+      "speaker": "Mara",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "mara",
+        "gate": 1,
+        "threshold": 25
+      },
+      "placeholder": {
+        "title": "Mara · Trust Gate 1",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_mara_gate_2": {
+      "id": "bond_scene_mara_gate_2",
+      "speaker": "Mara",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "mara",
+        "gate": 2,
+        "threshold": 50
+      },
+      "placeholder": {
+        "title": "Mara · Trust Gate 2",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_mara_gate_3": {
+      "id": "bond_scene_mara_gate_3",
+      "speaker": "Mara",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "mara",
+        "gate": 3,
+        "threshold": 75
+      },
+      "placeholder": {
+        "title": "Mara · Trust Gate 3",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_sable_gate_1": {
+      "id": "bond_scene_sable_gate_1",
+      "speaker": "Sable",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "sable",
+        "gate": 1,
+        "threshold": 25
+      },
+      "placeholder": {
+        "title": "Sable · Trust Gate 1",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_sable_gate_2": {
+      "id": "bond_scene_sable_gate_2",
+      "speaker": "Sable",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "sable",
+        "gate": 2,
+        "threshold": 50
+      },
+      "placeholder": {
+        "title": "Sable · Trust Gate 2",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_sable_gate_3": {
+      "id": "bond_scene_sable_gate_3",
+      "speaker": "Sable",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "sable",
+        "gate": 3,
+        "threshold": 75
+      },
+      "placeholder": {
+        "title": "Sable · Trust Gate 3",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_vesper_gate_1": {
+      "id": "bond_scene_vesper_gate_1",
+      "speaker": "Vesper",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "vesper",
+        "gate": 1,
+        "threshold": 25
+      },
+      "placeholder": {
+        "title": "Vesper · Trust Gate 1",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_vesper_gate_2": {
+      "id": "bond_scene_vesper_gate_2",
+      "speaker": "Vesper",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "vesper",
+        "gate": 2,
+        "threshold": 50
+      },
+      "placeholder": {
+        "title": "Vesper · Trust Gate 2",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_vesper_gate_3": {
+      "id": "bond_scene_vesper_gate_3",
+      "speaker": "Vesper",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "vesper",
+        "gate": 3,
+        "threshold": 75
+      },
+      "placeholder": {
+        "title": "Vesper · Trust Gate 3",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_ren_gate_1": {
+      "id": "bond_scene_ren_gate_1",
+      "speaker": "Ren",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "ren",
+        "gate": 1,
+        "threshold": 25
+      },
+      "placeholder": {
+        "title": "Ren · Trust Gate 1",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_ren_gate_2": {
+      "id": "bond_scene_ren_gate_2",
+      "speaker": "Ren",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "ren",
+        "gate": 2,
+        "threshold": 50
+      },
+      "placeholder": {
+        "title": "Ren · Trust Gate 2",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_ren_gate_3": {
+      "id": "bond_scene_ren_gate_3",
+      "speaker": "Ren",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "ren",
+        "gate": 3,
+        "threshold": 75
+      },
+      "placeholder": {
+        "title": "Ren · Trust Gate 3",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_iona_gate_1": {
+      "id": "bond_scene_iona_gate_1",
+      "speaker": "Iona",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "iona",
+        "gate": 1,
+        "threshold": 25
+      },
+      "placeholder": {
+        "title": "Iona · Trust Gate 1",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_iona_gate_2": {
+      "id": "bond_scene_iona_gate_2",
+      "speaker": "Iona",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "iona",
+        "gate": 2,
+        "threshold": 50
+      },
+      "placeholder": {
+        "title": "Iona · Trust Gate 2",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_iona_gate_3": {
+      "id": "bond_scene_iona_gate_3",
+      "speaker": "Iona",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "iona",
+        "gate": 3,
+        "threshold": 75
+      },
+      "placeholder": {
+        "title": "Iona · Trust Gate 3",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_brick_gate_1": {
+      "id": "bond_scene_brick_gate_1",
+      "speaker": "Brick",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "brick",
+        "gate": 1,
+        "threshold": 25
+      },
+      "placeholder": {
+        "title": "Brick · Trust Gate 1",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_brick_gate_2": {
+      "id": "bond_scene_brick_gate_2",
+      "speaker": "Brick",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "brick",
+        "gate": 2,
+        "threshold": 50
+      },
+      "placeholder": {
+        "title": "Brick · Trust Gate 2",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_brick_gate_3": {
+      "id": "bond_scene_brick_gate_3",
+      "speaker": "Brick",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "brick",
+        "gate": 3,
+        "threshold": 75
+      },
+      "placeholder": {
+        "title": "Brick · Trust Gate 3",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_tamsin_gate_1": {
+      "id": "bond_scene_tamsin_gate_1",
+      "speaker": "Tamsin",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "tamsin",
+        "gate": 1,
+        "threshold": 25
+      },
+      "placeholder": {
+        "title": "Tamsin · Trust Gate 1",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_tamsin_gate_2": {
+      "id": "bond_scene_tamsin_gate_2",
+      "speaker": "Tamsin",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "tamsin",
+        "gate": 2,
+        "threshold": 50
+      },
+      "placeholder": {
+        "title": "Tamsin · Trust Gate 2",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_tamsin_gate_3": {
+      "id": "bond_scene_tamsin_gate_3",
+      "speaker": "Tamsin",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "tamsin",
+        "gate": 3,
+        "threshold": 75
+      },
+      "placeholder": {
+        "title": "Tamsin · Trust Gate 3",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_juno_gate_1": {
+      "id": "bond_scene_juno_gate_1",
+      "speaker": "Juno",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "juno",
+        "gate": 1,
+        "threshold": 25
+      },
+      "placeholder": {
+        "title": "Juno · Trust Gate 1",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_juno_gate_2": {
+      "id": "bond_scene_juno_gate_2",
+      "speaker": "Juno",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "juno",
+        "gate": 2,
+        "threshold": 50
+      },
+      "placeholder": {
+        "title": "Juno · Trust Gate 2",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_juno_gate_3": {
+      "id": "bond_scene_juno_gate_3",
+      "speaker": "Juno",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_stub",
+      "bond_scene": {
+        "companion_id": "juno",
+        "gate": 3,
+        "threshold": 75
+      },
+      "placeholder": {
+        "title": "Juno · Trust Gate 3",
+        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+      },
+      "content_tier": "sfw"
+    }
+  }
+}
