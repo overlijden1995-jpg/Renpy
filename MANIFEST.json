@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "canvas": { "width": 1920, "height": 1080 },
+  "defaultScene": "01_colony_gate",
+  "assets": {
+    "env.01_colony_gate": { "type": "image", "src": "assets/env/01_colony_gate.png" },
+    "env.02_scrap_yard": { "type": "image", "src": "assets/env/02_scrap_yard.png" },
+    "env.03_water_pump_station": { "type": "image", "src": "assets/env/03_water_pump_station.png" },
+    "env.04_greenhouse_interior": { "type": "image", "src": "assets/env/04_greenhouse_interior.png" },
+    "env.05_clinic": { "type": "image", "src": "assets/env/05_clinic.png" },
+    "env.06_workshop": { "type": "image", "src": "assets/env/06_workshop.png" },
+    "env.07_perimeter_wall": { "type": "image", "src": "assets/env/07_perimeter_wall.png" },
+    "env.08_wasteland_road": { "type": "image", "src": "assets/env/08_wasteland_road.png" },
+    "env.09_ruined_city_street": { "type": "image", "src": "assets/env/09_ruined_city_street.png" },
+    "env.10_night_campfire": { "type": "image", "src": "assets/env/10_night_campfire.png" },
+    "ui.nine_slice_panel": { "type": "image", "src": "assets/ui/01_nine_slice_panel.png" },
+    "ui.button_normal": { "type": "image", "src": "assets/ui/02_button_normal.png" },
+    "ui.button_hover": { "type": "image", "src": "assets/ui/03_button_hover.png" },
+    "ui.button_pressed": { "type": "image", "src": "assets/ui/04_button_pressed.png" },
+    "ui.scrap_icon": { "type": "image", "src": "assets/ui/05_scrap_icon.png" },
+    "ui.water_icon": { "type": "image", "src": "assets/ui/06_water_icon.png" },
+    "ui.food_icon": { "type": "image", "src": "assets/ui/07_food_icon.png" },
+    "ui.power_icon": { "type": "image", "src": "assets/ui/08_power_icon.png" },
+    "ui.meds_icon": { "type": "image", "src": "assets/ui/09_meds_icon.png" },
+    "ui.dialogue_box": { "type": "image", "src": "assets/ui/10_dialogue_box.png" }
+  },
+  "scenes": {
+    "01_colony_gate": { "title": "Colony Gate", "backgroundAsset": "env.01_colony_gate", "groundLine": [[0, 820], [1920, 820]], "start": [960, 820] },
+    "02_scrap_yard": { "title": "Scrap Yard", "backgroundAsset": "env.02_scrap_yard", "groundLine": [[0, 830], [1920, 830]], "start": [960, 830] },
+    "03_water_pump_station": { "title": "Water Pump Station", "backgroundAsset": "env.03_water_pump_station", "groundLine": [[0, 850], [1920, 850]], "start": [960, 850] },
+    "04_greenhouse_interior": { "title": "Greenhouse Interior", "backgroundAsset": "env.04_greenhouse_interior", "groundLine": [[0, 810], [1920, 810]], "start": [960, 810] },
+    "05_clinic": { "title": "Clinic", "backgroundAsset": "env.05_clinic", "groundLine": [[0, 825], [1920, 825]], "start": [960, 825] },
+    "06_workshop": { "title": "Workshop", "backgroundAsset": "env.06_workshop", "groundLine": [[0, 850], [1920, 850]], "start": [960, 850] },
+    "07_perimeter_wall": { "title": "Perimeter Wall", "backgroundAsset": "env.07_perimeter_wall", "groundLine": [[0, 825], [1920, 825]], "start": [960, 825] },
+    "08_wasteland_road": { "title": "Wasteland Road", "backgroundAsset": "env.08_wasteland_road", "groundLine": [[0, 835], [1920, 835]], "start": [960, 835] },
+    "09_ruined_city_street": { "title": "Ruined City Street", "backgroundAsset": "env.09_ruined_city_street", "groundLine": [[0, 840], [1920, 840]], "start": [960, 840] },
+    "10_night_campfire": { "title": "Night Campfire", "backgroundAsset": "env.10_night_campfire", "groundLine": [[0, 835], [1920, 835]], "start": [960, 835] }
+  }
+}
