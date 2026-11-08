@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171814">
+  <title>Ashfall — Field Engine</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #e7dfc8;
+      --muted: #a99f82;
+      --rust: #a95537;
+      --olive: #74734c;
+      --panel: #20211c;
+      --line: #514b39;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #121310; color: var(--ink); }
+    body { min-height: 100vh; display: flex; justify-content: center; }
+    button, select { font: inherit; color: inherit; }
+    button, select {
+      border: 1px solid #5f5946; border-radius: 6px; background: #282921;
+      padding: .58rem .78rem; min-height: 38px;
+    }
+    button { cursor: pointer; transition: background .14s ease, border-color .14s ease, transform .14s ease; }
+    button:hover { background: #37372a; border-color: #a16a43; }
+    button:active { transform: translateY(1px); }
+    button:focus-visible, select:focus-visible { outline: 2px solid #cf9c62; outline-offset: 2px; }
+    .shell { width: min(100%, 1600px); min-height: 100vh; padding: 0 22px 18px; display: flex; flex-direction: column; }
+    header {
+      min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      border-bottom: 1px solid #39382e; margin-bottom: 14px;
+    }
+    .brand { display: flex; align-items: center; gap: 13px; min-width: 215px; }
+    .brand-mark { width: 12px; height: 34px; border-radius: 2px; background: linear-gradient(var(--rust), #633b2c); box-shadow: 4px 0 #474633; }
+    .brand strong { display: block; font-size: 14px; letter-spacing: .17em; text-transform: uppercase; }
+    .brand small { display: block; color: var(--muted); margin-top: 3px; letter-spacing: .09em; text-transform: uppercase; font-size: 10px; }
+    .scene-control { display: flex; align-items: center; gap: 9px; }
+    .scene-control label, .save-label { color: var(--muted); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+    #sceneSelect { min-width: 210px; }
+    .header-right { display: flex; align-items: center; gap: 9px; }
+    #status { color: #c7b994; max-width: 300px; text-align: right; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .stage { position: relative; flex: 1 1 auto; min-height: 260px; display: grid; place-items: center; overflow: hidden; }
+    #gameCanvas {
+      display: block; width: min(100%, calc((100vh - 245px) * 16 / 9)); height: auto; max-height: 100%;
+      aspect-ratio: 16 / 9; background: #171814; border: 1px solid #544c3c;
+      box-shadow: 0 16px 44px #0009; touch-action: none; cursor: crosshair;
+    }
+    .tip { position: absolute; left: 12px; bottom: 10px; color: #d4c8a6; background: #171814d9; border: 1px solid #484536; border-radius: 4px; padding: 6px 9px; font-size: 10px; letter-spacing: .04em; pointer-events: none; }
+    .inventory {
+      margin: 14px 0 10px; padding: 11px 14px; border: 1px solid #464334; border-radius: 8px;
+      background: linear-gradient(110deg, #23241e, #1c1d19); display: flex; align-items: center; gap: 18px; min-height: 71px;
+    }
+    .inventory-heading { min-width: 104px; }
+    .inventory-heading strong { font-size: 11px; text-transform: uppercase; letter-spacing: .15em; }
+    .inventory-heading small { display: block; color: var(--muted); margin-top: 4px; font-size: 10px; }
+    #inventoryList { display: grid; grid-template-columns: repeat(5, minmax(90px, 1fr)); gap: 8px; flex: 1; }
+    .resource { display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; border-left: 2px solid var(--olive); background: #2a2a22; border-radius: 3px; }
+    .resource span { color: #c3b99b; font-size: 11px; letter-spacing: .07em; text-transform: uppercase; }
+    .resource b { color: #efe5c9; font-size: 16px; font-variant-numeric: tabular-nums; }
+    footer { display: flex; align-items: center; justify-content: space-between; gap: 15px; color: var(--muted); font-size: 11px; }
+    .save-controls { display: flex; align-items: center; gap: 8px; }
+    #saveSlot { min-width: 118px; }
+    .debug-tag { display: none; padding: 4px 7px; color: #161711; background: #d7b778; border-radius: 3px; font-size: 10px; font-weight: 800; letter-spacing: .12em; }
+    .debug-tag.active { display: inline-block; }
+    #error { display: none; position: absolute; inset: 18px; z-index: 5; padding: 18px; background: #241914f2; border: 1px solid #9b5237; border-radius: 8px; color: #f1d9c1; white-space: pre-wrap; font: 13px/1.5 ui-monospace, monospace; }
+    @media (max-width: 740px) {
+      .shell { padding: 0 10px 12px; }
+      header { align-items: flex-start; flex-wrap: wrap; padding: 12px 0; gap: 12px; }
+      .brand { min-width: 0; }
+      .scene-control { order: 3; width: 100%; }
+      #sceneSelect { flex: 1; min-width: 0; }
+      .header-right { margin-left: auto; }
+      #status { max-width: 120px; }
+      #gameCanvas { width: 100%; }
+      .inventory { align-items: flex-start; flex-direction: column; gap: 10px; }
+      .inventory-heading { display: flex; gap: 9px; align-items: baseline; }
+      .inventory-heading small { margin: 0; }
+      #inventoryList { width: 100%; grid-template-columns: repeat(2, minmax(0,1fr)); }
+      footer { align-items: flex-start; flex-direction: column; }
+      .save-controls { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div class="brand" aria-label="Ashfall field engine">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div><strong>Ashfall</strong><small>Field interface · build 01</small></div>
+      </div>
+      <div class="scene-control">
+        <label for="sceneSelect">Location</label>
+        <select id="sceneSelect" aria-label="Select location"></select>
+      </div>
+      <div class="header-right">
+        <span id="debugTag" class="debug-tag">DEBUG · F1</span>
+        <span id="status" role="status" aria-live="polite">Loading field data…</span>
+      </div>
+    </header>
+    <section class="stage" aria-label="Game scene">
+      <canvas id="gameCanvas" width="1920" height="1080" aria-label="Ashfall game view"></canvas>
+      <div class="tip">Click to walk · click a marked object to inspect · wheel zoom · right-drag pan · F1 debug</div>
+      <pre id="error" role="alert"></pre>
+    </section>
+    <section class="inventory" aria-label="Inventory">
+      <div class="inventory-heading"><strong>Field stores</strong><small>Current carry</small></div>
+      <div id="inventoryList" aria-live="polite"></div>
+    </section>
+    <footer>
+      <span>Walk the ground line. Save data stays in this browser.</span>
+      <div class="save-controls">
+        <label class="save-label" for="saveSlot">Save slot</label>
+        <select id="saveSlot" aria-label="Save slot">
+          <option value="1">Slot 1</option><option value="2">Slot 2</option><option value="3">Slot 3</option>
+        </select>
+        <button id="saveButton" type="button">Save</button>
+        <button id="loadButton" type="button">Load</button>
+      </div>
+    </footer>
+  </main>
+  <script type="module" src="./project/src/engine.js"></script>
+</body>
+</html>

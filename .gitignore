@@ -26,6 +26,19 @@ uv.lock
 .gdb_history
 uv.lock
 
+# Ashfall project-generated files.
+/game/saves/
+/game/cache/
+/assets/characters/aligned/
+/assets/characters/keyed/
+*.rpyc
+*.rpymc
+log.txt
+traceback.txt
+errors.txt
+lint.txt
+/dist/
+
 # Compiled Ren'Py files.
 *.rpyc
 *.rpyb
