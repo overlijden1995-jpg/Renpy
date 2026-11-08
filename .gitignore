@@ -29,6 +29,8 @@ uv.lock
 # Ashfall project-generated files.
 /game/saves/
 /game/cache/
+/assets/characters/aligned/
+/assets/characters/keyed/
 *.rpyc
 *.rpymc
 log.txt
