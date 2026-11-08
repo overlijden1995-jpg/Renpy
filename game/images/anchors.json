@@ -96,5 +96,103 @@
         1209
       ]
     }
+  },
+  "sable": {
+    "base_hurt": {
+      "source_canvas": [
+        720,
+        1232
+      ],
+      "bbox": [
+        144,
+        27,
+        560,
+        1232
+      ],
+      "display_offset": [
+        144,
+        27
+      ],
+      "foot_midline": [
+        351.5,
+        1231
+      ],
+      "trimmed_size": [
+        416,
+        1205
+      ]
+    },
+    "base_idle": {
+      "source_canvas": [
+        720,
+        1232
+      ],
+      "bbox": [
+        144,
+        28,
+        560,
+        1232
+      ],
+      "display_offset": [
+        144,
+        28
+      ],
+      "foot_midline": [
+        351.5,
+        1231
+      ],
+      "trimmed_size": [
+        416,
+        1204
+      ]
+    },
+    "base_walk": {
+      "source_canvas": [
+        720,
+        1232
+      ],
+      "bbox": [
+        144,
+        28,
+        577,
+        1204
+      ],
+      "display_offset": [
+        144,
+        28
+      ],
+      "foot_midline": [
+        360.0,
+        1203
+      ],
+      "trimmed_size": [
+        433,
+        1176
+      ]
+    },
+    "base_work": {
+      "source_canvas": [
+        720,
+        1232
+      ],
+      "bbox": [
+        119,
+        27,
+        579,
+        1232
+      ],
+      "display_offset": [
+        119,
+        27
+      ],
+      "foot_midline": [
+        348.5,
+        1231
+      ],
+      "trimmed_size": [
+        460,
+        1205
+      ]
+    }
   }
 }

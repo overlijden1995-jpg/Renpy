@@ -15,6 +15,19 @@ image mc face_smile = "images/mc/face_smile.png"
 image mc face_soft = "images/mc/face_soft.png"
 image mc face_surprise = "images/mc/face_surprise.png"
 
+image sable base_hurt = "images/sable/base_hurt.png"
+image sable base_idle = "images/sable/base_idle.png"
+image sable base_walk = "images/sable/base_walk.png"
+image sable base_work = "images/sable/base_work.png"
+image sable blush_off = "images/sable/blush_off.png"
+image sable blush_on = "images/sable/blush_on.png"
+image sable face_angry = "images/sable/face_angry.png"
+image sable face_neutral = "images/sable/face_neutral.png"
+image sable face_pain = "images/sable/face_pain.png"
+image sable face_smile = "images/sable/face_smile.png"
+image sable face_soft = "images/sable/face_soft.png"
+image sable face_surprise = "images/sable/face_surprise.png"
+
 layeredimage mc:
     # Idle is the default base layer and is explicitly always displayed.
     always:
@@ -49,3 +62,38 @@ layeredimage mc:
             "mc blush_off"
         attribute on:
             "mc blush_on"
+
+layeredimage sable:
+    # Idle is the default base layer and is explicitly always displayed.
+    always:
+        "sable base_idle"
+        when idle
+
+    group base:
+        attribute idle default
+        attribute walk:
+            "sable base_walk"
+        attribute work:
+            "sable base_work"
+        attribute hurt:
+            "sable base_hurt"
+
+    group face:
+        attribute neutral default:
+            "sable face_neutral"
+        attribute smile:
+            "sable face_smile"
+        attribute soft:
+            "sable face_soft"
+        attribute surprise:
+            "sable face_surprise"
+        attribute angry:
+            "sable face_angry"
+        attribute pain:
+            "sable face_pain"
+
+    group blush:
+        attribute off default:
+            "sable blush_off"
+        attribute on:
+            "sable blush_on"
