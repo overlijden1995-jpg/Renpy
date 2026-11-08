@@ -5,6 +5,7 @@
   "assets": {
     "env.01_colony_gate": { "type": "image", "src": "assets/env/01_colony_gate.png" },
     "char.sable.face_neutral": { "type": "image", "src": "game/images/sable/face_neutral.png" },
+    "char.mc.face_neutral": { "type": "image", "src": "game/images/mc/face_neutral.png" },
     "env.02_scrap_yard": { "type": "image", "src": "assets/env/02_scrap_yard.png" },
     "env.03_water_pump_station": { "type": "image", "src": "assets/env/03_water_pump_station.png" },
     "env.04_greenhouse_interior": { "type": "image", "src": "assets/env/04_greenhouse_interior.png" },

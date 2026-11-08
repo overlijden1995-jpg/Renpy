@@ -414,6 +414,12 @@ export class ColonyModel {
     return actual;
   }
 
+  gather(resource, amount, source = "gathering") {
+    const actual = this.addResource(resource, amount, source);
+    if (actual > 0) this.emit("resourceGathered", { resource, amount: actual, source, balance: this.resources[resource] });
+    return actual;
+  }
+
   resourceCapacity(resource) {
     let bonus = 0;
     for (const building of this.buildings.values()) bonus += this.definition(building.typeId).capacityBonus?.[resource] || 0;

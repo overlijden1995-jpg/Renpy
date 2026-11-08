@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "start": "sable_salvage_report",
+  "start": "opening_mc_wakes",
   "initial_flags": {},
   "defaults": {
     "bond_scene_content_tier": "sfw"
@@ -269,8 +269,399 @@
       },
       "terminal": true
     },
+    "opening_mc_wakes": {
+      "id": "opening_mc_wakes",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Cold gravel presses through your coat. You come around at the colony gate with the gate shut, your mouth dry, and a watchful figure above you asking whether you can stand.",
+      "choices": [
+        {
+          "id": "get_up",
+          "text": "Get to your feet. Ask what needs doing.",
+          "next": "opening_gate_briefing",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "opening.woke_at_gate": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "opening.cold_open_started": true
+        },
+        "clear": []
+      }
+    },
+    "opening_gate_briefing": {
+      "id": "opening_gate_briefing",
+      "speaker": "Gate Watch",
+      "portrait_frame": null,
+      "text": "“You can stand. Good. Start with salvage, turn it into a working bench, then put someone on the job. We need useful more than brave.”",
+      "choices": [
+        {
+          "id": "start_tutorial",
+          "text": "All right. One step at a time.",
+          "next": "tutorial_gather_prompt",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "opening.gate_briefed": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      }
+    },
+    "tutorial_gather_prompt": {
+      "id": "tutorial_gather_prompt",
+      "speaker": "Gate Watch",
+      "portrait_frame": null,
+      "text": "First: gather. The sorted pile is just inside the yard. Bring back eight scrap; a pile is only inventory after somebody carries it.",
+      "choices": [
+        {
+          "id": "gather_scrap",
+          "text": "Gather eight scrap from the sorted pile.",
+          "next": "tutorial_build_prompt",
+          "requires": {},
+          "actions": [
+            {
+              "type": "gather",
+              "resource": "scrap",
+              "amount": 8
+            }
+          ],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "tutorial.gathered": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "tutorial.step": "gather"
+        },
+        "clear": []
+      }
+    },
+    "tutorial_build_prompt": {
+      "id": "tutorial_build_prompt",
+      "speaker": "Gate Watch",
+      "portrait_frame": null,
+      "text": "Next: build. Put a salvage bench on the repair-bench grid in the yard. A tool left in a heap is still a heap.",
+      "choices": [
+        {
+          "id": "build_salvage_bench",
+          "text": "Build a salvage bench at the repair-bench site.",
+          "next": "tutorial_recruit_prompt",
+          "requires": {
+            "flags": {
+              "all": [
+                "tutorial.gathered"
+              ]
+            }
+          },
+          "actions": [
+            {
+              "type": "build",
+              "building_type": "salvage_bench",
+              "grid_id": "scrap_bench_grid",
+              "cell": [
+                0,
+                0
+              ],
+              "result_flag": "tutorial.salvage_bench_id"
+            }
+          ],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "tutorial.built": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "tutorial.step": "build"
+        },
+        "clear": []
+      }
+    },
+    "tutorial_recruit_prompt": {
+      "id": "tutorial_recruit_prompt",
+      "speaker": "Gate Watch",
+      "portrait_frame": null,
+      "text": "Last: recruit. The bench will not sort itself. Sable knows salvage; invite her onto the crew and assign her to the new worksite.",
+      "choices": [
+        {
+          "id": "recruit_sable",
+          "text": "Recruit Sable to staff the salvage bench.",
+          "next": "tutorial_opening_complete",
+          "requires": {
+            "flags": {
+              "all": [
+                "tutorial.built"
+              ]
+            }
+          },
+          "actions": [
+            {
+              "type": "recruit",
+              "companion_id": "sable",
+              "building_flag": "tutorial.salvage_bench_id",
+              "result_flag": "crew.recruited.sable"
+            }
+          ],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "tutorial.recruited": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "tutorial.step": "recruit"
+        },
+        "clear": []
+      }
+    },
+    "tutorial_opening_complete": {
+      "id": "tutorial_opening_complete",
+      "speaker": "Sable",
+      "portrait_frame": "char.sable.face_neutral",
+      "text": "“You built it where I can see the gate. Better than sorting on my knees. I heard a little about the tracks north of the road, too. Want the useful version?”",
+      "choices": [
+        {
+          "id": "hear_scout_report",
+          "text": "Tell me what you found.",
+          "next": "sable_salvage_report",
+          "requires": {
+            "flags": {
+              "all": [
+                "tutorial.gathered",
+                "tutorial.built",
+                "tutorial.recruited"
+              ]
+            }
+          },
+          "actions": [],
+          "disposition_deltas": {
+            "sable": 1
+          },
+          "flags": {
+            "set": {
+              "tutorial.opening_complete": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "tutorial.step": "complete",
+          "tutorial.opening_complete": true
+        },
+        "clear": []
+      }
+    },
     "bond_scene_mara_gate_1": {
       "id": "bond_scene_mara_gate_1",
+      "speaker": "Mara",
+      "portrait_frame": null,
+      "text": "A clean bandage is a promise, not decoration. I count them before anyone tells me to relax.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "I will not ask you to carry it alone.",
+          "next": "bond_scene_mara_gate_1_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "mara": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.mara.gate_1.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "Then let us make one useful plan.",
+          "next": "bond_scene_mara_gate_1_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "mara": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.mara.gate_1.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_mara_gate_1": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_mara_gate_1",
+        "slot_id": "bond_scene_mara_gate_1",
+        "companion_id": "mara",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Mara · Trust Gate 1",
+        "placeholder_node": "bond_scene_mara_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_mara_gate_1_care": {
+      "id": "bond_scene_mara_gate_1_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will not ask you to carry it alone.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_mara_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.mara.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_mara_gate_1",
+        "slot_id": "bond_scene_mara_gate_1",
+        "companion_id": "mara",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Mara · Trust Gate 1",
+        "placeholder_node": "bond_scene_mara_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_mara_gate_1_plan": {
+      "id": "bond_scene_mara_gate_1_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Then let us make one useful plan.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_mara_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.mara.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_mara_gate_1",
+        "slot_id": "bond_scene_mara_gate_1",
+        "companion_id": "mara",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Mara · Trust Gate 1",
+        "placeholder_node": "bond_scene_mara_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_mara_gate_1_reply": {
+      "id": "bond_scene_mara_gate_1_reply",
+      "speaker": "Mara",
+      "portrait_frame": null,
+      "text": "You brought the kit back intact. Good. That is how a patient gets choices later.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_mara_gate_1_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_mara_gate_1": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_mara_gate_1",
+        "slot_id": "bond_scene_mara_gate_1",
+        "companion_id": "mara",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Mara · Trust Gate 1",
+        "placeholder_node": "bond_scene_mara_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_mara_gate_1_placeholder": {
+      "id": "bond_scene_mara_gate_1_placeholder",
       "speaker": "Mara",
       "portrait_frame": null,
       "text": "",
@@ -280,43 +671,197 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_mara_gate_1",
+        "slot_id": "bond_scene_mara_gate_1",
         "companion_id": "mara",
         "gate": 1,
-        "threshold": 25
+        "threshold": 25,
+        "title": "Mara · Trust Gate 1",
+        "placeholder_node": "bond_scene_mara_gate_1_placeholder"
       },
+      "content_tier": "sfw",
+      "terminal": true,
       "placeholder": {
         "title": "Mara · Trust Gate 1",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
-      },
-      "content_tier": "sfw"
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_mara_gate_2": {
       "id": "bond_scene_mara_gate_2",
       "speaker": "Mara",
       "portrait_frame": null,
-      "text": "",
-      "choices": [],
+      "text": "I can triage a wound. I cannot triage a rumor, however loudly it limps into my clinic.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "Thank you for trusting me with that.",
+          "next": "bond_scene_mara_gate_2_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "mara": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.mara.gate_2.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "We can choose the next step together.",
+          "next": "bond_scene_mara_gate_2_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "mara": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.mara.gate_2.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_mara_gate_2": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_mara_gate_2",
+        "slot_id": "bond_scene_mara_gate_2",
+        "companion_id": "mara",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Mara · Trust Gate 2",
+        "placeholder_node": "bond_scene_mara_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_mara_gate_2_care": {
+      "id": "bond_scene_mara_gate_2_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Thank you for trusting me with that.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_mara_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.mara.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
       "disposition_deltas": {},
       "flags": {
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_exchange",
       "bond_scene": {
+        "root_id": "bond_scene_mara_gate_2",
+        "slot_id": "bond_scene_mara_gate_2",
         "companion_id": "mara",
         "gate": 2,
-        "threshold": 50
-      },
-      "placeholder": {
+        "threshold": 50,
         "title": "Mara · Trust Gate 2",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_mara_gate_2_placeholder"
       },
       "content_tier": "sfw"
     },
-    "bond_scene_mara_gate_3": {
-      "id": "bond_scene_mara_gate_3",
+    "bond_scene_mara_gate_2_plan": {
+      "id": "bond_scene_mara_gate_2_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "We can choose the next step together.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_mara_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.mara.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_mara_gate_2",
+        "slot_id": "bond_scene_mara_gate_2",
+        "companion_id": "mara",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Mara · Trust Gate 2",
+        "placeholder_node": "bond_scene_mara_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_mara_gate_2_reply": {
+      "id": "bond_scene_mara_gate_2_reply",
+      "speaker": "Mara",
+      "portrait_frame": null,
+      "text": "I keep my voice level because somebody on the cot needs one thing in the room to stay steady.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_mara_gate_2_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_mara_gate_2": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_mara_gate_2",
+        "slot_id": "bond_scene_mara_gate_2",
+        "companion_id": "mara",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Mara · Trust Gate 2",
+        "placeholder_node": "bond_scene_mara_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_mara_gate_2_placeholder": {
+      "id": "bond_scene_mara_gate_2_placeholder",
       "speaker": "Mara",
       "portrait_frame": null,
       "text": "",
@@ -326,21 +871,398 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_mara_gate_2",
+        "slot_id": "bond_scene_mara_gate_2",
+        "companion_id": "mara",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Mara · Trust Gate 2",
+        "placeholder_node": "bond_scene_mara_gate_2_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Mara · Trust Gate 2",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
+    },
+    "bond_scene_mara_gate_3": {
+      "id": "bond_scene_mara_gate_3",
+      "speaker": "Mara",
+      "portrait_frame": null,
+      "text": "I used to think discretion meant carrying every bad answer alone. It was efficient. It was also wrong.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "You set the pace. I will not spend your trust for you.",
+          "next": "bond_scene_mara_gate_3_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "mara": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.mara.gate_3.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "I will keep the boundary and the plan clear.",
+          "next": "bond_scene_mara_gate_3_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "mara": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.mara.gate_3.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_mara_gate_3": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_mara_gate_3",
+        "slot_id": "bond_scene_mara_gate_3",
         "companion_id": "mara",
         "gate": 3,
-        "threshold": 75
-      },
-      "placeholder": {
+        "threshold": 75,
         "title": "Mara · Trust Gate 3",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_mara_gate_3_placeholder"
       },
       "content_tier": "sfw"
+    },
+    "bond_scene_mara_gate_3_care": {
+      "id": "bond_scene_mara_gate_3_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "You set the pace. I will not spend your trust for you.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_mara_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.mara.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_mara_gate_3",
+        "slot_id": "bond_scene_mara_gate_3",
+        "companion_id": "mara",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Mara · Trust Gate 3",
+        "placeholder_node": "bond_scene_mara_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_mara_gate_3_plan": {
+      "id": "bond_scene_mara_gate_3_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will keep the boundary and the plan clear.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_mara_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.mara.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_mara_gate_3",
+        "slot_id": "bond_scene_mara_gate_3",
+        "companion_id": "mara",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Mara · Trust Gate 3",
+        "placeholder_node": "bond_scene_mara_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_mara_gate_3_reply": {
+      "id": "bond_scene_mara_gate_3_reply",
+      "speaker": "Mara",
+      "portrait_frame": null,
+      "text": "I can tell you what I know without handing you somebody else’s story. That is the line I mean to keep.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_mara_gate_3_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_mara_gate_3": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_mara_gate_3",
+        "slot_id": "bond_scene_mara_gate_3",
+        "companion_id": "mara",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Mara · Trust Gate 3",
+        "placeholder_node": "bond_scene_mara_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_mara_gate_3_placeholder": {
+      "id": "bond_scene_mara_gate_3_placeholder",
+      "speaker": "Mara",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_placeholder",
+      "bond_scene": {
+        "root_id": "bond_scene_mara_gate_3",
+        "slot_id": "bond_scene_mara_gate_3",
+        "companion_id": "mara",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Mara · Trust Gate 3",
+        "placeholder_node": "bond_scene_mara_gate_3_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Mara · Trust Gate 3",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_sable_gate_1": {
       "id": "bond_scene_sable_gate_1",
       "speaker": "Sable",
+      "portrait_frame": "char.sable.face_neutral",
+      "text": "You do not need to thank me. You need to remember which tracks turned back.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "I will not ask you to carry it alone.",
+          "next": "bond_scene_sable_gate_1_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "sable": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.sable.gate_1.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "Then let us make one useful plan.",
+          "next": "bond_scene_sable_gate_1_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "sable": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.sable.gate_1.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_sable_gate_1": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_sable_gate_1",
+        "slot_id": "bond_scene_sable_gate_1",
+        "companion_id": "sable",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Sable · Trust Gate 1",
+        "placeholder_node": "bond_scene_sable_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_sable_gate_1_care": {
+      "id": "bond_scene_sable_gate_1_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will not ask you to carry it alone.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_sable_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.sable.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_sable_gate_1",
+        "slot_id": "bond_scene_sable_gate_1",
+        "companion_id": "sable",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Sable · Trust Gate 1",
+        "placeholder_node": "bond_scene_sable_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_sable_gate_1_plan": {
+      "id": "bond_scene_sable_gate_1_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Then let us make one useful plan.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_sable_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.sable.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_sable_gate_1",
+        "slot_id": "bond_scene_sable_gate_1",
+        "companion_id": "sable",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Sable · Trust Gate 1",
+        "placeholder_node": "bond_scene_sable_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_sable_gate_1_reply": {
+      "id": "bond_scene_sable_gate_1_reply",
+      "speaker": "Sable",
+      "portrait_frame": "char.sable.face_neutral",
+      "text": "Good. Most people only hear the danger after they have already stepped into it.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_sable_gate_1_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_sable_gate_1": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_sable_gate_1",
+        "slot_id": "bond_scene_sable_gate_1",
+        "companion_id": "sable",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Sable · Trust Gate 1",
+        "placeholder_node": "bond_scene_sable_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_sable_gate_1_placeholder": {
+      "id": "bond_scene_sable_gate_1_placeholder",
+      "speaker": "Sable",
       "portrait_frame": null,
       "text": "",
       "choices": [],
@@ -349,43 +1271,197 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_sable_gate_1",
+        "slot_id": "bond_scene_sable_gate_1",
         "companion_id": "sable",
         "gate": 1,
-        "threshold": 25
+        "threshold": 25,
+        "title": "Sable · Trust Gate 1",
+        "placeholder_node": "bond_scene_sable_gate_1_placeholder"
       },
+      "content_tier": "sfw",
+      "terminal": true,
       "placeholder": {
         "title": "Sable · Trust Gate 1",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
-      },
-      "content_tier": "sfw"
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_sable_gate_2": {
       "id": "bond_scene_sable_gate_2",
       "speaker": "Sable",
-      "portrait_frame": null,
-      "text": "",
-      "choices": [],
+      "portrait_frame": "char.sable.face_neutral",
+      "text": "A trail says who came through. It does not say what they wanted. I will not pretend it does.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "Thank you for trusting me with that.",
+          "next": "bond_scene_sable_gate_2_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "sable": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.sable.gate_2.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "We can choose the next step together.",
+          "next": "bond_scene_sable_gate_2_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "sable": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.sable.gate_2.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_sable_gate_2": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_sable_gate_2",
+        "slot_id": "bond_scene_sable_gate_2",
+        "companion_id": "sable",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Sable · Trust Gate 2",
+        "placeholder_node": "bond_scene_sable_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_sable_gate_2_care": {
+      "id": "bond_scene_sable_gate_2_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Thank you for trusting me with that.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_sable_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.sable.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
       "disposition_deltas": {},
       "flags": {
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_exchange",
       "bond_scene": {
+        "root_id": "bond_scene_sable_gate_2",
+        "slot_id": "bond_scene_sable_gate_2",
         "companion_id": "sable",
         "gate": 2,
-        "threshold": 50
-      },
-      "placeholder": {
+        "threshold": 50,
         "title": "Sable · Trust Gate 2",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_sable_gate_2_placeholder"
       },
       "content_tier": "sfw"
     },
-    "bond_scene_sable_gate_3": {
-      "id": "bond_scene_sable_gate_3",
+    "bond_scene_sable_gate_2_plan": {
+      "id": "bond_scene_sable_gate_2_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "We can choose the next step together.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_sable_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.sable.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_sable_gate_2",
+        "slot_id": "bond_scene_sable_gate_2",
+        "companion_id": "sable",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Sable · Trust Gate 2",
+        "placeholder_node": "bond_scene_sable_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_sable_gate_2_reply": {
+      "id": "bond_scene_sable_gate_2_reply",
+      "speaker": "Sable",
+      "portrait_frame": "char.sable.face_neutral",
+      "text": "I came back because the job was to report, not to prove I was brave. That part is worth trusting.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_sable_gate_2_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_sable_gate_2": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_sable_gate_2",
+        "slot_id": "bond_scene_sable_gate_2",
+        "companion_id": "sable",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Sable · Trust Gate 2",
+        "placeholder_node": "bond_scene_sable_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_sable_gate_2_placeholder": {
+      "id": "bond_scene_sable_gate_2_placeholder",
       "speaker": "Sable",
       "portrait_frame": null,
       "text": "",
@@ -395,22 +1471,399 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_sable_gate_2",
+        "slot_id": "bond_scene_sable_gate_2",
+        "companion_id": "sable",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Sable · Trust Gate 2",
+        "placeholder_node": "bond_scene_sable_gate_2_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Sable · Trust Gate 2",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
+    },
+    "bond_scene_sable_gate_3": {
+      "id": "bond_scene_sable_gate_3",
+      "speaker": "Sable",
+      "portrait_frame": "char.sable.face_neutral",
+      "text": "You left the route call to me, even when the safe answer was the slower one.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "You set the pace. I will not spend your trust for you.",
+          "next": "bond_scene_sable_gate_3_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "sable": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.sable.gate_3.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "I will keep the boundary and the plan clear.",
+          "next": "bond_scene_sable_gate_3_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "sable": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.sable.gate_3.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_sable_gate_3": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_sable_gate_3",
+        "slot_id": "bond_scene_sable_gate_3",
         "companion_id": "sable",
         "gate": 3,
-        "threshold": 75
-      },
-      "placeholder": {
+        "threshold": 75,
         "title": "Sable · Trust Gate 3",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_sable_gate_3_placeholder"
       },
       "content_tier": "sfw"
+    },
+    "bond_scene_sable_gate_3_care": {
+      "id": "bond_scene_sable_gate_3_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "You set the pace. I will not spend your trust for you.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_sable_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.sable.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_sable_gate_3",
+        "slot_id": "bond_scene_sable_gate_3",
+        "companion_id": "sable",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Sable · Trust Gate 3",
+        "placeholder_node": "bond_scene_sable_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_sable_gate_3_plan": {
+      "id": "bond_scene_sable_gate_3_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will keep the boundary and the plan clear.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_sable_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.sable.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_sable_gate_3",
+        "slot_id": "bond_scene_sable_gate_3",
+        "companion_id": "sable",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Sable · Trust Gate 3",
+        "placeholder_node": "bond_scene_sable_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_sable_gate_3_reply": {
+      "id": "bond_scene_sable_gate_3_reply",
+      "speaker": "Sable",
+      "portrait_frame": "char.sable.face_neutral",
+      "text": "That kind of trust keeps a scout honest. It does not make the road honest.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_sable_gate_3_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_sable_gate_3": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_sable_gate_3",
+        "slot_id": "bond_scene_sable_gate_3",
+        "companion_id": "sable",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Sable · Trust Gate 3",
+        "placeholder_node": "bond_scene_sable_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_sable_gate_3_placeholder": {
+      "id": "bond_scene_sable_gate_3_placeholder",
+      "speaker": "Sable",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_placeholder",
+      "bond_scene": {
+        "root_id": "bond_scene_sable_gate_3",
+        "slot_id": "bond_scene_sable_gate_3",
+        "companion_id": "sable",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Sable · Trust Gate 3",
+        "placeholder_node": "bond_scene_sable_gate_3_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Sable · Trust Gate 3",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_vesper_gate_1": {
       "id": "bond_scene_vesper_gate_1",
       "speaker": "Vesper",
       "portrait_frame": null,
+      "text": "I keep two ledgers: what we own, and what people think we owe them. The second one is harder to balance.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "I will not ask you to carry it alone.",
+          "next": "bond_scene_vesper_gate_1_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "vesper": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.vesper.gate_1.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "Then let us make one useful plan.",
+          "next": "bond_scene_vesper_gate_1_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "vesper": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.vesper.gate_1.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_vesper_gate_1": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_1",
+        "slot_id": "bond_scene_vesper_gate_1",
+        "companion_id": "vesper",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Vesper · Trust Gate 1",
+        "placeholder_node": "bond_scene_vesper_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_vesper_gate_1_care": {
+      "id": "bond_scene_vesper_gate_1_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will not ask you to carry it alone.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_vesper_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.vesper.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_1",
+        "slot_id": "bond_scene_vesper_gate_1",
+        "companion_id": "vesper",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Vesper · Trust Gate 1",
+        "placeholder_node": "bond_scene_vesper_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_vesper_gate_1_plan": {
+      "id": "bond_scene_vesper_gate_1_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Then let us make one useful plan.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_vesper_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.vesper.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_1",
+        "slot_id": "bond_scene_vesper_gate_1",
+        "companion_id": "vesper",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Vesper · Trust Gate 1",
+        "placeholder_node": "bond_scene_vesper_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_vesper_gate_1_reply": {
+      "id": "bond_scene_vesper_gate_1_reply",
+      "speaker": "Vesper",
+      "portrait_frame": null,
+      "text": "You asked before promising anything. That saves more than scrap. Usually.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_vesper_gate_1_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_vesper_gate_1": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_1",
+        "slot_id": "bond_scene_vesper_gate_1",
+        "companion_id": "vesper",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Vesper · Trust Gate 1",
+        "placeholder_node": "bond_scene_vesper_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_vesper_gate_1_placeholder": {
+      "id": "bond_scene_vesper_gate_1_placeholder",
+      "speaker": "Vesper",
+      "portrait_frame": null,
       "text": "",
       "choices": [],
       "disposition_deltas": {},
@@ -418,43 +1871,197 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_1",
+        "slot_id": "bond_scene_vesper_gate_1",
         "companion_id": "vesper",
         "gate": 1,
-        "threshold": 25
+        "threshold": 25,
+        "title": "Vesper · Trust Gate 1",
+        "placeholder_node": "bond_scene_vesper_gate_1_placeholder"
       },
+      "content_tier": "sfw",
+      "terminal": true,
       "placeholder": {
         "title": "Vesper · Trust Gate 1",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
-      },
-      "content_tier": "sfw"
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_vesper_gate_2": {
       "id": "bond_scene_vesper_gate_2",
       "speaker": "Vesper",
       "portrait_frame": null,
-      "text": "",
-      "choices": [],
+      "text": "Generosity is easy when the shelves are full. I want to know what it looks like with three tins left.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "Thank you for trusting me with that.",
+          "next": "bond_scene_vesper_gate_2_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "vesper": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.vesper.gate_2.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "We can choose the next step together.",
+          "next": "bond_scene_vesper_gate_2_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "vesper": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.vesper.gate_2.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_vesper_gate_2": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_2",
+        "slot_id": "bond_scene_vesper_gate_2",
+        "companion_id": "vesper",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Vesper · Trust Gate 2",
+        "placeholder_node": "bond_scene_vesper_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_vesper_gate_2_care": {
+      "id": "bond_scene_vesper_gate_2_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Thank you for trusting me with that.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_vesper_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.vesper.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
       "disposition_deltas": {},
       "flags": {
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_exchange",
       "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_2",
+        "slot_id": "bond_scene_vesper_gate_2",
         "companion_id": "vesper",
         "gate": 2,
-        "threshold": 50
-      },
-      "placeholder": {
+        "threshold": 50,
         "title": "Vesper · Trust Gate 2",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_vesper_gate_2_placeholder"
       },
       "content_tier": "sfw"
     },
-    "bond_scene_vesper_gate_3": {
-      "id": "bond_scene_vesper_gate_3",
+    "bond_scene_vesper_gate_2_plan": {
+      "id": "bond_scene_vesper_gate_2_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "We can choose the next step together.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_vesper_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.vesper.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_2",
+        "slot_id": "bond_scene_vesper_gate_2",
+        "companion_id": "vesper",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Vesper · Trust Gate 2",
+        "placeholder_node": "bond_scene_vesper_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_vesper_gate_2_reply": {
+      "id": "bond_scene_vesper_gate_2_reply",
+      "speaker": "Vesper",
+      "portrait_frame": null,
+      "text": "I can make a fair count. I cannot make scarcity feel fair. Those are different jobs.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_vesper_gate_2_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_vesper_gate_2": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_2",
+        "slot_id": "bond_scene_vesper_gate_2",
+        "companion_id": "vesper",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Vesper · Trust Gate 2",
+        "placeholder_node": "bond_scene_vesper_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_vesper_gate_2_placeholder": {
+      "id": "bond_scene_vesper_gate_2_placeholder",
       "speaker": "Vesper",
       "portrait_frame": null,
       "text": "",
@@ -464,22 +2071,399 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_2",
+        "slot_id": "bond_scene_vesper_gate_2",
+        "companion_id": "vesper",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Vesper · Trust Gate 2",
+        "placeholder_node": "bond_scene_vesper_gate_2_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Vesper · Trust Gate 2",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
+    },
+    "bond_scene_vesper_gate_3": {
+      "id": "bond_scene_vesper_gate_3",
+      "speaker": "Vesper",
+      "portrait_frame": null,
+      "text": "I once rounded a debt in somebody’s favor and called it kindness. The next quartermaster inherited the argument.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "You set the pace. I will not spend your trust for you.",
+          "next": "bond_scene_vesper_gate_3_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "vesper": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.vesper.gate_3.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "I will keep the boundary and the plan clear.",
+          "next": "bond_scene_vesper_gate_3_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "vesper": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.vesper.gate_3.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_vesper_gate_3": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_3",
+        "slot_id": "bond_scene_vesper_gate_3",
         "companion_id": "vesper",
         "gate": 3,
-        "threshold": 75
-      },
-      "placeholder": {
+        "threshold": 75,
         "title": "Vesper · Trust Gate 3",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_vesper_gate_3_placeholder"
       },
       "content_tier": "sfw"
+    },
+    "bond_scene_vesper_gate_3_care": {
+      "id": "bond_scene_vesper_gate_3_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "You set the pace. I will not spend your trust for you.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_vesper_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.vesper.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_3",
+        "slot_id": "bond_scene_vesper_gate_3",
+        "companion_id": "vesper",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Vesper · Trust Gate 3",
+        "placeholder_node": "bond_scene_vesper_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_vesper_gate_3_plan": {
+      "id": "bond_scene_vesper_gate_3_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will keep the boundary and the plan clear.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_vesper_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.vesper.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_3",
+        "slot_id": "bond_scene_vesper_gate_3",
+        "companion_id": "vesper",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Vesper · Trust Gate 3",
+        "placeholder_node": "bond_scene_vesper_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_vesper_gate_3_reply": {
+      "id": "bond_scene_vesper_gate_3_reply",
+      "speaker": "Vesper",
+      "portrait_frame": null,
+      "text": "If we give, I want it written down as a choice, not smuggled in as arithmetic.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_vesper_gate_3_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_vesper_gate_3": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_3",
+        "slot_id": "bond_scene_vesper_gate_3",
+        "companion_id": "vesper",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Vesper · Trust Gate 3",
+        "placeholder_node": "bond_scene_vesper_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_vesper_gate_3_placeholder": {
+      "id": "bond_scene_vesper_gate_3_placeholder",
+      "speaker": "Vesper",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_placeholder",
+      "bond_scene": {
+        "root_id": "bond_scene_vesper_gate_3",
+        "slot_id": "bond_scene_vesper_gate_3",
+        "companion_id": "vesper",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Vesper · Trust Gate 3",
+        "placeholder_node": "bond_scene_vesper_gate_3_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Vesper · Trust Gate 3",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_ren_gate_1": {
       "id": "bond_scene_ren_gate_1",
       "speaker": "Ren",
       "portrait_frame": null,
+      "text": "The generator is making a new noise. It has made that noise before, but this time I wrote it down.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "I will not ask you to carry it alone.",
+          "next": "bond_scene_ren_gate_1_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "ren": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.ren.gate_1.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "Then let us make one useful plan.",
+          "next": "bond_scene_ren_gate_1_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "ren": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.ren.gate_1.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_ren_gate_1": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_ren_gate_1",
+        "slot_id": "bond_scene_ren_gate_1",
+        "companion_id": "ren",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Ren · Trust Gate 1",
+        "placeholder_node": "bond_scene_ren_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_ren_gate_1_care": {
+      "id": "bond_scene_ren_gate_1_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will not ask you to carry it alone.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_ren_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.ren.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_ren_gate_1",
+        "slot_id": "bond_scene_ren_gate_1",
+        "companion_id": "ren",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Ren · Trust Gate 1",
+        "placeholder_node": "bond_scene_ren_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_ren_gate_1_plan": {
+      "id": "bond_scene_ren_gate_1_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Then let us make one useful plan.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_ren_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.ren.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_ren_gate_1",
+        "slot_id": "bond_scene_ren_gate_1",
+        "companion_id": "ren",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Ren · Trust Gate 1",
+        "placeholder_node": "bond_scene_ren_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_ren_gate_1_reply": {
+      "id": "bond_scene_ren_gate_1_reply",
+      "speaker": "Ren",
+      "portrait_frame": null,
+      "text": "A note costs less than a replacement coil. I am trying to remember that before the sparks start.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_ren_gate_1_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_ren_gate_1": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_ren_gate_1",
+        "slot_id": "bond_scene_ren_gate_1",
+        "companion_id": "ren",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Ren · Trust Gate 1",
+        "placeholder_node": "bond_scene_ren_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_ren_gate_1_placeholder": {
+      "id": "bond_scene_ren_gate_1_placeholder",
+      "speaker": "Ren",
+      "portrait_frame": null,
       "text": "",
       "choices": [],
       "disposition_deltas": {},
@@ -487,43 +2471,197 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_ren_gate_1",
+        "slot_id": "bond_scene_ren_gate_1",
         "companion_id": "ren",
         "gate": 1,
-        "threshold": 25
+        "threshold": 25,
+        "title": "Ren · Trust Gate 1",
+        "placeholder_node": "bond_scene_ren_gate_1_placeholder"
       },
+      "content_tier": "sfw",
+      "terminal": true,
       "placeholder": {
         "title": "Ren · Trust Gate 1",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
-      },
-      "content_tier": "sfw"
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_ren_gate_2": {
       "id": "bond_scene_ren_gate_2",
       "speaker": "Ren",
       "portrait_frame": null,
-      "text": "",
-      "choices": [],
+      "text": "Improvising is not the same thing as guessing. The distinction gets less convincing at two in the morning.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "Thank you for trusting me with that.",
+          "next": "bond_scene_ren_gate_2_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "ren": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.ren.gate_2.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "We can choose the next step together.",
+          "next": "bond_scene_ren_gate_2_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "ren": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.ren.gate_2.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_ren_gate_2": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_ren_gate_2",
+        "slot_id": "bond_scene_ren_gate_2",
+        "companion_id": "ren",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Ren · Trust Gate 2",
+        "placeholder_node": "bond_scene_ren_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_ren_gate_2_care": {
+      "id": "bond_scene_ren_gate_2_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Thank you for trusting me with that.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_ren_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.ren.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
       "disposition_deltas": {},
       "flags": {
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_exchange",
       "bond_scene": {
+        "root_id": "bond_scene_ren_gate_2",
+        "slot_id": "bond_scene_ren_gate_2",
         "companion_id": "ren",
         "gate": 2,
-        "threshold": 50
-      },
-      "placeholder": {
+        "threshold": 50,
         "title": "Ren · Trust Gate 2",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_ren_gate_2_placeholder"
       },
       "content_tier": "sfw"
     },
-    "bond_scene_ren_gate_3": {
-      "id": "bond_scene_ren_gate_3",
+    "bond_scene_ren_gate_2_plan": {
+      "id": "bond_scene_ren_gate_2_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "We can choose the next step together.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_ren_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.ren.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_ren_gate_2",
+        "slot_id": "bond_scene_ren_gate_2",
+        "companion_id": "ren",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Ren · Trust Gate 2",
+        "placeholder_node": "bond_scene_ren_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_ren_gate_2_reply": {
+      "id": "bond_scene_ren_gate_2_reply",
+      "speaker": "Ren",
+      "portrait_frame": null,
+      "text": "You let me shut the line down before it cooked. I know what the lamps cost. I also know what a fire costs.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_ren_gate_2_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_ren_gate_2": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_ren_gate_2",
+        "slot_id": "bond_scene_ren_gate_2",
+        "companion_id": "ren",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Ren · Trust Gate 2",
+        "placeholder_node": "bond_scene_ren_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_ren_gate_2_placeholder": {
+      "id": "bond_scene_ren_gate_2_placeholder",
       "speaker": "Ren",
       "portrait_frame": null,
       "text": "",
@@ -533,22 +2671,399 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_ren_gate_2",
+        "slot_id": "bond_scene_ren_gate_2",
+        "companion_id": "ren",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Ren · Trust Gate 2",
+        "placeholder_node": "bond_scene_ren_gate_2_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Ren · Trust Gate 2",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
+    },
+    "bond_scene_ren_gate_3": {
+      "id": "bond_scene_ren_gate_3",
+      "speaker": "Ren",
+      "portrait_frame": null,
+      "text": "I have a proper fix and an ugly one. The ugly one buys us a night; the proper one needs parts we do not have.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "You set the pace. I will not spend your trust for you.",
+          "next": "bond_scene_ren_gate_3_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "ren": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.ren.gate_3.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "I will keep the boundary and the plan clear.",
+          "next": "bond_scene_ren_gate_3_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "ren": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.ren.gate_3.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_ren_gate_3": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_ren_gate_3",
+        "slot_id": "bond_scene_ren_gate_3",
         "companion_id": "ren",
         "gate": 3,
-        "threshold": 75
-      },
-      "placeholder": {
+        "threshold": 75,
         "title": "Ren · Trust Gate 3",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_ren_gate_3_placeholder"
       },
       "content_tier": "sfw"
+    },
+    "bond_scene_ren_gate_3_care": {
+      "id": "bond_scene_ren_gate_3_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "You set the pace. I will not spend your trust for you.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_ren_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.ren.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_ren_gate_3",
+        "slot_id": "bond_scene_ren_gate_3",
+        "companion_id": "ren",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Ren · Trust Gate 3",
+        "placeholder_node": "bond_scene_ren_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_ren_gate_3_plan": {
+      "id": "bond_scene_ren_gate_3_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will keep the boundary and the plan clear.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_ren_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.ren.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_ren_gate_3",
+        "slot_id": "bond_scene_ren_gate_3",
+        "companion_id": "ren",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Ren · Trust Gate 3",
+        "placeholder_node": "bond_scene_ren_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_ren_gate_3_reply": {
+      "id": "bond_scene_ren_gate_3_reply",
+      "speaker": "Ren",
+      "portrait_frame": null,
+      "text": "I can live with a temporary fix if we call it temporary and put the proper repair on the board.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_ren_gate_3_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_ren_gate_3": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_ren_gate_3",
+        "slot_id": "bond_scene_ren_gate_3",
+        "companion_id": "ren",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Ren · Trust Gate 3",
+        "placeholder_node": "bond_scene_ren_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_ren_gate_3_placeholder": {
+      "id": "bond_scene_ren_gate_3_placeholder",
+      "speaker": "Ren",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_placeholder",
+      "bond_scene": {
+        "root_id": "bond_scene_ren_gate_3",
+        "slot_id": "bond_scene_ren_gate_3",
+        "companion_id": "ren",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Ren · Trust Gate 3",
+        "placeholder_node": "bond_scene_ren_gate_3_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Ren · Trust Gate 3",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_iona_gate_1": {
       "id": "bond_scene_iona_gate_1",
       "speaker": "Iona",
       "portrait_frame": null,
+      "text": "The tank is not empty. The gauge is lying, which is a more expensive problem.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "I will not ask you to carry it alone.",
+          "next": "bond_scene_iona_gate_1_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "iona": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.iona.gate_1.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "Then let us make one useful plan.",
+          "next": "bond_scene_iona_gate_1_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "iona": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.iona.gate_1.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_iona_gate_1": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_iona_gate_1",
+        "slot_id": "bond_scene_iona_gate_1",
+        "companion_id": "iona",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Iona · Trust Gate 1",
+        "placeholder_node": "bond_scene_iona_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_iona_gate_1_care": {
+      "id": "bond_scene_iona_gate_1_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will not ask you to carry it alone.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_iona_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.iona.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_iona_gate_1",
+        "slot_id": "bond_scene_iona_gate_1",
+        "companion_id": "iona",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Iona · Trust Gate 1",
+        "placeholder_node": "bond_scene_iona_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_iona_gate_1_plan": {
+      "id": "bond_scene_iona_gate_1_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Then let us make one useful plan.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_iona_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.iona.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_iona_gate_1",
+        "slot_id": "bond_scene_iona_gate_1",
+        "companion_id": "iona",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Iona · Trust Gate 1",
+        "placeholder_node": "bond_scene_iona_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_iona_gate_1_reply": {
+      "id": "bond_scene_iona_gate_1_reply",
+      "speaker": "Iona",
+      "portrait_frame": null,
+      "text": "You came to look at the line instead of telling me to work faster. That helps.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_iona_gate_1_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_iona_gate_1": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_iona_gate_1",
+        "slot_id": "bond_scene_iona_gate_1",
+        "companion_id": "iona",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Iona · Trust Gate 1",
+        "placeholder_node": "bond_scene_iona_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_iona_gate_1_placeholder": {
+      "id": "bond_scene_iona_gate_1_placeholder",
+      "speaker": "Iona",
+      "portrait_frame": null,
       "text": "",
       "choices": [],
       "disposition_deltas": {},
@@ -556,43 +3071,197 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_iona_gate_1",
+        "slot_id": "bond_scene_iona_gate_1",
         "companion_id": "iona",
         "gate": 1,
-        "threshold": 25
+        "threshold": 25,
+        "title": "Iona · Trust Gate 1",
+        "placeholder_node": "bond_scene_iona_gate_1_placeholder"
       },
+      "content_tier": "sfw",
+      "terminal": true,
       "placeholder": {
         "title": "Iona · Trust Gate 1",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
-      },
-      "content_tier": "sfw"
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_iona_gate_2": {
       "id": "bond_scene_iona_gate_2",
       "speaker": "Iona",
       "portrait_frame": null,
-      "text": "",
-      "choices": [],
+      "text": "I can keep the pump running by myself. I cannot be in two places when the seal gives.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "Thank you for trusting me with that.",
+          "next": "bond_scene_iona_gate_2_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "iona": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.iona.gate_2.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "We can choose the next step together.",
+          "next": "bond_scene_iona_gate_2_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "iona": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.iona.gate_2.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_iona_gate_2": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_iona_gate_2",
+        "slot_id": "bond_scene_iona_gate_2",
+        "companion_id": "iona",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Iona · Trust Gate 2",
+        "placeholder_node": "bond_scene_iona_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_iona_gate_2_care": {
+      "id": "bond_scene_iona_gate_2_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Thank you for trusting me with that.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_iona_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.iona.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
       "disposition_deltas": {},
       "flags": {
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_exchange",
       "bond_scene": {
+        "root_id": "bond_scene_iona_gate_2",
+        "slot_id": "bond_scene_iona_gate_2",
         "companion_id": "iona",
         "gate": 2,
-        "threshold": 50
-      },
-      "placeholder": {
+        "threshold": 50,
         "title": "Iona · Trust Gate 2",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_iona_gate_2_placeholder"
       },
       "content_tier": "sfw"
     },
-    "bond_scene_iona_gate_3": {
-      "id": "bond_scene_iona_gate_3",
+    "bond_scene_iona_gate_2_plan": {
+      "id": "bond_scene_iona_gate_2_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "We can choose the next step together.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_iona_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.iona.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_iona_gate_2",
+        "slot_id": "bond_scene_iona_gate_2",
+        "companion_id": "iona",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Iona · Trust Gate 2",
+        "placeholder_node": "bond_scene_iona_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_iona_gate_2_reply": {
+      "id": "bond_scene_iona_gate_2_reply",
+      "speaker": "Iona",
+      "portrait_frame": null,
+      "text": "Taking help is not the same as handing over the valve. I am learning to say that plainly.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_iona_gate_2_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_iona_gate_2": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_iona_gate_2",
+        "slot_id": "bond_scene_iona_gate_2",
+        "companion_id": "iona",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Iona · Trust Gate 2",
+        "placeholder_node": "bond_scene_iona_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_iona_gate_2_placeholder": {
+      "id": "bond_scene_iona_gate_2_placeholder",
       "speaker": "Iona",
       "portrait_frame": null,
       "text": "",
@@ -602,22 +3271,399 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_iona_gate_2",
+        "slot_id": "bond_scene_iona_gate_2",
+        "companion_id": "iona",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Iona · Trust Gate 2",
+        "placeholder_node": "bond_scene_iona_gate_2_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Iona · Trust Gate 2",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
+    },
+    "bond_scene_iona_gate_3": {
+      "id": "bond_scene_iona_gate_3",
+      "speaker": "Iona",
+      "portrait_frame": null,
+      "text": "Water work teaches you to notice what everyone else steps over: a damp seam, a changed taste, a quiet pipe.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "You set the pace. I will not spend your trust for you.",
+          "next": "bond_scene_iona_gate_3_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "iona": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.iona.gate_3.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "I will keep the boundary and the plan clear.",
+          "next": "bond_scene_iona_gate_3_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "iona": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.iona.gate_3.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_iona_gate_3": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_iona_gate_3",
+        "slot_id": "bond_scene_iona_gate_3",
         "companion_id": "iona",
         "gate": 3,
-        "threshold": 75
-      },
-      "placeholder": {
+        "threshold": 75,
         "title": "Iona · Trust Gate 3",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_iona_gate_3_placeholder"
       },
       "content_tier": "sfw"
+    },
+    "bond_scene_iona_gate_3_care": {
+      "id": "bond_scene_iona_gate_3_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "You set the pace. I will not spend your trust for you.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_iona_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.iona.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_iona_gate_3",
+        "slot_id": "bond_scene_iona_gate_3",
+        "companion_id": "iona",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Iona · Trust Gate 3",
+        "placeholder_node": "bond_scene_iona_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_iona_gate_3_plan": {
+      "id": "bond_scene_iona_gate_3_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will keep the boundary and the plan clear.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_iona_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.iona.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_iona_gate_3",
+        "slot_id": "bond_scene_iona_gate_3",
+        "companion_id": "iona",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Iona · Trust Gate 3",
+        "placeholder_node": "bond_scene_iona_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_iona_gate_3_reply": {
+      "id": "bond_scene_iona_gate_3_reply",
+      "speaker": "Iona",
+      "portrait_frame": null,
+      "text": "You asked me to show you the signs. Good. A system is safer when more than one person can read it.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_iona_gate_3_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_iona_gate_3": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_iona_gate_3",
+        "slot_id": "bond_scene_iona_gate_3",
+        "companion_id": "iona",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Iona · Trust Gate 3",
+        "placeholder_node": "bond_scene_iona_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_iona_gate_3_placeholder": {
+      "id": "bond_scene_iona_gate_3_placeholder",
+      "speaker": "Iona",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_placeholder",
+      "bond_scene": {
+        "root_id": "bond_scene_iona_gate_3",
+        "slot_id": "bond_scene_iona_gate_3",
+        "companion_id": "iona",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Iona · Trust Gate 3",
+        "placeholder_node": "bond_scene_iona_gate_3_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Iona · Trust Gate 3",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_brick_gate_1": {
       "id": "bond_scene_brick_gate_1",
       "speaker": "Brick",
       "portrait_frame": null,
+      "text": "A wall is a promise with a maintenance schedule. People keep asking for the promise part.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "I will not ask you to carry it alone.",
+          "next": "bond_scene_brick_gate_1_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "brick": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.brick.gate_1.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "Then let us make one useful plan.",
+          "next": "bond_scene_brick_gate_1_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "brick": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.brick.gate_1.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_brick_gate_1": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_brick_gate_1",
+        "slot_id": "bond_scene_brick_gate_1",
+        "companion_id": "brick",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Brick · Trust Gate 1",
+        "placeholder_node": "bond_scene_brick_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_brick_gate_1_care": {
+      "id": "bond_scene_brick_gate_1_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will not ask you to carry it alone.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_brick_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.brick.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_brick_gate_1",
+        "slot_id": "bond_scene_brick_gate_1",
+        "companion_id": "brick",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Brick · Trust Gate 1",
+        "placeholder_node": "bond_scene_brick_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_brick_gate_1_plan": {
+      "id": "bond_scene_brick_gate_1_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Then let us make one useful plan.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_brick_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.brick.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_brick_gate_1",
+        "slot_id": "bond_scene_brick_gate_1",
+        "companion_id": "brick",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Brick · Trust Gate 1",
+        "placeholder_node": "bond_scene_brick_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_brick_gate_1_reply": {
+      "id": "bond_scene_brick_gate_1_reply",
+      "speaker": "Brick",
+      "portrait_frame": null,
+      "text": "You checked the braces before asking me to stand watch. That is the right order.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_brick_gate_1_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_brick_gate_1": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_brick_gate_1",
+        "slot_id": "bond_scene_brick_gate_1",
+        "companion_id": "brick",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Brick · Trust Gate 1",
+        "placeholder_node": "bond_scene_brick_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_brick_gate_1_placeholder": {
+      "id": "bond_scene_brick_gate_1_placeholder",
+      "speaker": "Brick",
+      "portrait_frame": null,
       "text": "",
       "choices": [],
       "disposition_deltas": {},
@@ -625,43 +3671,197 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_brick_gate_1",
+        "slot_id": "bond_scene_brick_gate_1",
         "companion_id": "brick",
         "gate": 1,
-        "threshold": 25
+        "threshold": 25,
+        "title": "Brick · Trust Gate 1",
+        "placeholder_node": "bond_scene_brick_gate_1_placeholder"
       },
+      "content_tier": "sfw",
+      "terminal": true,
       "placeholder": {
         "title": "Brick · Trust Gate 1",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
-      },
-      "content_tier": "sfw"
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_brick_gate_2": {
       "id": "bond_scene_brick_gate_2",
       "speaker": "Brick",
       "portrait_frame": null,
-      "text": "",
-      "choices": [],
+      "text": "I know how to keep a gate. I am less sure when keeping it means telling someone to stay outside.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "Thank you for trusting me with that.",
+          "next": "bond_scene_brick_gate_2_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "brick": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.brick.gate_2.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "We can choose the next step together.",
+          "next": "bond_scene_brick_gate_2_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "brick": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.brick.gate_2.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_brick_gate_2": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_brick_gate_2",
+        "slot_id": "bond_scene_brick_gate_2",
+        "companion_id": "brick",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Brick · Trust Gate 2",
+        "placeholder_node": "bond_scene_brick_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_brick_gate_2_care": {
+      "id": "bond_scene_brick_gate_2_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Thank you for trusting me with that.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_brick_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.brick.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
       "disposition_deltas": {},
       "flags": {
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_exchange",
       "bond_scene": {
+        "root_id": "bond_scene_brick_gate_2",
+        "slot_id": "bond_scene_brick_gate_2",
         "companion_id": "brick",
         "gate": 2,
-        "threshold": 50
-      },
-      "placeholder": {
+        "threshold": 50,
         "title": "Brick · Trust Gate 2",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_brick_gate_2_placeholder"
       },
       "content_tier": "sfw"
     },
-    "bond_scene_brick_gate_3": {
-      "id": "bond_scene_brick_gate_3",
+    "bond_scene_brick_gate_2_plan": {
+      "id": "bond_scene_brick_gate_2_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "We can choose the next step together.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_brick_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.brick.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_brick_gate_2",
+        "slot_id": "bond_scene_brick_gate_2",
+        "companion_id": "brick",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Brick · Trust Gate 2",
+        "placeholder_node": "bond_scene_brick_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_brick_gate_2_reply": {
+      "id": "bond_scene_brick_gate_2_reply",
+      "speaker": "Brick",
+      "portrait_frame": null,
+      "text": "Mercy is not letting the hinge rust. It is deciding who gets through and living with the answer.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_brick_gate_2_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_brick_gate_2": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_brick_gate_2",
+        "slot_id": "bond_scene_brick_gate_2",
+        "companion_id": "brick",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Brick · Trust Gate 2",
+        "placeholder_node": "bond_scene_brick_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_brick_gate_2_placeholder": {
+      "id": "bond_scene_brick_gate_2_placeholder",
       "speaker": "Brick",
       "portrait_frame": null,
       "text": "",
@@ -671,22 +3871,399 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_brick_gate_2",
+        "slot_id": "bond_scene_brick_gate_2",
+        "companion_id": "brick",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Brick · Trust Gate 2",
+        "placeholder_node": "bond_scene_brick_gate_2_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Brick · Trust Gate 2",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
+    },
+    "bond_scene_brick_gate_3": {
+      "id": "bond_scene_brick_gate_3",
+      "speaker": "Brick",
+      "portrait_frame": null,
+      "text": "I used to think a good guard never left their post. Then I watched a post outlast the people it was meant to protect.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "You set the pace. I will not spend your trust for you.",
+          "next": "bond_scene_brick_gate_3_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "brick": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.brick.gate_3.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "I will keep the boundary and the plan clear.",
+          "next": "bond_scene_brick_gate_3_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "brick": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.brick.gate_3.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_brick_gate_3": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_brick_gate_3",
+        "slot_id": "bond_scene_brick_gate_3",
         "companion_id": "brick",
         "gate": 3,
-        "threshold": 75
-      },
-      "placeholder": {
+        "threshold": 75,
         "title": "Brick · Trust Gate 3",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_brick_gate_3_placeholder"
       },
       "content_tier": "sfw"
+    },
+    "bond_scene_brick_gate_3_care": {
+      "id": "bond_scene_brick_gate_3_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "You set the pace. I will not spend your trust for you.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_brick_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.brick.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_brick_gate_3",
+        "slot_id": "bond_scene_brick_gate_3",
+        "companion_id": "brick",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Brick · Trust Gate 3",
+        "placeholder_node": "bond_scene_brick_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_brick_gate_3_plan": {
+      "id": "bond_scene_brick_gate_3_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will keep the boundary and the plan clear.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_brick_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.brick.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_brick_gate_3",
+        "slot_id": "bond_scene_brick_gate_3",
+        "companion_id": "brick",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Brick · Trust Gate 3",
+        "placeholder_node": "bond_scene_brick_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_brick_gate_3_reply": {
+      "id": "bond_scene_brick_gate_3_reply",
+      "speaker": "Brick",
+      "portrait_frame": null,
+      "text": "I can step away if someone else knows the watch. That is not quitting. That is building a crew.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_brick_gate_3_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_brick_gate_3": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_brick_gate_3",
+        "slot_id": "bond_scene_brick_gate_3",
+        "companion_id": "brick",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Brick · Trust Gate 3",
+        "placeholder_node": "bond_scene_brick_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_brick_gate_3_placeholder": {
+      "id": "bond_scene_brick_gate_3_placeholder",
+      "speaker": "Brick",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_placeholder",
+      "bond_scene": {
+        "root_id": "bond_scene_brick_gate_3",
+        "slot_id": "bond_scene_brick_gate_3",
+        "companion_id": "brick",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Brick · Trust Gate 3",
+        "placeholder_node": "bond_scene_brick_gate_3_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Brick · Trust Gate 3",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_tamsin_gate_1": {
       "id": "bond_scene_tamsin_gate_1",
       "speaker": "Tamsin",
       "portrait_frame": null,
+      "text": "The radio caught a voice and lost it. I logged the minute, the weather, and who was in the room.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "I will not ask you to carry it alone.",
+          "next": "bond_scene_tamsin_gate_1_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "tamsin": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.tamsin.gate_1.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "Then let us make one useful plan.",
+          "next": "bond_scene_tamsin_gate_1_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "tamsin": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.tamsin.gate_1.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_tamsin_gate_1": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_1",
+        "slot_id": "bond_scene_tamsin_gate_1",
+        "companion_id": "tamsin",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Tamsin · Trust Gate 1",
+        "placeholder_node": "bond_scene_tamsin_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_tamsin_gate_1_care": {
+      "id": "bond_scene_tamsin_gate_1_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will not ask you to carry it alone.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_tamsin_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.tamsin.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_1",
+        "slot_id": "bond_scene_tamsin_gate_1",
+        "companion_id": "tamsin",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Tamsin · Trust Gate 1",
+        "placeholder_node": "bond_scene_tamsin_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_tamsin_gate_1_plan": {
+      "id": "bond_scene_tamsin_gate_1_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Then let us make one useful plan.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_tamsin_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.tamsin.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_1",
+        "slot_id": "bond_scene_tamsin_gate_1",
+        "companion_id": "tamsin",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Tamsin · Trust Gate 1",
+        "placeholder_node": "bond_scene_tamsin_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_tamsin_gate_1_reply": {
+      "id": "bond_scene_tamsin_gate_1_reply",
+      "speaker": "Tamsin",
+      "portrait_frame": null,
+      "text": "You did not ask me to play the recording for everyone. I noticed.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_tamsin_gate_1_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_tamsin_gate_1": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_1",
+        "slot_id": "bond_scene_tamsin_gate_1",
+        "companion_id": "tamsin",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Tamsin · Trust Gate 1",
+        "placeholder_node": "bond_scene_tamsin_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_tamsin_gate_1_placeholder": {
+      "id": "bond_scene_tamsin_gate_1_placeholder",
+      "speaker": "Tamsin",
+      "portrait_frame": null,
       "text": "",
       "choices": [],
       "disposition_deltas": {},
@@ -694,43 +4271,197 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_1",
+        "slot_id": "bond_scene_tamsin_gate_1",
         "companion_id": "tamsin",
         "gate": 1,
-        "threshold": 25
+        "threshold": 25,
+        "title": "Tamsin · Trust Gate 1",
+        "placeholder_node": "bond_scene_tamsin_gate_1_placeholder"
       },
+      "content_tier": "sfw",
+      "terminal": true,
       "placeholder": {
         "title": "Tamsin · Trust Gate 1",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
-      },
-      "content_tier": "sfw"
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_tamsin_gate_2": {
       "id": "bond_scene_tamsin_gate_2",
       "speaker": "Tamsin",
       "portrait_frame": null,
-      "text": "",
-      "choices": [],
+      "text": "A quiet channel is not an empty channel. Sometimes people need to know it is safe before they speak.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "Thank you for trusting me with that.",
+          "next": "bond_scene_tamsin_gate_2_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "tamsin": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.tamsin.gate_2.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "We can choose the next step together.",
+          "next": "bond_scene_tamsin_gate_2_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "tamsin": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.tamsin.gate_2.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_tamsin_gate_2": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_2",
+        "slot_id": "bond_scene_tamsin_gate_2",
+        "companion_id": "tamsin",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Tamsin · Trust Gate 2",
+        "placeholder_node": "bond_scene_tamsin_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_tamsin_gate_2_care": {
+      "id": "bond_scene_tamsin_gate_2_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Thank you for trusting me with that.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_tamsin_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.tamsin.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
       "disposition_deltas": {},
       "flags": {
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_exchange",
       "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_2",
+        "slot_id": "bond_scene_tamsin_gate_2",
         "companion_id": "tamsin",
         "gate": 2,
-        "threshold": 50
-      },
-      "placeholder": {
+        "threshold": 50,
         "title": "Tamsin · Trust Gate 2",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_tamsin_gate_2_placeholder"
       },
       "content_tier": "sfw"
     },
-    "bond_scene_tamsin_gate_3": {
-      "id": "bond_scene_tamsin_gate_3",
+    "bond_scene_tamsin_gate_2_plan": {
+      "id": "bond_scene_tamsin_gate_2_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "We can choose the next step together.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_tamsin_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.tamsin.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_2",
+        "slot_id": "bond_scene_tamsin_gate_2",
+        "companion_id": "tamsin",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Tamsin · Trust Gate 2",
+        "placeholder_node": "bond_scene_tamsin_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_tamsin_gate_2_reply": {
+      "id": "bond_scene_tamsin_gate_2_reply",
+      "speaker": "Tamsin",
+      "portrait_frame": null,
+      "text": "I can pass the warning along without passing along the name. That should be ordinary.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_tamsin_gate_2_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_tamsin_gate_2": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_2",
+        "slot_id": "bond_scene_tamsin_gate_2",
+        "companion_id": "tamsin",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Tamsin · Trust Gate 2",
+        "placeholder_node": "bond_scene_tamsin_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_tamsin_gate_2_placeholder": {
+      "id": "bond_scene_tamsin_gate_2_placeholder",
       "speaker": "Tamsin",
       "portrait_frame": null,
       "text": "",
@@ -740,22 +4471,399 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_2",
+        "slot_id": "bond_scene_tamsin_gate_2",
+        "companion_id": "tamsin",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Tamsin · Trust Gate 2",
+        "placeholder_node": "bond_scene_tamsin_gate_2_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Tamsin · Trust Gate 2",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
+    },
+    "bond_scene_tamsin_gate_3": {
+      "id": "bond_scene_tamsin_gate_3",
+      "speaker": "Tamsin",
+      "portrait_frame": null,
+      "text": "I used to think privacy meant keeping every door closed. A locked door can still leave someone alone on the wrong side.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "You set the pace. I will not spend your trust for you.",
+          "next": "bond_scene_tamsin_gate_3_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "tamsin": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.tamsin.gate_3.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "I will keep the boundary and the plan clear.",
+          "next": "bond_scene_tamsin_gate_3_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "tamsin": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.tamsin.gate_3.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_tamsin_gate_3": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_3",
+        "slot_id": "bond_scene_tamsin_gate_3",
         "companion_id": "tamsin",
         "gate": 3,
-        "threshold": 75
-      },
-      "placeholder": {
+        "threshold": 75,
         "title": "Tamsin · Trust Gate 3",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_tamsin_gate_3_placeholder"
       },
       "content_tier": "sfw"
+    },
+    "bond_scene_tamsin_gate_3_care": {
+      "id": "bond_scene_tamsin_gate_3_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "You set the pace. I will not spend your trust for you.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_tamsin_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.tamsin.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_3",
+        "slot_id": "bond_scene_tamsin_gate_3",
+        "companion_id": "tamsin",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Tamsin · Trust Gate 3",
+        "placeholder_node": "bond_scene_tamsin_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_tamsin_gate_3_plan": {
+      "id": "bond_scene_tamsin_gate_3_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will keep the boundary and the plan clear.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_tamsin_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.tamsin.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_3",
+        "slot_id": "bond_scene_tamsin_gate_3",
+        "companion_id": "tamsin",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Tamsin · Trust Gate 3",
+        "placeholder_node": "bond_scene_tamsin_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_tamsin_gate_3_reply": {
+      "id": "bond_scene_tamsin_gate_3_reply",
+      "speaker": "Tamsin",
+      "portrait_frame": null,
+      "text": "You asked what I was comfortable sharing. I can answer that. It is a better signal than a guess.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_tamsin_gate_3_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_tamsin_gate_3": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_3",
+        "slot_id": "bond_scene_tamsin_gate_3",
+        "companion_id": "tamsin",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Tamsin · Trust Gate 3",
+        "placeholder_node": "bond_scene_tamsin_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_tamsin_gate_3_placeholder": {
+      "id": "bond_scene_tamsin_gate_3_placeholder",
+      "speaker": "Tamsin",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_placeholder",
+      "bond_scene": {
+        "root_id": "bond_scene_tamsin_gate_3",
+        "slot_id": "bond_scene_tamsin_gate_3",
+        "companion_id": "tamsin",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Tamsin · Trust Gate 3",
+        "placeholder_node": "bond_scene_tamsin_gate_3_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Tamsin · Trust Gate 3",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_juno_gate_1": {
       "id": "bond_scene_juno_gate_1",
       "speaker": "Juno",
       "portrait_frame": null,
+      "text": "The children have made a map of every place the roof drips. It is more accurate than the repair board.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "I will not ask you to carry it alone.",
+          "next": "bond_scene_juno_gate_1_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "juno": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.juno.gate_1.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "Then let us make one useful plan.",
+          "next": "bond_scene_juno_gate_1_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "juno": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.juno.gate_1.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_juno_gate_1": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_juno_gate_1",
+        "slot_id": "bond_scene_juno_gate_1",
+        "companion_id": "juno",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Juno · Trust Gate 1",
+        "placeholder_node": "bond_scene_juno_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_juno_gate_1_care": {
+      "id": "bond_scene_juno_gate_1_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will not ask you to carry it alone.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_juno_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.juno.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_juno_gate_1",
+        "slot_id": "bond_scene_juno_gate_1",
+        "companion_id": "juno",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Juno · Trust Gate 1",
+        "placeholder_node": "bond_scene_juno_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_juno_gate_1_plan": {
+      "id": "bond_scene_juno_gate_1_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Then let us make one useful plan.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_juno_gate_1_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.juno.gate_1.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_juno_gate_1",
+        "slot_id": "bond_scene_juno_gate_1",
+        "companion_id": "juno",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Juno · Trust Gate 1",
+        "placeholder_node": "bond_scene_juno_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_juno_gate_1_reply": {
+      "id": "bond_scene_juno_gate_1_reply",
+      "speaker": "Juno",
+      "portrait_frame": null,
+      "text": "They are allowed to be funny about it. They are also allowed to ask when it will be fixed.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_juno_gate_1_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_juno_gate_1": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_juno_gate_1",
+        "slot_id": "bond_scene_juno_gate_1",
+        "companion_id": "juno",
+        "gate": 1,
+        "threshold": 25,
+        "title": "Juno · Trust Gate 1",
+        "placeholder_node": "bond_scene_juno_gate_1_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_juno_gate_1_placeholder": {
+      "id": "bond_scene_juno_gate_1_placeholder",
+      "speaker": "Juno",
+      "portrait_frame": null,
       "text": "",
       "choices": [],
       "disposition_deltas": {},
@@ -763,43 +4871,197 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_juno_gate_1",
+        "slot_id": "bond_scene_juno_gate_1",
         "companion_id": "juno",
         "gate": 1,
-        "threshold": 25
+        "threshold": 25,
+        "title": "Juno · Trust Gate 1",
+        "placeholder_node": "bond_scene_juno_gate_1_placeholder"
       },
+      "content_tier": "sfw",
+      "terminal": true,
       "placeholder": {
         "title": "Juno · Trust Gate 1",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
-      },
-      "content_tier": "sfw"
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     },
     "bond_scene_juno_gate_2": {
       "id": "bond_scene_juno_gate_2",
       "speaker": "Juno",
       "portrait_frame": null,
-      "text": "",
-      "choices": [],
+      "text": "Mediation is mostly helping people say the sentence they keep trying to replace with a threat.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "Thank you for trusting me with that.",
+          "next": "bond_scene_juno_gate_2_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "juno": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.juno.gate_2.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "We can choose the next step together.",
+          "next": "bond_scene_juno_gate_2_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "juno": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.juno.gate_2.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_juno_gate_2": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_juno_gate_2",
+        "slot_id": "bond_scene_juno_gate_2",
+        "companion_id": "juno",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Juno · Trust Gate 2",
+        "placeholder_node": "bond_scene_juno_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_juno_gate_2_care": {
+      "id": "bond_scene_juno_gate_2_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "Thank you for trusting me with that.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_juno_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.juno.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
       "disposition_deltas": {},
       "flags": {
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_exchange",
       "bond_scene": {
+        "root_id": "bond_scene_juno_gate_2",
+        "slot_id": "bond_scene_juno_gate_2",
         "companion_id": "juno",
         "gate": 2,
-        "threshold": 50
-      },
-      "placeholder": {
+        "threshold": 50,
         "title": "Juno · Trust Gate 2",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_juno_gate_2_placeholder"
       },
       "content_tier": "sfw"
     },
-    "bond_scene_juno_gate_3": {
-      "id": "bond_scene_juno_gate_3",
+    "bond_scene_juno_gate_2_plan": {
+      "id": "bond_scene_juno_gate_2_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "We can choose the next step together.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_juno_gate_2_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.juno.gate_2.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_juno_gate_2",
+        "slot_id": "bond_scene_juno_gate_2",
+        "companion_id": "juno",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Juno · Trust Gate 2",
+        "placeholder_node": "bond_scene_juno_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_juno_gate_2_reply": {
+      "id": "bond_scene_juno_gate_2_reply",
+      "speaker": "Juno",
+      "portrait_frame": null,
+      "text": "You let both of them finish. That is a small thing until it is not.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_juno_gate_2_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_juno_gate_2": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_juno_gate_2",
+        "slot_id": "bond_scene_juno_gate_2",
+        "companion_id": "juno",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Juno · Trust Gate 2",
+        "placeholder_node": "bond_scene_juno_gate_2_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_juno_gate_2_placeholder": {
+      "id": "bond_scene_juno_gate_2_placeholder",
       "speaker": "Juno",
       "portrait_frame": null,
       "text": "",
@@ -809,17 +5071,230 @@
         "set": {},
         "clear": []
       },
-      "type": "bond_scene_stub",
+      "type": "bond_scene_placeholder",
       "bond_scene": {
+        "root_id": "bond_scene_juno_gate_2",
+        "slot_id": "bond_scene_juno_gate_2",
+        "companion_id": "juno",
+        "gate": 2,
+        "threshold": 50,
+        "title": "Juno · Trust Gate 2",
+        "placeholder_node": "bond_scene_juno_gate_2_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Juno · Trust Gate 2",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
+    },
+    "bond_scene_juno_gate_3": {
+      "id": "bond_scene_juno_gate_3",
+      "speaker": "Juno",
+      "portrait_frame": null,
+      "text": "Stability can become a polite word for never changing anything. Change can become a polite word for not staying to help.",
+      "choices": [
+        {
+          "id": "answer_with_care",
+          "text": "You set the pace. I will not spend your trust for you.",
+          "next": "bond_scene_juno_gate_3_care",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "juno": 1.5
+          },
+          "flags": {
+            "set": {
+              "bond.juno.gate_3.care": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "answer_with_a_plan",
+          "text": "I will keep the boundary and the plan clear.",
+          "next": "bond_scene_juno_gate_3_plan",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {
+            "juno": 0.5
+          },
+          "flags": {
+            "set": {
+              "bond.juno.gate_3.plan": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {
+          "bond_scene_started.bond_scene_juno_gate_3": true
+        },
+        "clear": []
+      },
+      "type": "bond_scene",
+      "bond_scene": {
+        "root_id": "bond_scene_juno_gate_3",
+        "slot_id": "bond_scene_juno_gate_3",
         "companion_id": "juno",
         "gate": 3,
-        "threshold": 75
-      },
-      "placeholder": {
+        "threshold": 75,
         "title": "Juno · Trust Gate 3",
-        "body": "This bond-scene slot is open. Scene content has not been authored yet."
+        "placeholder_node": "bond_scene_juno_gate_3_placeholder"
       },
       "content_tier": "sfw"
+    },
+    "bond_scene_juno_gate_3_care": {
+      "id": "bond_scene_juno_gate_3_care",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "You set the pace. I will not spend your trust for you.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_juno_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.juno.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_juno_gate_3",
+        "slot_id": "bond_scene_juno_gate_3",
+        "companion_id": "juno",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Juno · Trust Gate 3",
+        "placeholder_node": "bond_scene_juno_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_juno_gate_3_plan": {
+      "id": "bond_scene_juno_gate_3_plan",
+      "speaker": "You",
+      "portrait_frame": "char.mc.face_neutral",
+      "text": "I will keep the boundary and the plan clear.",
+      "choices": [
+        {
+          "id": "listen_to_reply",
+          "text": "Let them finish.",
+          "next": "bond_scene_juno_gate_3_reply",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond.juno.gate_3.heard": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_juno_gate_3",
+        "slot_id": "bond_scene_juno_gate_3",
+        "companion_id": "juno",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Juno · Trust Gate 3",
+        "placeholder_node": "bond_scene_juno_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_juno_gate_3_reply": {
+      "id": "bond_scene_juno_gate_3_reply",
+      "speaker": "Juno",
+      "portrait_frame": null,
+      "text": "We can try the new schedule for a week and ask the people doing the work what it costs them.",
+      "choices": [
+        {
+          "id": "continue_to_placeholder",
+          "text": "Continue.",
+          "next": "bond_scene_juno_gate_3_placeholder",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "bond_scene_exchange_done.bond_scene_juno_gate_3": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_exchange",
+      "bond_scene": {
+        "root_id": "bond_scene_juno_gate_3",
+        "slot_id": "bond_scene_juno_gate_3",
+        "companion_id": "juno",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Juno · Trust Gate 3",
+        "placeholder_node": "bond_scene_juno_gate_3_placeholder"
+      },
+      "content_tier": "sfw"
+    },
+    "bond_scene_juno_gate_3_placeholder": {
+      "id": "bond_scene_juno_gate_3_placeholder",
+      "speaker": "Juno",
+      "portrait_frame": null,
+      "text": "",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "type": "bond_scene_placeholder",
+      "bond_scene": {
+        "root_id": "bond_scene_juno_gate_3",
+        "slot_id": "bond_scene_juno_gate_3",
+        "companion_id": "juno",
+        "gate": 3,
+        "threshold": 75,
+        "title": "Juno · Trust Gate 3",
+        "placeholder_node": "bond_scene_juno_gate_3_placeholder"
+      },
+      "content_tier": "sfw",
+      "terminal": true,
+      "placeholder": {
+        "title": "Juno · Trust Gate 3",
+        "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
+      }
     }
-  }
+  },
+  "opening_sequence": [
+    "opening_mc_wakes",
+    "opening_gate_briefing",
+    "tutorial_gather_prompt",
+    "tutorial_build_prompt",
+    "tutorial_recruit_prompt",
+    "tutorial_opening_complete"
+  ]
 }

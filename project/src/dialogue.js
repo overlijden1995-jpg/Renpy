@@ -1,5 +1,6 @@
 const DIALOGUE_URL = new URL("../../data/dialogue/graph.json", import.meta.url);
 const MANIFEST_URL = new URL("../../MANIFEST.json", import.meta.url);
+const RESOURCE_IDS = ["scrap", "water", "food", "power", "meds"];
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -79,11 +80,12 @@ export class DialogueRunner {
       if (!("portrait_frame" in node)) node.portrait_frame = null;
       if (!node.disposition_deltas) node.disposition_deltas = {};
       if (!node.flags) node.flags = { set: {}, clear: [] };
-      if (node.type === "bond_scene_stub" || id.startsWith("bond_scene_")) {
-        node.type = "bond_scene_stub";
+      if (node.bond_scene || id.startsWith("bond_scene_")) {
         node.content_tier ||= defaultTier;
-        node.placeholder ||= { title: id.replaceAll("_", " "), body: "This bond-scene slot is open. Scene content has not been authored yet." };
         if (!node.bond_scene) throw new Error(`Bond scene ${id} is missing its companion/gate metadata.`);
+      }
+      if (node.bond_scene && !["bond_scene", "bond_scene_exchange", "bond_scene_placeholder", "bond_scene_stub"].includes(node.type)) {
+        throw new Error(`Unknown bond-scene node type at ${id}: ${node.type}`);
       }
       if (node.portrait_frame && this.manifest) {
         const asset = this.manifest.assets?.[node.portrait_frame];
@@ -96,6 +98,8 @@ export class DialogueRunner {
         choiceIds.add(choice.id);
         if (!choice.flags) choice.flags = { set: {}, clear: [] };
         if (!choice.disposition_deltas) choice.disposition_deltas = {};
+        if (!choice.actions) choice.actions = [];
+        if (!Array.isArray(choice.actions)) throw new Error(`Choice ${id}/${choice.id} actions must be an array.`);
         if (choice.next != null && !this.graph.nodes[choice.next]) throw new Error(`Choice ${id}/${choice.id} points to missing node ${choice.next}.`);
       }
     }
@@ -103,8 +107,8 @@ export class DialogueRunner {
     for (const [companionId, gates] of Object.entries(this.graph.trust_gate_slots || {})) {
       for (const [threshold, nodeId] of Object.entries(gates)) {
         const node = this.graph.nodes[nodeId];
-        if (!node || node.type !== "bond_scene_stub") throw new Error(`Trust gate ${companionId}/${threshold} must point to a bond_scene stub node.`);
-        if (node.bond_scene.companion_id !== companionId || Number(node.bond_scene.threshold) !== Number(threshold)) {
+        if (!node || !["bond_scene", "bond_scene_stub"].includes(node.type)) throw new Error(`Trust gate ${companionId}/${threshold} must point to a bond_scene entry node.`);
+        if ((node.bond_scene.root_id && node.bond_scene.root_id !== nodeId) || node.bond_scene.companion_id !== companionId || Number(node.bond_scene.threshold) !== Number(threshold)) {
           throw new Error(`Trust gate map does not match stub metadata for ${nodeId}.`);
         }
       }
@@ -148,6 +152,10 @@ export class DialogueRunner {
     return node;
   }
 
+  bondSceneRootId(node) {
+    return node?.bond_scene ? (node.bond_scene.root_id || node.id) : null;
+  }
+
   getDisposition(companionId) {
     if (this.colony?.companions?.has(companionId)) return this.colony.companion(companionId).disposition;
     return this.dispositions.get(companionId) ?? 50;
@@ -179,10 +187,11 @@ export class DialogueRunner {
     }
   }
 
-  enterNode(nodeId, { allowBondStub = false } = {}) {
+  enterNode(nodeId, { allowBondStub = false, allowBondScene = false } = {}) {
     const node = this.getNode(nodeId);
-    if (node.type === "bond_scene_stub" && !allowBondStub && !this.unlockedBondScenes.has(nodeId)) {
-      throw new Error(`Bond-scene slot is still locked: ${nodeId}`);
+    const rootId = this.bondSceneRootId(node);
+    if (rootId && !allowBondStub && !allowBondScene && !this.unlockedBondScenes.has(rootId)) {
+      throw new Error(`Bond-scene slot is still locked: ${rootId}`);
     }
     this.currentNodeId = nodeId;
     this.ended = Boolean(node.terminal);
@@ -205,7 +214,7 @@ export class DialogueRunner {
     const node = this.currentNodeId ? this.getNode() : null;
     return {
       node,
-      choices: node && node.type !== "bond_scene_stub" ? this.availableChoices(node.id) : [],
+      choices: node && !["bond_scene_stub", "bond_scene_placeholder"].includes(node.type) ? this.availableChoices(node.id) : [],
       flags: { ...this.flags },
       ended: this.ended,
       unlockedBondScenes: this.getAvailableBondScenes(),
@@ -214,7 +223,7 @@ export class DialogueRunner {
 
   availableChoices(nodeId = this.currentNodeId) {
     const node = this.getNode(nodeId);
-    if (node.type === "bond_scene_stub" || node.terminal) return [];
+    if (["bond_scene_stub", "bond_scene_placeholder"].includes(node.type) || node.terminal) return [];
     return node.choices.filter((choice) => this.canChoose(choice));
   }
 
@@ -245,12 +254,42 @@ export class DialogueRunner {
     return true;
   }
 
+  performAction(action, source) {
+    let result = null;
+    let handled = false;
+    if (this.colony) {
+      if (action.type === "gather" && RESOURCE_IDS.includes(action.resource)) {
+        const amount = Number(action.amount) || 0;
+        result = typeof this.colony.gather === "function"
+          ? this.colony.gather(action.resource, amount, source)
+          : this.colony.addResource?.(action.resource, amount, source);
+        handled = true;
+      } else if (action.type === "build") {
+        result = this.colony.placeBuilding(action.building_type, action.grid_id, action.cell);
+        if (action.result_flag && result?.id) this.setFlag(action.result_flag, result.id, source);
+        handled = true;
+      } else if (action.type === "recruit") {
+        const buildingId = action.building_id || (action.building_flag && this.flags[action.building_flag]);
+        if (!buildingId) throw new Error(`Recruit action needs a built worksite: ${action.building_flag || action.companion_id}`);
+        result = this.colony.assignCompanion(action.companion_id, buildingId);
+        if (result?.assigned === false) throw new Error(`Could not recruit ${action.companion_id} to the worksite.`);
+        const flag = action.result_flag || `crew.recruited.${action.companion_id}`;
+        this.setFlag(flag, true, source);
+        handled = true;
+      }
+    }
+    const event = { action, source, handled, result };
+    this.emit(handled ? "actionPerformed" : "actionRequested", event);
+    return event;
+  }
+
   choose(choiceId) {
     if (!this.currentNodeId || this.ended) throw new Error("There is no active dialogue choice.");
     const node = this.getNode();
     const choice = node.choices.find((item) => item.id === choiceId);
     if (!choice) throw new Error(`Unknown choice ${choiceId} in ${node.id}.`);
     if (!this.canChoose(choice)) throw new Error(`Choice is currently gated: ${choiceId}`);
+    for (const action of choice.actions || []) this.performAction(action, `choice:${node.id}:${choiceId}`);
     this.applyDispositionDeltas(choice.disposition_deltas, `choice:${node.id}:${choiceId}`);
     this.applyFlags(choice.flags, `choice:${node.id}:${choiceId}`);
     this.emit("choiceSelected", { choiceId, choice, from: node.id });
@@ -264,7 +303,9 @@ export class DialogueRunner {
 
   unlockBondScene(nodeId, source = {}) {
     const node = this.getNode(nodeId);
-    if (node.type !== "bond_scene_stub") throw new Error(`Trust gate target is not a bond_scene stub: ${nodeId}`);
+    if (!node.bond_scene || !["bond_scene", "bond_scene_stub"].includes(node.type) || this.bondSceneRootId(node) !== nodeId) {
+      throw new Error(`Trust gate target is not a bond_scene entry node: ${nodeId}`);
+    }
     if (this.unlockedBondScenes.has(nodeId)) return false;
     this.unlockedBondScenes.add(nodeId);
     this.setFlag(`bond_scene_unlocked.${nodeId}`, true, "trust-gate");
@@ -282,14 +323,16 @@ export class DialogueRunner {
   getAvailableBondScenes() {
     return [...this.unlockedBondScenes].map((nodeId) => {
       const node = this.graph.nodes[nodeId];
-      return { id: nodeId, ...node.bond_scene, content_tier: node.content_tier || "sfw", title: node.placeholder?.title || nodeId };
+      return { id: nodeId, ...node.bond_scene, content_tier: node.content_tier || "sfw", title: node.bond_scene.title || node.placeholder?.title || nodeId };
     });
   }
 
   openBondScene(nodeId) {
     if (!this.unlockedBondScenes.has(nodeId)) throw new Error(`Bond-scene slot is still locked: ${nodeId}`);
+    const node = this.getNode(nodeId);
+    if (this.bondSceneRootId(node) !== nodeId) throw new Error(`Only the bond-scene entry node can be opened: ${nodeId}`);
     this.previousNodeId = this.currentNodeId;
-    return this.enterNode(nodeId, { allowBondStub: true });
+    return this.enterNode(nodeId, { allowBondStub: true, allowBondScene: true });
   }
 
   closeBondScene() {
@@ -344,7 +387,7 @@ export class DialogueRunner {
     const document = container.ownerDocument;
     ensureDialogueStyles(document);
     const node = this.getNode();
-    if (node.type === "bond_scene_stub") return this.renderPlaceholderCard(container, node);
+    if (["bond_scene_stub", "bond_scene_placeholder"].includes(node.type)) return this.renderPlaceholderCard(container, node);
     const card = document.createElement("article");
     card.className = "ashfall-dialogue";
     const top = document.createElement("div");
@@ -410,7 +453,10 @@ export class DialogueRunner {
   restore(snapshot) {
     if (!snapshot || snapshot.version !== 1) throw new Error("Unsupported dialogue save data.");
     for (const nodeId of snapshot.unlockedBondScenes || []) {
-      if (this.graph.nodes[nodeId]?.type !== "bond_scene_stub") throw new Error(`Saved bond-scene slot is invalid: ${nodeId}`);
+      const slot = this.graph.nodes[nodeId];
+      if (!slot?.bond_scene || !["bond_scene", "bond_scene_stub"].includes(slot.type) || this.bondSceneRootId(slot) !== nodeId) {
+        throw new Error(`Saved bond-scene slot is invalid: ${nodeId}`);
+      }
     }
     if (snapshot.currentNodeId && !this.graph.nodes[snapshot.currentNodeId]) throw new Error(`Saved dialogue node is missing: ${snapshot.currentNodeId}`);
     this.flags = { ...(this.graph.initial_flags || {}), ...(snapshot.flags || {}) };
@@ -420,8 +466,9 @@ export class DialogueRunner {
     this.previousNodeId = snapshot.previousNodeId || null;
     this.ended = Boolean(snapshot.ended);
     this.currentNodeId = snapshot.currentNodeId || null;
-    if (this.currentNodeId && this.graph.nodes[this.currentNodeId].type === "bond_scene_stub" && !this.unlockedBondScenes.has(this.currentNodeId)) {
-      throw new Error(`Saved bond-scene slot is locked: ${this.currentNodeId}`);
+    if (this.currentNodeId) {
+      const rootId = this.bondSceneRootId(this.graph.nodes[this.currentNodeId]);
+      if (rootId && !this.unlockedBondScenes.has(rootId)) throw new Error(`Saved bond-scene slot is locked: ${rootId}`);
     }
     return this.getView();
   }
