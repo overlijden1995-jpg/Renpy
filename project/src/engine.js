@@ -1,6 +1,7 @@
+import { SaveSlots } from "./save.js";
+
 const MANIFEST_URL = new URL("../../MANIFEST.json", import.meta.url);
 const HOTSPOTS_URL = new URL("../../data/hotspots.json", import.meta.url);
-const SAVE_KEY_PREFIX = "ashfall.field.save.";
 const RESOURCE_KEYS = ["scrap", "water", "food", "power", "meds"];
 const RESOURCE_LABELS = { scrap: "Scrap", water: "Water", food: "Food", power: "Power", meds: "Meds" };
 
@@ -303,22 +304,6 @@ class InventoryModel {
   }
 }
 
-class SaveSlots {
-  key(slot) { return `${SAVE_KEY_PREFIX}${slot}`; }
-
-  save(slot, state) {
-    localStorage.setItem(this.key(slot), JSON.stringify({ version: 1, savedAt: Date.now(), ...state }));
-  }
-
-  load(slot) {
-    const serialized = localStorage.getItem(this.key(slot));
-    if (!serialized) return null;
-    const value = JSON.parse(serialized);
-    if (value.version !== 1) throw new Error("This save slot uses an unsupported format.");
-    return value;
-  }
-}
-
 class FieldEngine {
   constructor(manifest, hotspotsData, manifestUrl) {
     this.manifest = manifest;
@@ -416,7 +401,7 @@ class FieldEngine {
     const hotspotScene = this.hotspotsData.scenes[sceneId];
     if (!config || !hotspotScene) throw new Error(`Scene is missing from the manifest or hotspot data: ${sceneId}`);
     const asset = this.manifest.assets[config.backgroundAsset];
-    if (!asset || asset.src !== hotspotScene.image) {
+    if (!asset || hotspotScene.backgroundAsset !== config.backgroundAsset) {
       throw new Error(`Scene background must resolve through MANIFEST.json: ${sceneId}`);
     }
     const [width, height] = this.hotspotsData.canvas;

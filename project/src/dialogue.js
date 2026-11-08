@@ -276,6 +276,13 @@ export class DialogueRunner {
         const flag = action.result_flag || `crew.recruited.${action.companion_id}`;
         this.setFlag(flag, true, source);
         handled = true;
+      } else if (action.type === "faction_delivery") {
+        this.colony.getFactionStanding(action.faction_id);
+        this.colony.spend(action.resource, action.amount, `faction delivery:${action.faction_id}`);
+        this.colony.changeFactionStanding(action.faction_id, action.standing_delta, source);
+        result = { factionId: action.faction_id, resource: action.resource, amount: action.amount, standingDelta: action.standing_delta };
+        if (action.result_flag) this.setFlag(action.result_flag, true, source);
+        handled = true;
       }
     }
     const event = { action, source, handled, result };

@@ -329,7 +329,7 @@ export class ColonyModel {
     if (!companion.assignedBuildingId) return { companionId, assigned: false, buildingId: null, fit: null };
     const building = this.building(companion.assignedBuildingId);
     const definition = this.definition(building.typeId);
-    return { companionId, assigned: true, buildingId: building.id, buildingName: definition.name, fit: this.matchesRole(companion, definition.jobRole) };
+    return { companionId, assigned: true, buildingId: building.id, buildingType: building.typeId, buildingName: definition.name, fit: this.matchesRole(companion, definition.jobRole) };
   }
 
   injureCompanion(companionId, severity = "minor", durationPhases = null, cause = "injury") {
@@ -602,6 +602,83 @@ export class ColonyModel {
         injury: companion.injury ? { ...companion.injury } : null,
       })),
     };
+  }
+
+  restore(snapshot) {
+    if (!snapshot || snapshot.version !== 1) throw new Error("Unsupported colony save data.");
+    const phaseIndex = Number(snapshot.phaseIndex);
+    const day = Math.floor(Number(snapshot.day));
+    const phaseElapsed = Number(snapshot.phaseElapsed);
+    if (!Number.isInteger(phaseIndex) || phaseIndex < 0 || phaseIndex >= this.data.time.phases.length || !Number.isInteger(day) || day < 1 || !Number.isFinite(phaseElapsed) || phaseElapsed < 0 || phaseElapsed >= this.phaseSeconds) {
+      throw new Error("Colony save contains an invalid day or phase clock.");
+    }
+    this.buildings.clear();
+    for (const record of snapshot.buildings || []) {
+      const definition = this.definition(record.typeId);
+      const grid = this.placementGrid(record.gridId);
+      if (!(grid.allows || []).includes(record.typeId) || !Array.isArray(record.cell) || record.cell.length !== 2 || !record.cell.every(Number.isInteger)) {
+        throw new Error(`Invalid saved building placement: ${record.id}`);
+      }
+      const [column, row] = record.cell;
+      if (column < 0 || row < 0 || column + definition.size[0] > grid.columns || row + definition.size[1] > grid.rows || this.buildings.has(record.id)) {
+        throw new Error(`Saved building is outside its hotspot grid or duplicated: ${record.id}`);
+      }
+      const occupied = this.cellOccupancy(grid.id);
+      for (let y = row; y < row + definition.size[1]; y += 1) {
+        for (let x = column; x < column + definition.size[0]; x += 1) {
+          if (occupied.has(`${x},${y}`)) throw new Error(`Saved building overlaps at ${grid.id}/${x},${y}.`);
+        }
+      }
+      this.buildings.set(record.id, {
+        id: record.id,
+        typeId: record.typeId,
+        gridId: record.gridId,
+        sceneId: grid.scene,
+        hotspotId: grid.hotspot,
+        cell: [...record.cell],
+        assignedCompanions: [],
+      });
+    }
+    for (const resource of RESOURCE_IDS) {
+      const capacity = this.resourceCapacity(resource);
+      this.resources[resource] = round2(Math.min(capacity, this.toAmount(snapshot.resources?.[resource] ?? 0)));
+    }
+    for (const faction of this.data.factions || []) {
+      const value = Number(snapshot.standings?.[faction.id] ?? faction.standing ?? 0);
+      this.standings[faction.id] = round2(clamp(Number.isFinite(value) ? value : 0,
+        this.data.factionEffects.minimumStanding, this.data.factionEffects.maximumStanding));
+    }
+    const companionRecords = new Map((snapshot.companions || []).map((record) => [record.id, record]));
+    for (const companion of this.companions.values()) {
+      const saved = companionRecords.get(companion.id);
+      companion.assignedBuildingId = null;
+      companion.injury = saved?.injury ? {
+        severity: saved.injury.severity,
+        phasesRemaining: Math.max(1, Math.floor(Number(saved.injury.phasesRemaining) || 1)),
+      } : null;
+      companion.inRotation = companion.injury ? false : (saved?.inRotation ?? true);
+      companion.disposition = this.normalizeDisposition(saved?.disposition ?? companion.disposition);
+      companion.firedTrustGates = new Set((saved?.firedTrustGates || []).map(String));
+    }
+    for (const companion of this.companions.values()) {
+      const saved = companionRecords.get(companion.id);
+      const buildingId = saved?.assignedBuildingId;
+      if (!buildingId) continue;
+      if (companion.injury || !companion.inRotation) throw new Error(`Injured companion cannot be assigned in save: ${companion.id}`);
+      const building = this.buildings.get(buildingId);
+      if (!building) throw new Error(`Saved assignment references missing building: ${buildingId}`);
+      const slots = this.definition(building.typeId).workerSlots || 1;
+      if (building.assignedCompanions.length >= slots) throw new Error(`Saved building has too many workers: ${buildingId}`);
+      building.assignedCompanions.push(companion.id);
+      companion.assignedBuildingId = buildingId;
+    }
+    this.day = day;
+    this.phaseIndex = phaseIndex;
+    this.phaseElapsed = round2(phaseElapsed);
+    const numericNextId = Math.max(0, ...(snapshot.buildings || []).map((building) => Number(String(building.id).match(/_(\d+)$/)?.[1]) || 0)) + 1;
+    this.nextBuildingNumber = Math.max(numericNextId, Math.floor(Number(snapshot.nextBuildingNumber) || 1));
+    this.emit("colonyRestored", { state: this.getState() });
+    return this.getState();
   }
 
   getState() {

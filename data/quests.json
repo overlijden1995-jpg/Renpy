@@ -14,17 +14,32 @@
           "id": "recover_scrap",
           "title": "Recover usable metal",
           "description": "Gather 12 scrap from a salvage hotspot.",
-          "objective": { "type": "resource_gathered", "resource": "scrap", "amount": 12 }
+          "objective": {
+            "type": "resource_gathered",
+            "resource": "scrap",
+            "amount": 12
+          }
         },
         {
           "id": "secure_scrap_bench",
           "title": "Keep salvage moving",
           "description": "Have a salvage bench staffed by a scout.",
-          "objective": { "type": "assigned_building", "building_type": "salvage_bench", "companion_id": "sable" }
+          "objective": {
+            "type": "assigned_building",
+            "building_type": "salvage_bench",
+            "companion_id": "sable"
+          }
         }
       ],
       "completion_flag": "quest.side_scrap_empty_rack.complete",
-      "rewards": { "resources": { "scrap": 8 }, "disposition_deltas": { "sable": 2 } }
+      "rewards": {
+        "resources": {
+          "scrap": 8
+        },
+        "disposition_deltas": {
+          "sable": 2
+        }
+      }
     },
     {
       "id": "side_water_every_drop",
@@ -38,20 +53,41 @@
           "id": "place_water_pump",
           "title": "Repair the pump line",
           "description": "Place a water pump on the water-station hotspot grid.",
-          "objective": { "type": "building_placed", "building_type": "water_pump", "grid_id": "water_station_grid" }
+          "objective": {
+            "type": "building_placed",
+            "building_type": "water_pump",
+            "grid_id": "water_station_grid"
+          }
         },
         {
           "id": "staff_water_pump",
           "title": "Put the pump on a shift",
           "description": "Assign Iona and produce 8 water.",
-          "objective": { "all": [
-            { "type": "companion_assigned", "companion_id": "iona", "building_type": "water_pump" },
-            { "type": "resource_produced", "resource": "water", "amount": 8 }
-          ] }
+          "objective": {
+            "all": [
+              {
+                "type": "companion_assigned",
+                "companion_id": "iona",
+                "building_type": "water_pump"
+              },
+              {
+                "type": "resource_produced",
+                "resource": "water",
+                "amount": 8
+              }
+            ]
+          }
         }
       ],
       "completion_flag": "quest.side_water_every_drop.complete",
-      "rewards": { "resources": { "water": 10 }, "disposition_deltas": { "iona": 2 } }
+      "rewards": {
+        "resources": {
+          "water": 10
+        },
+        "disposition_deltas": {
+          "iona": 2
+        }
+      }
     },
     {
       "id": "side_food_seed_isnt_dinner",
@@ -65,20 +101,41 @@
           "id": "plant_greenhouse",
           "title": "Put the bed to work",
           "description": "Place a greenhouse plot in the crop-bed grid.",
-          "objective": { "type": "building_placed", "building_type": "greenhouse_plot", "grid_id": "greenhouse_grid" }
+          "objective": {
+            "type": "building_placed",
+            "building_type": "greenhouse_plot",
+            "grid_id": "greenhouse_grid"
+          }
         },
         {
           "id": "grow_food",
           "title": "Bring in a first yield",
           "description": "Assign Juno and produce 8 food.",
-          "objective": { "all": [
-            { "type": "companion_assigned", "companion_id": "juno", "building_type": "greenhouse_plot" },
-            { "type": "resource_produced", "resource": "food", "amount": 8 }
-          ] }
+          "objective": {
+            "all": [
+              {
+                "type": "companion_assigned",
+                "companion_id": "juno",
+                "building_type": "greenhouse_plot"
+              },
+              {
+                "type": "resource_produced",
+                "resource": "food",
+                "amount": 8
+              }
+            ]
+          }
         }
       ],
       "completion_flag": "quest.side_food_seed_isnt_dinner.complete",
-      "rewards": { "resources": { "food": 10 }, "disposition_deltas": { "juno": 2 } }
+      "rewards": {
+        "resources": {
+          "food": 10
+        },
+        "disposition_deltas": {
+          "juno": 2
+        }
+      }
     },
     {
       "id": "side_power_quiet_circuit",
@@ -92,20 +149,44 @@
           "id": "place_generator",
           "title": "Make a safe connection",
           "description": "Place a generator on a workshop or salvage-bench grid.",
-          "objective": { "type": "building_placed", "building_type": "generator", "grid_ids": ["scrap_bench_grid", "workshop_grid"] }
+          "objective": {
+            "type": "building_placed",
+            "building_type": "generator",
+            "grid_ids": [
+              "scrap_bench_grid",
+              "workshop_grid"
+            ]
+          }
         },
         {
           "id": "run_generator",
           "title": "Hold the load",
           "description": "Assign Ren and produce 8 power.",
-          "objective": { "all": [
-            { "type": "companion_assigned", "companion_id": "ren", "building_type": "generator" },
-            { "type": "resource_produced", "resource": "power", "amount": 8 }
-          ] }
+          "objective": {
+            "all": [
+              {
+                "type": "companion_assigned",
+                "companion_id": "ren",
+                "building_type": "generator"
+              },
+              {
+                "type": "resource_produced",
+                "resource": "power",
+                "amount": 8
+              }
+            ]
+          }
         }
       ],
       "completion_flag": "quest.side_power_quiet_circuit.complete",
-      "rewards": { "resources": { "power": 10 }, "disposition_deltas": { "ren": 2 } }
+      "rewards": {
+        "resources": {
+          "power": 10
+        },
+        "disposition_deltas": {
+          "ren": 2
+        }
+      }
     },
     {
       "id": "side_meds_clean_shelf",
@@ -119,20 +200,44 @@
           "id": "establish_clinic",
           "title": "Set up a treatment room",
           "description": "Place a clinic on a clinic or workshop hotspot grid.",
-          "objective": { "type": "building_placed", "building_type": "clinic", "grid_ids": ["clinic_grid", "workshop_grid"] }
+          "objective": {
+            "type": "building_placed",
+            "building_type": "clinic",
+            "grid_ids": [
+              "clinic_grid",
+              "workshop_grid"
+            ]
+          }
         },
         {
           "id": "restock_meds",
           "title": "Prepare the kit",
           "description": "Assign Mara and produce 3 meds.",
-          "objective": { "all": [
-            { "type": "companion_assigned", "companion_id": "mara", "building_type": "clinic" },
-            { "type": "resource_produced", "resource": "meds", "amount": 3 }
-          ] }
+          "objective": {
+            "all": [
+              {
+                "type": "companion_assigned",
+                "companion_id": "mara",
+                "building_type": "clinic"
+              },
+              {
+                "type": "resource_produced",
+                "resource": "meds",
+                "amount": 3
+              }
+            ]
+          }
         }
       ],
       "completion_flag": "quest.side_meds_clean_shelf.complete",
-      "rewards": { "resources": { "meds": 4 }, "disposition_deltas": { "mara": 2 } }
+      "rewards": {
+        "resources": {
+          "meds": 4
+        },
+        "disposition_deltas": {
+          "mara": 2
+        }
+      }
     },
     {
       "id": "side_faction_river_compact_delivery",
@@ -146,17 +251,33 @@
           "id": "prepare_delivery",
           "title": "Set aside the water",
           "description": "Reserve 6 water for the agreed delivery.",
-          "objective": { "type": "resource_available", "resource": "water", "amount": 6 }
+          "objective": {
+            "type": "resource_available",
+            "resource": "water",
+            "amount": 6
+          }
         },
         {
           "id": "complete_delivery",
           "title": "Honor the agreement",
           "description": "Complete the exchange and improve River Compact standing by at least 10.",
-          "objective": { "type": "faction_standing_change", "faction_id": "river_compact", "minimum_delta": 10 }
+          "objective": {
+            "type": "faction_standing_change",
+            "faction_id": "river_compact",
+            "minimum_delta": 10
+          }
         }
       ],
       "completion_flag": "quest.side_faction_river_compact_delivery.complete",
-      "rewards": { "resources": { "scrap": 8 }, "faction_standing": { "river_compact": 4 } }
+      "rewards": {
+        "resources": {
+          "scrap": 8
+        },
+        "faction_standing": {
+          "river_compact": 4
+        }
+      },
+      "dialogue_entry_node": "quest_river_delivery"
     },
     {
       "id": "side_rescue_culvert_signal",
@@ -169,17 +290,35 @@
           "id": "reach_the_culvert",
           "title": "Find the signal",
           "description": "Follow the road marker to the culvert and confirm the caller is alive.",
-          "objective": { "type": "flag", "name": "quest.rescue_culvert_signal.contact_made", "value": true }
+          "objective": {
+            "type": "flag",
+            "name": "quest.rescue_culvert_signal.contact_made",
+            "value": true
+          }
         },
         {
           "id": "bring_them_home",
           "title": "Bring them through the gate",
           "description": "Complete the rescue and choose to shelter the survivor at the colony.",
-          "objective": { "type": "flag", "name": "quest.rescue_culvert_signal.survivor_safe", "value": true }
+          "objective": {
+            "type": "flag",
+            "name": "quest.rescue_culvert_signal.survivor_safe",
+            "value": true
+          }
         }
       ],
       "completion_flag": "quest.side_rescue_culvert_signal.complete",
-      "rewards": { "resources": { "food": 6, "meds": 1 }, "disposition_deltas": { "tamsin": 2, "brick": 1 } }
+      "rewards": {
+        "resources": {
+          "food": 6,
+          "meds": 1
+        },
+        "disposition_deltas": {
+          "tamsin": 2,
+          "brick": 1
+        }
+      },
+      "dialogue_entry_node": "quest_rescue_culvert_signal"
     }
   ]
 }

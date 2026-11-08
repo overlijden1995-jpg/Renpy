@@ -1,41 +1,637 @@
 {
   "version": 1,
-  "canvas": { "width": 1920, "height": 1080 },
+  "canvas": {
+    "width": 1920,
+    "height": 1080
+  },
   "defaultScene": "01_colony_gate",
   "assets": {
-    "env.01_colony_gate": { "type": "image", "src": "assets/env/01_colony_gate.png" },
-    "char.sable.face_neutral": { "type": "image", "src": "game/images/sable/face_neutral.png" },
-    "char.mc.face_neutral": { "type": "image", "src": "game/images/mc/face_neutral.png" },
-    "env.02_scrap_yard": { "type": "image", "src": "assets/env/02_scrap_yard.png" },
-    "env.03_water_pump_station": { "type": "image", "src": "assets/env/03_water_pump_station.png" },
-    "env.04_greenhouse_interior": { "type": "image", "src": "assets/env/04_greenhouse_interior.png" },
-    "env.05_clinic": { "type": "image", "src": "assets/env/05_clinic.png" },
-    "env.06_workshop": { "type": "image", "src": "assets/env/06_workshop.png" },
-    "env.07_perimeter_wall": { "type": "image", "src": "assets/env/07_perimeter_wall.png" },
-    "env.08_wasteland_road": { "type": "image", "src": "assets/env/08_wasteland_road.png" },
-    "env.09_ruined_city_street": { "type": "image", "src": "assets/env/09_ruined_city_street.png" },
-    "env.10_night_campfire": { "type": "image", "src": "assets/env/10_night_campfire.png" },
-    "ui.nine_slice_panel": { "type": "image", "src": "assets/ui/01_nine_slice_panel.png" },
-    "ui.button_normal": { "type": "image", "src": "assets/ui/02_button_normal.png" },
-    "ui.button_hover": { "type": "image", "src": "assets/ui/03_button_hover.png" },
-    "ui.button_pressed": { "type": "image", "src": "assets/ui/04_button_pressed.png" },
-    "ui.scrap_icon": { "type": "image", "src": "assets/ui/05_scrap_icon.png" },
-    "ui.water_icon": { "type": "image", "src": "assets/ui/06_water_icon.png" },
-    "ui.food_icon": { "type": "image", "src": "assets/ui/07_food_icon.png" },
-    "ui.power_icon": { "type": "image", "src": "assets/ui/08_power_icon.png" },
-    "ui.meds_icon": { "type": "image", "src": "assets/ui/09_meds_icon.png" },
-    "ui.dialogue_box": { "type": "image", "src": "assets/ui/10_dialogue_box.png" }
+    "env.01_colony_gate": {
+      "type": "image",
+      "src": "assets/env/01_colony_gate.png"
+    },
+    "char.sable.face_neutral": {
+      "type": "image",
+      "src": "game/images/sable/face_neutral.png"
+    },
+    "char.mc.face_neutral": {
+      "type": "image",
+      "src": "game/images/mc/face_neutral.png"
+    },
+    "env.02_scrap_yard": {
+      "type": "image",
+      "src": "assets/env/02_scrap_yard.png"
+    },
+    "env.03_water_pump_station": {
+      "type": "image",
+      "src": "assets/env/03_water_pump_station.png"
+    },
+    "env.04_greenhouse_interior": {
+      "type": "image",
+      "src": "assets/env/04_greenhouse_interior.png"
+    },
+    "env.05_clinic": {
+      "type": "image",
+      "src": "assets/env/05_clinic.png"
+    },
+    "env.06_workshop": {
+      "type": "image",
+      "src": "assets/env/06_workshop.png"
+    },
+    "env.07_perimeter_wall": {
+      "type": "image",
+      "src": "assets/env/07_perimeter_wall.png"
+    },
+    "env.08_wasteland_road": {
+      "type": "image",
+      "src": "assets/env/08_wasteland_road.png"
+    },
+    "env.09_ruined_city_street": {
+      "type": "image",
+      "src": "assets/env/09_ruined_city_street.png"
+    },
+    "env.10_night_campfire": {
+      "type": "image",
+      "src": "assets/env/10_night_campfire.png"
+    },
+    "ui.nine_slice_panel": {
+      "type": "image",
+      "src": "assets/ui/01_nine_slice_panel.png"
+    },
+    "ui.button_normal": {
+      "type": "image",
+      "src": "assets/ui/02_button_normal.png"
+    },
+    "ui.button_hover": {
+      "type": "image",
+      "src": "assets/ui/03_button_hover.png"
+    },
+    "ui.button_pressed": {
+      "type": "image",
+      "src": "assets/ui/04_button_pressed.png"
+    },
+    "ui.scrap_icon": {
+      "type": "image",
+      "src": "assets/ui/05_scrap_icon.png"
+    },
+    "ui.water_icon": {
+      "type": "image",
+      "src": "assets/ui/06_water_icon.png"
+    },
+    "ui.food_icon": {
+      "type": "image",
+      "src": "assets/ui/07_food_icon.png"
+    },
+    "ui.power_icon": {
+      "type": "image",
+      "src": "assets/ui/08_power_icon.png"
+    },
+    "ui.meds_icon": {
+      "type": "image",
+      "src": "assets/ui/09_meds_icon.png"
+    },
+    "ui.dialogue_box": {
+      "type": "image",
+      "src": "assets/ui/10_dialogue_box.png"
+    },
+    "char.alice.base_hurt": {
+      "type": "image",
+      "src": "game/images/alice/base_hurt.png"
+    },
+    "char.alice.base_idle": {
+      "type": "image",
+      "src": "game/images/alice/base_idle.png"
+    },
+    "char.alice.base_walk": {
+      "type": "image",
+      "src": "game/images/alice/base_walk.png"
+    },
+    "char.alice.base_work": {
+      "type": "image",
+      "src": "game/images/alice/base_work.png"
+    },
+    "char.alice.blush_off": {
+      "type": "image",
+      "src": "game/images/alice/blush_off.png"
+    },
+    "char.alice.blush_on": {
+      "type": "image",
+      "src": "game/images/alice/blush_on.png"
+    },
+    "char.alice.face_angry": {
+      "type": "image",
+      "src": "game/images/alice/face_angry.png"
+    },
+    "char.alice.face_neutral": {
+      "type": "image",
+      "src": "game/images/alice/face_neutral.png"
+    },
+    "char.alice.face_pain": {
+      "type": "image",
+      "src": "game/images/alice/face_pain.png"
+    },
+    "char.alice.face_smile": {
+      "type": "image",
+      "src": "game/images/alice/face_smile.png"
+    },
+    "char.alice.face_soft": {
+      "type": "image",
+      "src": "game/images/alice/face_soft.png"
+    },
+    "char.alice.face_surprise": {
+      "type": "image",
+      "src": "game/images/alice/face_surprise.png"
+    },
+    "char.denice.base_hurt": {
+      "type": "image",
+      "src": "game/images/denice/base_hurt.png"
+    },
+    "char.denice.base_idle": {
+      "type": "image",
+      "src": "game/images/denice/base_idle.png"
+    },
+    "char.denice.base_walk": {
+      "type": "image",
+      "src": "game/images/denice/base_walk.png"
+    },
+    "char.denice.base_work": {
+      "type": "image",
+      "src": "game/images/denice/base_work.png"
+    },
+    "char.denice.blush_off": {
+      "type": "image",
+      "src": "game/images/denice/blush_off.png"
+    },
+    "char.denice.blush_on": {
+      "type": "image",
+      "src": "game/images/denice/blush_on.png"
+    },
+    "char.denice.face_angry": {
+      "type": "image",
+      "src": "game/images/denice/face_angry.png"
+    },
+    "char.denice.face_neutral": {
+      "type": "image",
+      "src": "game/images/denice/face_neutral.png"
+    },
+    "char.denice.face_pain": {
+      "type": "image",
+      "src": "game/images/denice/face_pain.png"
+    },
+    "char.denice.face_smile": {
+      "type": "image",
+      "src": "game/images/denice/face_smile.png"
+    },
+    "char.denice.face_soft": {
+      "type": "image",
+      "src": "game/images/denice/face_soft.png"
+    },
+    "char.denice.face_surprise": {
+      "type": "image",
+      "src": "game/images/denice/face_surprise.png"
+    },
+    "char.mc.base_hurt": {
+      "type": "image",
+      "src": "game/images/mc/base_hurt.png"
+    },
+    "char.mc.base_idle": {
+      "type": "image",
+      "src": "game/images/mc/base_idle.png"
+    },
+    "char.mc.base_walk": {
+      "type": "image",
+      "src": "game/images/mc/base_walk.png"
+    },
+    "char.mc.base_work": {
+      "type": "image",
+      "src": "game/images/mc/base_work.png"
+    },
+    "char.mc.blush_off": {
+      "type": "image",
+      "src": "game/images/mc/blush_off.png"
+    },
+    "char.mc.blush_on": {
+      "type": "image",
+      "src": "game/images/mc/blush_on.png"
+    },
+    "char.mc.face_angry": {
+      "type": "image",
+      "src": "game/images/mc/face_angry.png"
+    },
+    "char.mc.face_pain": {
+      "type": "image",
+      "src": "game/images/mc/face_pain.png"
+    },
+    "char.mc.face_smile": {
+      "type": "image",
+      "src": "game/images/mc/face_smile.png"
+    },
+    "char.mc.face_soft": {
+      "type": "image",
+      "src": "game/images/mc/face_soft.png"
+    },
+    "char.mc.face_surprise": {
+      "type": "image",
+      "src": "game/images/mc/face_surprise.png"
+    },
+    "char.sable.base_hurt": {
+      "type": "image",
+      "src": "game/images/sable/base_hurt.png"
+    },
+    "char.sable.base_idle": {
+      "type": "image",
+      "src": "game/images/sable/base_idle.png"
+    },
+    "char.sable.base_walk": {
+      "type": "image",
+      "src": "game/images/sable/base_walk.png"
+    },
+    "char.sable.base_work": {
+      "type": "image",
+      "src": "game/images/sable/base_work.png"
+    },
+    "char.sable.blush_off": {
+      "type": "image",
+      "src": "game/images/sable/blush_off.png"
+    },
+    "char.sable.blush_on": {
+      "type": "image",
+      "src": "game/images/sable/blush_on.png"
+    },
+    "char.sable.face_angry": {
+      "type": "image",
+      "src": "game/images/sable/face_angry.png"
+    },
+    "char.sable.face_pain": {
+      "type": "image",
+      "src": "game/images/sable/face_pain.png"
+    },
+    "char.sable.face_smile": {
+      "type": "image",
+      "src": "game/images/sable/face_smile.png"
+    },
+    "char.sable.face_soft": {
+      "type": "image",
+      "src": "game/images/sable/face_soft.png"
+    },
+    "char.sable.face_surprise": {
+      "type": "image",
+      "src": "game/images/sable/face_surprise.png"
+    },
+    "char.sophia.base_hurt": {
+      "type": "image",
+      "src": "game/images/sophia/base_hurt.png"
+    },
+    "char.sophia.base_idle": {
+      "type": "image",
+      "src": "game/images/sophia/base_idle.png"
+    },
+    "char.sophia.base_walk": {
+      "type": "image",
+      "src": "game/images/sophia/base_walk.png"
+    },
+    "char.sophia.base_work": {
+      "type": "image",
+      "src": "game/images/sophia/base_work.png"
+    },
+    "char.sophia.blush_off": {
+      "type": "image",
+      "src": "game/images/sophia/blush_off.png"
+    },
+    "char.sophia.blush_on": {
+      "type": "image",
+      "src": "game/images/sophia/blush_on.png"
+    },
+    "char.sophia.face_angry": {
+      "type": "image",
+      "src": "game/images/sophia/face_angry.png"
+    },
+    "char.sophia.face_neutral": {
+      "type": "image",
+      "src": "game/images/sophia/face_neutral.png"
+    },
+    "char.sophia.face_pain": {
+      "type": "image",
+      "src": "game/images/sophia/face_pain.png"
+    },
+    "char.sophia.face_smile": {
+      "type": "image",
+      "src": "game/images/sophia/face_smile.png"
+    },
+    "char.sophia.face_soft": {
+      "type": "image",
+      "src": "game/images/sophia/face_soft.png"
+    },
+    "char.sophia.face_surprise": {
+      "type": "image",
+      "src": "game/images/sophia/face_surprise.png"
+    },
+    "char.tory.base_hurt": {
+      "type": "image",
+      "src": "game/images/tory/base_hurt.png"
+    },
+    "char.tory.base_idle": {
+      "type": "image",
+      "src": "game/images/tory/base_idle.png"
+    },
+    "char.tory.base_walk": {
+      "type": "image",
+      "src": "game/images/tory/base_walk.png"
+    },
+    "char.tory.base_work": {
+      "type": "image",
+      "src": "game/images/tory/base_work.png"
+    },
+    "char.tory.blush_off": {
+      "type": "image",
+      "src": "game/images/tory/blush_off.png"
+    },
+    "char.tory.blush_on": {
+      "type": "image",
+      "src": "game/images/tory/blush_on.png"
+    },
+    "char.tory.face_angry": {
+      "type": "image",
+      "src": "game/images/tory/face_angry.png"
+    },
+    "char.tory.face_neutral": {
+      "type": "image",
+      "src": "game/images/tory/face_neutral.png"
+    },
+    "char.tory.face_pain": {
+      "type": "image",
+      "src": "game/images/tory/face_pain.png"
+    },
+    "char.tory.face_smile": {
+      "type": "image",
+      "src": "game/images/tory/face_smile.png"
+    },
+    "char.tory.face_soft": {
+      "type": "image",
+      "src": "game/images/tory/face_soft.png"
+    },
+    "char.tory.face_surprise": {
+      "type": "image",
+      "src": "game/images/tory/face_surprise.png"
+    }
   },
   "scenes": {
-    "01_colony_gate": { "title": "Colony Gate", "backgroundAsset": "env.01_colony_gate", "groundLine": [[0, 820], [1920, 820]], "start": [960, 820] },
-    "02_scrap_yard": { "title": "Scrap Yard", "backgroundAsset": "env.02_scrap_yard", "groundLine": [[0, 830], [1920, 830]], "start": [960, 830] },
-    "03_water_pump_station": { "title": "Water Pump Station", "backgroundAsset": "env.03_water_pump_station", "groundLine": [[0, 850], [1920, 850]], "start": [960, 850] },
-    "04_greenhouse_interior": { "title": "Greenhouse Interior", "backgroundAsset": "env.04_greenhouse_interior", "groundLine": [[0, 810], [1920, 810]], "start": [960, 810] },
-    "05_clinic": { "title": "Clinic", "backgroundAsset": "env.05_clinic", "groundLine": [[0, 825], [1920, 825]], "start": [960, 825] },
-    "06_workshop": { "title": "Workshop", "backgroundAsset": "env.06_workshop", "groundLine": [[0, 850], [1920, 850]], "start": [960, 850] },
-    "07_perimeter_wall": { "title": "Perimeter Wall", "backgroundAsset": "env.07_perimeter_wall", "groundLine": [[0, 825], [1920, 825]], "start": [960, 825] },
-    "08_wasteland_road": { "title": "Wasteland Road", "backgroundAsset": "env.08_wasteland_road", "groundLine": [[0, 835], [1920, 835]], "start": [960, 835] },
-    "09_ruined_city_street": { "title": "Ruined City Street", "backgroundAsset": "env.09_ruined_city_street", "groundLine": [[0, 840], [1920, 840]], "start": [960, 840] },
-    "10_night_campfire": { "title": "Night Campfire", "backgroundAsset": "env.10_night_campfire", "groundLine": [[0, 835], [1920, 835]], "start": [960, 835] }
+    "01_colony_gate": {
+      "title": "Colony Gate",
+      "backgroundAsset": "env.01_colony_gate",
+      "groundLine": [
+        [
+          0,
+          820
+        ],
+        [
+          1920,
+          820
+        ]
+      ],
+      "start": [
+        960,
+        820
+      ]
+    },
+    "02_scrap_yard": {
+      "title": "Scrap Yard",
+      "backgroundAsset": "env.02_scrap_yard",
+      "groundLine": [
+        [
+          0,
+          830
+        ],
+        [
+          1920,
+          830
+        ]
+      ],
+      "start": [
+        960,
+        830
+      ]
+    },
+    "03_water_pump_station": {
+      "title": "Water Pump Station",
+      "backgroundAsset": "env.03_water_pump_station",
+      "groundLine": [
+        [
+          0,
+          850
+        ],
+        [
+          1920,
+          850
+        ]
+      ],
+      "start": [
+        960,
+        850
+      ]
+    },
+    "04_greenhouse_interior": {
+      "title": "Greenhouse Interior",
+      "backgroundAsset": "env.04_greenhouse_interior",
+      "groundLine": [
+        [
+          0,
+          810
+        ],
+        [
+          1920,
+          810
+        ]
+      ],
+      "start": [
+        960,
+        810
+      ]
+    },
+    "05_clinic": {
+      "title": "Clinic",
+      "backgroundAsset": "env.05_clinic",
+      "groundLine": [
+        [
+          0,
+          825
+        ],
+        [
+          1920,
+          825
+        ]
+      ],
+      "start": [
+        960,
+        825
+      ]
+    },
+    "06_workshop": {
+      "title": "Workshop",
+      "backgroundAsset": "env.06_workshop",
+      "groundLine": [
+        [
+          0,
+          850
+        ],
+        [
+          1920,
+          850
+        ]
+      ],
+      "start": [
+        960,
+        850
+      ]
+    },
+    "07_perimeter_wall": {
+      "title": "Perimeter Wall",
+      "backgroundAsset": "env.07_perimeter_wall",
+      "groundLine": [
+        [
+          0,
+          825
+        ],
+        [
+          1920,
+          825
+        ]
+      ],
+      "start": [
+        960,
+        825
+      ]
+    },
+    "08_wasteland_road": {
+      "title": "Wasteland Road",
+      "backgroundAsset": "env.08_wasteland_road",
+      "groundLine": [
+        [
+          0,
+          835
+        ],
+        [
+          1920,
+          835
+        ]
+      ],
+      "start": [
+        960,
+        835
+      ]
+    },
+    "09_ruined_city_street": {
+      "title": "Ruined City Street",
+      "backgroundAsset": "env.09_ruined_city_street",
+      "groundLine": [
+        [
+          0,
+          840
+        ],
+        [
+          1920,
+          840
+        ]
+      ],
+      "start": [
+        960,
+        840
+      ]
+    },
+    "10_night_campfire": {
+      "title": "Night Campfire",
+      "backgroundAsset": "env.10_night_campfire",
+      "groundLine": [
+        [
+          0,
+          835
+        ],
+        [
+          1920,
+          835
+        ]
+      ],
+      "start": [
+        960,
+        835
+      ]
+    }
+  },
+  "spriteFrames": {
+    "expectedCount": 80,
+    "assetIds": [
+      "char.alice.base_hurt",
+      "char.alice.base_idle",
+      "char.alice.base_walk",
+      "char.alice.base_work",
+      "char.alice.blush_off",
+      "char.alice.blush_on",
+      "char.alice.face_angry",
+      "char.alice.face_neutral",
+      "char.alice.face_pain",
+      "char.alice.face_smile",
+      "char.alice.face_soft",
+      "char.alice.face_surprise",
+      "char.denice.base_hurt",
+      "char.denice.base_idle",
+      "char.denice.base_walk",
+      "char.denice.base_work",
+      "char.denice.blush_off",
+      "char.denice.blush_on",
+      "char.denice.face_angry",
+      "char.denice.face_neutral",
+      "char.denice.face_pain",
+      "char.denice.face_smile",
+      "char.denice.face_soft",
+      "char.denice.face_surprise",
+      "char.mc.base_hurt",
+      "char.mc.base_idle",
+      "char.mc.base_walk",
+      "char.mc.base_work",
+      "char.mc.blush_off",
+      "char.mc.blush_on",
+      "char.mc.face_angry",
+      "char.mc.face_neutral",
+      "char.mc.face_pain",
+      "char.mc.face_smile",
+      "char.mc.face_soft",
+      "char.mc.face_surprise",
+      "char.sable.base_hurt",
+      "char.sable.base_idle",
+      "char.sable.base_walk",
+      "char.sable.base_work",
+      "char.sable.blush_off",
+      "char.sable.blush_on",
+      "char.sable.face_angry",
+      "char.sable.face_neutral",
+      "char.sable.face_pain",
+      "char.sable.face_smile",
+      "char.sable.face_soft",
+      "char.sable.face_surprise",
+      "char.sophia.base_hurt",
+      "char.sophia.base_idle",
+      "char.sophia.base_walk",
+      "char.sophia.base_work",
+      "char.sophia.blush_off",
+      "char.sophia.blush_on",
+      "char.sophia.face_angry",
+      "char.sophia.face_neutral",
+      "char.sophia.face_pain",
+      "char.sophia.face_smile",
+      "char.sophia.face_soft",
+      "char.sophia.face_surprise",
+      "char.tory.base_hurt",
+      "char.tory.base_idle",
+      "char.tory.base_walk",
+      "char.tory.base_work",
+      "char.tory.blush_off",
+      "char.tory.blush_on",
+      "char.tory.face_angry",
+      "char.tory.face_neutral",
+      "char.tory.face_pain",
+      "char.tory.face_smile",
+      "char.tory.face_soft",
+      "char.tory.face_surprise"
+    ]
   }
 }

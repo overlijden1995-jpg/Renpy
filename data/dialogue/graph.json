@@ -5287,6 +5287,191 @@
         "title": "Juno · Trust Gate 3",
         "body": "This voice-setting exchange ends here. The full bond scene remains a placeholder for later authored content."
       }
+    },
+    "quest_river_delivery": {
+      "id": "quest_river_delivery",
+      "speaker": "River Compact courier",
+      "portrait_frame": null,
+      "text": "“Six clean water. Sealed pump parts in return, and I will tell the Compact you kept the terms. No speeches; both lists fit on one page.”",
+      "choices": [
+        {
+          "id": "make_river_delivery",
+          "text": "Make the six-water delivery under the agreed terms.",
+          "next": "quest_river_delivery_done",
+          "requires": {},
+          "actions": [
+            {
+              "type": "faction_delivery",
+              "faction_id": "river_compact",
+              "resource": "water",
+              "amount": 6,
+              "standing_delta": 10,
+              "result_flag": "quest.side_faction_river_compact_delivery.complete"
+            }
+          ],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {},
+            "clear": []
+          }
+        },
+        {
+          "id": "defer_river_delivery",
+          "text": "Not until the stores can spare it.",
+          "next": null,
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "quest.side_faction_river_compact_delivery.deferred": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "quest_id": "side_faction_river_compact_delivery"
+    },
+    "quest_river_delivery_done": {
+      "id": "quest_river_delivery_done",
+      "speaker": "River Compact courier",
+      "portrait_frame": null,
+      "text": "The courier counts the water, signs the receipt, and leaves the pump seals in a dry case. The Compact has a reason to deal fairly next time.",
+      "choices": [
+        {
+          "id": "close_river_delivery",
+          "text": "Put the receipt on the board.",
+          "next": null,
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "quest.side_faction_river_compact_delivery.receipt_filed": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "quest_id": "side_faction_river_compact_delivery"
+    },
+    "quest_rescue_culvert_signal": {
+      "id": "quest_rescue_culvert_signal",
+      "speaker": "Tamsin",
+      "portrait_frame": null,
+      "text": "The radio pulse comes again from the road culvert: three short bursts, then silence. Tamsin has a direction and a rough window before the battery gives out.",
+      "choices": [
+        {
+          "id": "answer_culvert_signal",
+          "text": "Answer with the gate frequency and send a team.",
+          "next": "quest_rescue_culvert_contact",
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "quest.rescue_culvert_signal.contact_made": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "hold_for_daylight",
+          "text": "Mark the location. Move when there is enough light to see the ditch.",
+          "next": null,
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "quest.rescue_culvert_signal.marked_for_daylight": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "quest_id": "side_rescue_culvert_signal"
+    },
+    "quest_rescue_culvert_contact": {
+      "id": "quest_rescue_culvert_contact",
+      "speaker": "Tamsin",
+      "portrait_frame": null,
+      "text": "A voice answers, thin but steady. The caller is pinned below the culvert lip and can move if someone braces the loose panel. There is room for one rescuer at a time.",
+      "choices": [
+        {
+          "id": "bring_survivor_home",
+          "text": "Brace the panel and bring them through the gate.",
+          "next": "quest_rescue_culvert_complete",
+          "requires": {
+            "flags": {
+              "all": [
+                "quest.rescue_culvert_signal.contact_made"
+              ]
+            }
+          },
+          "actions": [],
+          "disposition_deltas": {
+            "brick": 1,
+            "tamsin": 1
+          },
+          "flags": {
+            "set": {
+              "quest.rescue_culvert_signal.survivor_safe": true,
+              "quest.side_rescue_culvert_signal.complete": true
+            },
+            "clear": []
+          }
+        },
+        {
+          "id": "leave_supplies_and_return",
+          "text": "Leave water and a splint. Return with a brace and more hands.",
+          "next": null,
+          "requires": {},
+          "actions": [],
+          "disposition_deltas": {},
+          "flags": {
+            "set": {
+              "quest.rescue_culvert_signal.supplies_left": true
+            },
+            "clear": []
+          }
+        }
+      ],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "quest_id": "side_rescue_culvert_signal"
+    },
+    "quest_rescue_culvert_complete": {
+      "id": "quest_rescue_culvert_complete",
+      "speaker": "Narrator",
+      "portrait_frame": null,
+      "text": "The gate watch takes the stretcher. Tamsin logs the rescued caller’s signal pattern; Brick checks the brace for cracks before anyone leans on it.",
+      "choices": [],
+      "disposition_deltas": {},
+      "flags": {
+        "set": {},
+        "clear": []
+      },
+      "terminal": true,
+      "quest_id": "side_rescue_culvert_signal"
     }
   },
   "opening_sequence": [
@@ -5296,5 +5481,9 @@
     "tutorial_build_prompt",
     "tutorial_recruit_prompt",
     "tutorial_opening_complete"
-  ]
+  ],
+  "quest_entry_nodes": {
+    "side_faction_river_compact_delivery": "quest_river_delivery",
+    "side_rescue_culvert_signal": "quest_rescue_culvert_signal"
+  }
 }
