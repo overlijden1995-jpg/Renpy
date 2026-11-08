@@ -1,0 +1,101 @@
+{
+  "canvas": [1920, 1080],
+  "rect_format": "[x, y, width, height] in pixels from the top-left corner",
+  "scenes": {
+    "01_colony_gate": {
+      "image": "assets/env/01_colony_gate.png",
+      "hotspots": [
+        { "id": "guard_booth", "label": "Guard booth", "rect": [40, 225, 430, 390] },
+        { "id": "gate_door", "label": "Steel gate", "rect": [720, 225, 540, 250] },
+        { "id": "sandbags", "label": "Sandbag position", "rect": [980, 475, 350, 160] },
+        { "id": "gate_controls", "label": "Gate controls", "rect": [1360, 420, 200, 185] },
+        { "id": "watchtower", "label": "Watchtower", "rect": [1540, 70, 380, 400] }
+      ]
+    },
+    "02_scrap_yard": {
+      "image": "assets/env/02_scrap_yard.png",
+      "hotspots": [
+        { "id": "sorted_scrap", "label": "Sorted scrap", "rect": [0, 265, 440, 300] },
+        { "id": "repair_bench", "label": "Repair workbench", "rect": [455, 265, 330, 270] },
+        { "id": "salvage_forklift", "label": "Salvage forklift", "rect": [940, 220, 360, 350] },
+        { "id": "sheet_metal_rack", "label": "Sheet-metal rack", "rect": [1320, 170, 600, 410] }
+      ]
+    },
+    "03_water_pump_station": {
+      "image": "assets/env/03_water_pump_station.png",
+      "hotspots": [
+        { "id": "storage_tank", "label": "Storage tank", "rect": [35, 35, 410, 680] },
+        { "id": "pump_engine", "label": "Pump engine", "rect": [470, 365, 590, 360] },
+        { "id": "main_valve", "label": "Main valve", "rect": [1080, 300, 300, 420] },
+        { "id": "pipe_manifold", "label": "Pipe manifold", "rect": [1370, 100, 500, 650] }
+      ]
+    },
+    "04_greenhouse_interior": {
+      "image": "assets/env/04_greenhouse_interior.png",
+      "hotspots": [
+        { "id": "seedling_table", "label": "Seedling table", "rect": [0, 400, 420, 380] },
+        { "id": "crop_bed", "label": "Raised crop bed", "rect": [420, 500, 1050, 270] },
+        { "id": "water_barrel", "label": "Water barrel", "rect": [1460, 465, 260, 300] },
+        { "id": "irrigation_controls", "label": "Irrigation controls", "rect": [1710, 130, 210, 640] }
+      ]
+    },
+    "05_clinic": {
+      "image": "assets/env/05_clinic.png",
+      "hotspots": [
+        { "id": "examination_cot", "label": "Examination cot", "rect": [20, 475, 590, 330] },
+        { "id": "medicine_cabinet", "label": "Medicine cabinet", "rect": [640, 165, 460, 290] },
+        { "id": "triage_desk", "label": "Triage desk", "rect": [1100, 420, 390, 390] },
+        { "id": "supply_shelves", "label": "Supply shelves", "rect": [1500, 185, 420, 610] }
+      ]
+    },
+    "06_workshop": {
+      "image": "assets/env/06_workshop.png",
+      "hotspots": [
+        { "id": "parts_bins", "label": "Parts bins", "rect": [0, 220, 390, 300] },
+        { "id": "workbench", "label": "Workbench and vise", "rect": [390, 340, 690, 405] },
+        { "id": "generator", "label": "Generator", "rect": [1110, 560, 370, 290] },
+        { "id": "tool_rack", "label": "Tool rack", "rect": [1500, 90, 420, 400] },
+        { "id": "cable_reels", "label": "Cable reels", "rect": [1510, 500, 410, 330] }
+      ]
+    },
+    "07_perimeter_wall": {
+      "image": "assets/env/07_perimeter_wall.png",
+      "hotspots": [
+        { "id": "sandbag_post", "label": "Sandbag post", "rect": [45, 340, 320, 270] },
+        { "id": "watchtower", "label": "Watchtower", "rect": [420, 130, 370, 480] },
+        { "id": "wall_gate", "label": "Perimeter gate", "rect": [780, 285, 300, 355] },
+        { "id": "spotlight", "label": "Wall spotlight", "rect": [1170, 120, 250, 290] },
+        { "id": "road_barricade", "label": "Road barricade", "rect": [1500, 500, 420, 250] }
+      ]
+    },
+    "08_wasteland_road": {
+      "image": "assets/env/08_wasteland_road.png",
+      "hotspots": [
+        { "id": "road_sign", "label": "Blank road sign", "rect": [10, 235, 230, 330] },
+        { "id": "abandoned_truck", "label": "Abandoned truck", "rect": [275, 335, 570, 245] },
+        { "id": "roadside_crates", "label": "Roadside supplies", "rect": [920, 450, 340, 135] },
+        { "id": "roadblock", "label": "Roadblock", "rect": [1660, 415, 250, 175] }
+      ]
+    },
+    "09_ruined_city_street": {
+      "image": "assets/env/09_ruined_city_street.png",
+      "hotspots": [
+        { "id": "shopfront", "label": "Broken shop window", "rect": [0, 175, 245, 430] },
+        { "id": "store_entry", "label": "Store entrance", "rect": [250, 230, 180, 390] },
+        { "id": "wrecked_car", "label": "Wrecked car", "rect": [500, 430, 390, 210] },
+        { "id": "rubble_pile", "label": "Rubble and exposed pipes", "rect": [900, 380, 500, 270] },
+        { "id": "street_doorway", "label": "Street-level doorway", "rect": [1610, 165, 300, 485] }
+      ]
+    },
+    "10_night_campfire": {
+      "image": "assets/env/10_night_campfire.png",
+      "hotspots": [
+        { "id": "bedroll_pack", "label": "Bedroll and pack", "rect": [85, 485, 390, 220] },
+        { "id": "cooking_pot", "label": "Cooking pot and log", "rect": [500, 510, 310, 190] },
+        { "id": "campfire", "label": "Campfire", "rect": [820, 500, 280, 240] },
+        { "id": "radio", "label": "Field radio", "rect": [1175, 500, 150, 150] },
+        { "id": "supply_crate", "label": "Supply crate", "rect": [1320, 510, 290, 190] }
+      ]
+    }
+  }
+}
