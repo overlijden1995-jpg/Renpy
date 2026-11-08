@@ -2,6 +2,19 @@
 init python:
     config.say_attribute_transition = Dissolve(0.15)
 
+image alice base_hurt = "images/alice/base_hurt.png"
+image alice base_idle = "images/alice/base_idle.png"
+image alice base_walk = "images/alice/base_walk.png"
+image alice base_work = "images/alice/base_work.png"
+image alice blush_off = "images/alice/blush_off.png"
+image alice blush_on = "images/alice/blush_on.png"
+image alice face_angry = "images/alice/face_angry.png"
+image alice face_neutral = "images/alice/face_neutral.png"
+image alice face_pain = "images/alice/face_pain.png"
+image alice face_smile = "images/alice/face_smile.png"
+image alice face_soft = "images/alice/face_soft.png"
+image alice face_surprise = "images/alice/face_surprise.png"
+
 image mc base_hurt = "images/mc/base_hurt.png"
 image mc base_idle = "images/mc/base_idle.png"
 image mc base_walk = "images/mc/base_walk.png"
@@ -40,6 +53,41 @@ image sophia face_pain = "images/sophia/face_pain.png"
 image sophia face_smile = "images/sophia/face_smile.png"
 image sophia face_soft = "images/sophia/face_soft.png"
 image sophia face_surprise = "images/sophia/face_surprise.png"
+
+layeredimage alice:
+    # Idle is the default base layer and is explicitly always displayed.
+    always:
+        "alice base_idle"
+        when idle
+
+    group base:
+        attribute idle default
+        attribute walk:
+            "alice base_walk"
+        attribute work:
+            "alice base_work"
+        attribute hurt:
+            "alice base_hurt"
+
+    group face:
+        attribute neutral default:
+            "alice face_neutral"
+        attribute smile:
+            "alice face_smile"
+        attribute soft:
+            "alice face_soft"
+        attribute surprise:
+            "alice face_surprise"
+        attribute angry:
+            "alice face_angry"
+        attribute pain:
+            "alice face_pain"
+
+    group blush:
+        attribute off default:
+            "alice blush_off"
+        attribute on:
+            "alice blush_on"
 
 layeredimage mc:
     # Idle is the default base layer and is explicitly always displayed.
