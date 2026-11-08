@@ -20,16 +20,26 @@ Use short paragraphs and clear choices suited to a visual novel and point-and-cl
 
 All image-generation prompts must stay **SFW**. Adult content is text-only for now. Visual prompts should describe clothing, pose, scene, lighting, and mood without nudity or explicit sexual content. This rule applies to character art, backgrounds, gallery images, and promotional assets.
 
-## STYLE_LOCK
+## STYLE_LOCK variants
 
-Use this prompt string verbatim as the prefix of every later image prompt:
-
-```text
-Full body character sprite, single figure, adult male, 2.05m, heavy build, wasteland survivor, chitin-plated left forearm and shoulder, glowing amber eyes, shaved head with stubble, jaw scar, tire-rubber and sheet-steel armor over a knee-length canvas coat, fingerless gloves, heavy boots. Anime visual novel cel-shaded style, thick clean lineart, two-tone shadow. Three-quarter front view, neutral A-pose, arms clear of body, flat expression. Solid flat magenta background. Four small black L-shaped registration marks, one per corner, inset 24px, clear of the figure. No text, no border, fully clothed.
-```
+Use the variant matching the subject verbatim as the prefix of every later image prompt. Both variants share these settings:
 
 - Seed: `4410`
 - Canvas: `768x1280`
 - Registration-mark tick inset: `24px`
 
-For every subsequent image, prefix the prompt with the exact STYLE_LOCK text above, and use the same seed (`4410`) and canvas (`768x1280`). Do not edit, paraphrase, or omit any part of the lock.
+### Male STYLE_LOCK
+
+```text
+Full body character sprite, single figure, adult male, 2.05m, heavy build, wasteland survivor, chitin-plated left forearm and shoulder, glowing amber eyes, shaved head with stubble, jaw scar, tire-rubber and sheet-steel armor over a knee-length canvas coat, fingerless gloves, heavy boots. Anime visual novel cel-shaded style, thick clean lineart, two-tone shadow. Three-quarter front view, neutral A-pose, arms clear of body, flat expression. Solid flat magenta background. Four small black L-shaped registration marks, one per corner, inset 24px, clear of the figure. No text, no border, fully clothed.
+```
+
+### Female STYLE_LOCK
+
+Derived from the existing companion sprites' practical scavenged clothing, muted earth tones, cel shading, and registration format:
+
+```text
+Full body character sprite, single figure, adult female, wasteland survivor, practical weathered scavenged clothing in muted earth tones, layered canvas and leather, utility belt with pouches, fingerless gloves, heavy boots. Anime visual novel cel-shaded style, thick clean lineart, two-tone shadow. Three-quarter front view, neutral A-pose, arms clear of body, flat expression. Solid flat magenta background. Four small black L-shaped registration marks, one per corner, inset 24px, clear of the figure. No text, no border, fully clothed.
+```
+
+For every subsequent image, prefix the prompt with the exact male or female STYLE_LOCK text above, as appropriate, and use the same seed (`4410`) and canvas (`768x1280`). Do not edit, paraphrase, or omit any part of the selected lock.
