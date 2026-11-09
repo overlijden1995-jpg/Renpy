@@ -58,10 +58,6 @@ class SceneNode {
     return child;
   }
 
-  update(dt) {
-    for (const child of this.children) child.update(dt);
-  }
-
   draw(ctx, engine) {
     if (!this.visible) return;
     for (const child of this.children) child.draw(ctx, engine);
@@ -99,161 +95,13 @@ class HotspotNode extends SceneNode {
   }
 }
 
-class GroundPathfinder {
-  constructor(polyline, spacing = 96) {
-    this.points = [];
-    for (let i = 0; i < polyline.length - 1; i += 1) {
-      const a = polyline[i];
-      const b = polyline[i + 1];
-      const distance = Math.hypot(b[0] - a[0], b[1] - a[1]);
-      const steps = Math.max(1, Math.ceil(distance / spacing));
-      for (let step = i === 0 ? 0 : 1; step <= steps; step += 1) {
-        const t = step / steps;
-        this.points.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]);
-      }
-    }
-    this.edges = this.points.map((_, index) => [index - 1, index + 1].filter((n) => n >= 0 && n < this.points.length));
-  }
-
-  project(x, y) {
-    let best = null;
-    let bestDistance = Infinity;
-    for (let i = 0; i < this.points.length - 1; i += 1) {
-      const a = this.points[i];
-      const b = this.points[i + 1];
-      const dx = b[0] - a[0];
-      const dy = b[1] - a[1];
-      const length2 = dx * dx + dy * dy || 1;
-      const t = Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / length2));
-      const point = [a[0] + t * dx, a[1] + t * dy];
-      const d = (point[0] - x) ** 2 + (point[1] - y) ** 2;
-      if (d < bestDistance) { bestDistance = d; best = point; }
-    }
-    return best || [...(this.points[0] || [x, y])];
-  }
-
-  nearestIndex(point) {
-    let bestIndex = 0;
-    let bestDistance = Infinity;
-    this.points.forEach((candidate, index) => {
-      const d = (candidate[0] - point[0]) ** 2 + (candidate[1] - point[1]) ** 2;
-      if (d < bestDistance) { bestDistance = d; bestIndex = index; }
-    });
-    return bestIndex;
-  }
-
-  findPath(start, destination) {
-    if (!this.points.length) return [start, destination];
-    const startIndex = this.nearestIndex(start);
-    const endIndex = this.nearestIndex(destination);
-    const open = new Set([startIndex]);
-    const cameFrom = new Map();
-    const gScore = new Map([[startIndex, 0]]);
-    const fScore = new Map([[startIndex, this.distance(this.points[startIndex], this.points[endIndex])]]);
-    while (open.size) {
-      let current = -1;
-      let currentScore = Infinity;
-      for (const index of open) {
-        const score = fScore.get(index) ?? Infinity;
-        if (score < currentScore) { current = index; currentScore = score; }
-      }
-      if (current === endIndex) {
-        const indexes = [current];
-        while (cameFrom.has(indexes[0])) indexes.unshift(cameFrom.get(indexes[0]));
-        const route = indexes.map((index) => this.points[index]);
-        if (this.distance(start, route[0]) > 1) route.unshift(start);
-        if (this.distance(route[route.length - 1], destination) > 1) route.push(destination);
-        return route;
-      }
-      open.delete(current);
-      for (const neighbor of this.edges[current]) {
-        const tentative = (gScore.get(current) ?? Infinity) + this.distance(this.points[current], this.points[neighbor]);
-        if (tentative < (gScore.get(neighbor) ?? Infinity)) {
-          cameFrom.set(neighbor, current);
-          gScore.set(neighbor, tentative);
-          fScore.set(neighbor, tentative + this.distance(this.points[neighbor], this.points[endIndex]));
-          open.add(neighbor);
-        }
-      }
-    }
-    return [start, destination];
-  }
-
-  distance(a, b) { return Math.hypot(a[0] - b[0], a[1] - b[1]); }
-}
-
-class ActorNode extends SceneNode {
-  constructor(start) {
-    super({ id: "player", x: start[0], y: start[1], width: 58, height: 142, anchor: [start[0], start[1]] });
-    this.path = [];
-    this.pathIndex = 0;
-    this.speed = 190;
-    this.facing = 1;
-  }
-
-  get position() { return [this.x, this.y]; }
-
-  moveAlong(path) {
-    this.path = path;
-    this.pathIndex = path.length > 1 ? 1 : 0;
-    if (path.length <= 1 && path[0]) { this.x = path[0][0]; this.y = path[0][1]; }
-  }
-
-  update(dt) {
-    let distanceLeft = this.speed * dt;
-    while (distanceLeft > 0 && this.pathIndex < this.path.length) {
-      const target = this.path[this.pathIndex];
-      const dx = target[0] - this.x;
-      const dy = target[1] - this.y;
-      const distance = Math.hypot(dx, dy);
-      if (distance < 0.01) { this.x = target[0]; this.y = target[1]; this.pathIndex += 1; continue; }
-      this.facing = dx < 0 ? -1 : 1;
-      const step = Math.min(distance, distanceLeft);
-      this.x += dx / distance * step;
-      this.y += dy / distance * step;
-      distanceLeft -= step;
-      if (step >= distance) this.pathIndex += 1;
-    }
-    this.anchor = [this.x, this.y];
-  }
-
-  draw(ctx) {
-    const x = this.x;
-    const y = this.y;
-    const direction = this.facing;
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.scale(direction, 1);
-    ctx.fillStyle = "#0b0b09a8";
-    ctx.beginPath(); ctx.ellipse(0, -2, 28, 7, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.lineCap = "round";
-    ctx.strokeStyle = "#27251e"; ctx.lineWidth = 11;
-    ctx.beginPath(); ctx.moveTo(-8, -43); ctx.lineTo(-12, -8); ctx.moveTo(8, -43); ctx.lineTo(12, -8); ctx.stroke();
-    ctx.strokeStyle = "#8c8170"; ctx.lineWidth = 6;
-    ctx.beginPath(); ctx.moveTo(-12, -8); ctx.lineTo(-15, -2); ctx.moveTo(12, -8); ctx.lineTo(17, -2); ctx.stroke();
-    ctx.fillStyle = "#657047"; ctx.strokeStyle = "#171813"; ctx.lineWidth = 3;
-    ctx.beginPath(); ctx.moveTo(-17, -103); ctx.lineTo(14, -103); ctx.lineTo(20, -48); ctx.lineTo(11, -41); ctx.lineTo(-13, -41); ctx.lineTo(-21, -52); ctx.closePath(); ctx.fill(); ctx.stroke();
-    ctx.strokeStyle = "#28251f"; ctx.lineWidth = 8;
-    ctx.beginPath(); ctx.moveTo(-16, -91); ctx.lineTo(-26, -56); ctx.moveTo(14, -91); ctx.lineTo(22, -59); ctx.stroke();
-    ctx.strokeStyle = "#b27a4e"; ctx.lineWidth = 5;
-    ctx.beginPath(); ctx.moveTo(-26, -57); ctx.lineTo(-28, -44); ctx.moveTo(22, -60); ctx.lineTo(25, -47); ctx.stroke();
-    ctx.fillStyle = "#b49b72"; ctx.strokeStyle = "#24211c"; ctx.lineWidth = 3;
-    ctx.beginPath(); ctx.ellipse(0, -117, 11, 14, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = "#d9a14f";
-    ctx.fillRect(4, -119, 4, 2);
-    ctx.restore();
-  }
-}
-
 class SceneGraph extends SceneNode {
-  constructor(sceneId, config, hotspotRecords, loader, actor) {
+  constructor(sceneId, config, hotspotRecords, loader) {
     super({ id: `scene:${sceneId}`, width: 1920, height: 1080 });
     this.sceneId = sceneId;
     this.config = config;
-    this.pathfinder = new GroundPathfinder(config.groundLine);
     this.background = this.add(new BackgroundNode(config.backgroundAsset, loader));
     this.hotspots = hotspotRecords.map((record) => this.add(new HotspotNode(sceneId, record)));
-    this.actor = this.add(actor);
   }
 
   hotspotAt(x, y) {
@@ -321,29 +169,57 @@ class FieldEngine {
     this.camera = { x: this.width / 2, y: this.height / 2, zoom: 1 };
     this.debug = false;
     this.statusText = "Ready.";
-    this.lastFrame = 0;
     this.activeSceneId = null;
     this.scene = null;
     this.ui = {
-      sceneSelect: document.querySelector("#sceneSelect"),
+      itinerary: document.querySelector("#itineraryList"),
       saveSlot: document.querySelector("#saveSlot"),
       status: document.querySelector("#status"),
       debugTag: document.querySelector("#debugTag"),
       inventory: document.querySelector("#inventoryList"),
       error: document.querySelector("#error"),
     };
-    this.populateSceneSelector();
+    this.populateItinerary();
     this.populateInventory();
     this.bindUI();
   }
 
-  populateSceneSelector() {
-    this.ui.sceneSelect.replaceChildren();
+  populateItinerary() {
+    this.ui.itinerary.replaceChildren();
+    this._stopButtons = new Map();
+    let index = 0;
     for (const [id, scene] of Object.entries(this.manifest.scenes)) {
-      const option = document.createElement("option");
-      option.value = id;
-      option.textContent = scene.title || id;
-      this.ui.sceneSelect.append(option);
+      index += 1;
+      const item = document.createElement("li");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "stop";
+      button.dataset.sceneId = id;
+      const number = document.createElement("span");
+      number.className = "stop-num";
+      number.textContent = String(index).padStart(2, "0");
+      number.setAttribute("aria-hidden", "true");
+      const title = document.createElement("span");
+      title.className = "stop-title";
+      title.textContent = scene.title || id;
+      button.append(number, title);
+      button.setAttribute("aria-label", `Travel to ${scene.title || id}`);
+      button.addEventListener("click", () => {
+        this.loadScene(id).catch((error) => this.showError(error));
+      });
+      item.append(button);
+      this.ui.itinerary.append(item);
+      this._stopButtons.set(id, button);
+    }
+  }
+
+  setActiveItinerary(sceneId) {
+    if (!this._stopButtons) return;
+    for (const [id, button] of this._stopButtons) {
+      const active = id === sceneId;
+      button.classList.toggle("active", active);
+      if (active) button.setAttribute("aria-current", "true");
+      else button.removeAttribute("aria-current");
     }
   }
 
@@ -369,9 +245,6 @@ class FieldEngine {
   }
 
   bindUI() {
-    this.ui.sceneSelect.addEventListener("change", () => {
-      this.loadScene(this.ui.sceneSelect.value).catch((error) => this.showError(error));
-    });
     document.querySelector("#saveButton").addEventListener("click", () => this.saveGame());
     document.querySelector("#loadButton").addEventListener("click", () => this.loadGame());
     this.canvas.addEventListener("contextmenu", (event) => event.preventDefault());
@@ -413,11 +286,9 @@ class FieldEngine {
       }
     }
     await this.loader.load(config.backgroundAsset);
-    const start = config.start || [this.width / 2, config.groundLine[0][1]];
-    const actor = new ActorNode(start);
-    this.scene = new SceneGraph(sceneId, config, hotspotScene.hotspots, this.loader, actor);
+    this.scene = new SceneGraph(sceneId, config, hotspotScene.hotspots, this.loader);
     this.activeSceneId = sceneId;
-    this.ui.sceneSelect.value = sceneId;
+    this.setActiveItinerary(sceneId);
     this.ui.error.style.display = "none";
     if (!options.preserveCamera) {
       this.camera.x = this.width / 2;
@@ -464,7 +335,7 @@ class FieldEngine {
     if (!this.pointer || this.pointer.id !== event.pointerId) return;
     const state = this.pointer;
     this.pointer = null;
-    this.canvas.style.cursor = "crosshair";
+    this.canvas.style.cursor = "default";
     if (state.pan || state.moved || event.button !== 0) return;
     const world = this.canvasToWorld(this.pointerToCanvas(event));
     const hotspot = this.scene?.hotspotAt(world[0], world[1]);
@@ -475,10 +346,7 @@ class FieldEngine {
       }));
       return;
     }
-    const destination = this.scene.pathfinder.project(world[0], world[1]);
-    const path = this.scene.pathfinder.findPath(this.scene.actor.position, destination);
-    this.scene.actor.moveAlong(path);
-    this.setStatus(`Walking to ${Math.round(destination[0])}, ${Math.round(destination[1])}`);
+    this.setStatus("Nothing marked there. Choose a stop from the itinerary.");
   }
 
   zoomAt(event) {
@@ -512,12 +380,6 @@ class FieldEngine {
     if (event.key === "Home") {
       this.camera.x = this.width / 2; this.camera.y = this.height / 2; this.camera.zoom = 1; this.draw();
     }
-    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-      event.preventDefault();
-      const x = this.scene.actor.x + (event.key === "ArrowLeft" ? -180 : 180);
-      const target = this.scene.pathfinder.project(x, this.scene.actor.y);
-      this.scene.actor.moveAlong(this.scene.pathfinder.findPath(this.scene.actor.position, target));
-    }
   }
 
   saveGame() {
@@ -525,7 +387,6 @@ class FieldEngine {
     try {
       this.saves.save(slot, {
         sceneId: this.activeSceneId,
-        actor: { x: this.scene.actor.x, y: this.scene.actor.y },
         inventory: this.inventory.toJSON(),
         camera: { ...this.camera },
       });
@@ -542,8 +403,6 @@ class FieldEngine {
       if (!state) { this.setStatus(`Slot ${slot} is empty.`); return; }
       if (!this.manifest.scenes[state.sceneId]) throw new Error("Save references a scene not in MANIFEST.json.");
       await this.loadScene(state.sceneId, { preserveCamera: true });
-      const point = this.scene.pathfinder.project(Number(state.actor?.x), Number(state.actor?.y));
-      this.scene.actor.moveAlong([point]);
       this.inventory.load(state.inventory);
       const camera = state.camera || {};
       this.camera.zoom = Math.max(1, Math.min(1.8, Number(camera.zoom) || 1));
@@ -569,23 +428,9 @@ class FieldEngine {
     ctx.translate(this.width / 2 - this.camera.x * zoom, this.height / 2 - this.camera.y * zoom);
     ctx.scale(zoom, zoom);
     this.scene.background.draw(ctx, this);
-    this.drawPath(ctx);
-    this.scene.actor.draw(ctx, this);
     if (this.debug) this.drawDebug(ctx);
     ctx.restore();
     this.drawSceneLabel(ctx);
-  }
-
-  drawPath(ctx) {
-    const actor = this.scene.actor;
-    if (actor.pathIndex >= actor.path.length) return;
-    ctx.save();
-    ctx.strokeStyle = "#e6c889a8";
-    ctx.lineWidth = 3 / this.camera.zoom;
-    ctx.setLineDash([10 / this.camera.zoom, 12 / this.camera.zoom]);
-    ctx.beginPath(); ctx.moveTo(actor.x, actor.y - 7);
-    for (let i = actor.pathIndex; i < actor.path.length; i += 1) ctx.lineTo(actor.path[i][0], actor.path[i][1] - 7);
-    ctx.stroke(); ctx.restore();
   }
 
   drawDebug(ctx) {
@@ -602,52 +447,26 @@ class FieldEngine {
       ctx.setLineDash([]);
       ctx.fillStyle = "#fff0d9";
       ctx.fillText(`${hotspot.id} · ${hotspot.label}`, hotspot.x + 5, hotspot.y - 4);
-      this.drawAnchor(ctx, hotspot.anchor, "#ffda77");
     }
-    const actor = this.scene.actor;
-    ctx.strokeStyle = "#71e0c2"; ctx.setLineDash([5 / this.camera.zoom, 5 / this.camera.zoom]);
-    ctx.strokeRect(actor.x - 29, actor.y - actor.height, actor.width, actor.height);
-    ctx.setLineDash([]);
-    this.drawAnchor(ctx, actor.anchor, "#71e0c2");
-    this.drawAnchor(ctx, [0, 0], "#81a5ff");
-    ctx.strokeStyle = "#81a5ff"; ctx.lineWidth = 2 / this.camera.zoom;
-    ctx.beginPath();
-    for (let i = 0; i < this.scene.config.groundLine.length; i += 1) {
-      const point = this.scene.config.groundLine[i];
-      if (i === 0) ctx.moveTo(point[0], point[1]); else ctx.lineTo(point[0], point[1]);
-    }
-    ctx.stroke();
     ctx.restore();
   }
 
-  drawAnchor(ctx, point, color) {
-    const radius = 8 / this.camera.zoom;
-    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 2 / this.camera.zoom;
-    ctx.beginPath(); ctx.moveTo(point[0] - radius, point[1]); ctx.lineTo(point[0] + radius, point[1]);
-    ctx.moveTo(point[0], point[1] - radius); ctx.lineTo(point[0], point[1] + radius); ctx.stroke();
-    ctx.beginPath(); ctx.arc(point[0], point[1], 2.5 / this.camera.zoom, 0, Math.PI * 2); ctx.fill();
-  }
-
   drawSceneLabel(ctx) {
+    const scenes = Object.keys(this.manifest.scenes);
+    const index = scenes.indexOf(this.activeSceneId);
     const title = this.manifest.scenes[this.activeSceneId]?.title || this.activeSceneId;
+    const stop = index >= 0 ? `STOP ${index + 1}/${scenes.length}` : "STOP —";
     ctx.save();
     ctx.fillStyle = "#11120fe8"; ctx.fillRect(22, 22, 370, 58);
     ctx.strokeStyle = "#b86a42"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(22, 22); ctx.lineTo(22, 80); ctx.stroke();
     ctx.fillStyle = "#eadfc6"; ctx.font = "600 24px system-ui, sans-serif"; ctx.fillText(title.toUpperCase(), 40, 48);
     ctx.fillStyle = "#b8aa87"; ctx.font = "14px system-ui, sans-serif";
-    ctx.fillText(`CAM ${this.camera.zoom.toFixed(2)}×  ·  ${this.debug ? "DEBUG ON" : "F1 DEBUG"}`, 40, 68);
+    ctx.fillText(`${stop}  ·  CAM ${this.camera.zoom.toFixed(2)}×  ·  ${this.debug ? "DEBUG ON" : "F1 DEBUG"}`, 40, 68);
     ctx.restore();
   }
 
-  update(dt) {
-    this.scene?.update(dt);
-  }
-
   start() {
-    const frame = (now) => {
-      const dt = this.lastFrame ? Math.min((now - this.lastFrame) / 1000, 0.05) : 0;
-      this.lastFrame = now;
-      this.update(dt);
+    const frame = () => {
       this.draw();
       requestAnimationFrame(frame);
     };

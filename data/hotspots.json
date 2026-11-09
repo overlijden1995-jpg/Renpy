@@ -504,6 +504,556 @@
         }
       ],
       "backgroundAsset": "env.10_night_campfire"
+    },
+    "11_mess_hall": {
+      "hotspots": [
+        {
+          "id": "open_doorway",
+          "label": "Open doorway",
+          "rect": [
+            10,
+            210,
+            360,
+            620
+          ]
+        },
+        {
+          "id": "dining_tables",
+          "label": "Dining tables",
+          "rect": [
+            0,
+            680,
+            1000,
+            400
+          ]
+        },
+        {
+          "id": "menu_board",
+          "label": "MENU board",
+          "rect": [
+            1235,
+            285,
+            410,
+            135
+          ]
+        },
+        {
+          "id": "pantry_shelves",
+          "label": "Dry goods shelf",
+          "rect": [
+            925,
+            430,
+            290,
+            250
+          ]
+        },
+        {
+          "id": "serving_counter",
+          "label": "Serving counter",
+          "rect": [
+            880,
+            540,
+            830,
+            190
+          ]
+        }
+      ],
+      "backgroundAsset": "env.11_mess_hall"
+    },
+    "12_sleeping_quarters": {
+      "hotspots": [
+        {
+          "id": "hanging_lantern",
+          "label": "Hanging lantern",
+          "rect": [
+            870,
+            200,
+            160,
+            230
+          ]
+        },
+        {
+          "id": "left_bunks",
+          "label": "West bunk row",
+          "rect": [
+            0,
+            300,
+            520,
+            610
+          ]
+        },
+        {
+          "id": "far_bunks",
+          "label": "Far bunk row",
+          "rect": [
+            555,
+            460,
+            340,
+            330
+          ]
+        },
+        {
+          "id": "personal_crates",
+          "label": "Personal crates",
+          "rect": [
+            230,
+            680,
+            180,
+            280
+          ]
+        },
+        {
+          "id": "right_bunks",
+          "label": "East bunk row",
+          "rect": [
+            1070,
+            330,
+            845,
+            590
+          ]
+        }
+      ],
+      "backgroundAsset": "env.12_sleeping_quarters"
+    },
+    "13_radio_room": {
+      "hotspots": [
+        {
+          "id": "workbench",
+          "label": "Workbench",
+          "rect": [
+            560,
+            620,
+            900,
+            440
+          ]
+        },
+        {
+          "id": "tool_wall",
+          "label": "Tool wall",
+          "rect": [
+            0,
+            60,
+            260,
+            700
+          ]
+        },
+        {
+          "id": "frequency_wall",
+          "label": "Frequency lists and maps",
+          "rect": [
+            290,
+            150,
+            400,
+            460
+          ]
+        },
+        {
+          "id": "field_radio",
+          "label": "Field radio",
+          "rect": [
+            800,
+            510,
+            370,
+            235
+          ]
+        },
+        {
+          "id": "hand_crank_generator",
+          "label": "Hand-crank generator",
+          "rect": [
+            1260,
+            600,
+            350,
+            280
+          ]
+        }
+      ],
+      "backgroundAsset": "env.13_radio_room"
+    },
+    "14_cistern_interior": {
+      "hotspots": [
+        {
+          "id": "water_pool",
+          "label": "Cistern water",
+          "rect": [
+            0,
+            800,
+            1920,
+            280
+          ]
+        },
+        {
+          "id": "measuring_winch",
+          "label": "Measuring winch and cord",
+          "rect": [
+            90,
+            190,
+            450,
+            480
+          ]
+        },
+        {
+          "id": "west_archway",
+          "label": "Dark west archway",
+          "rect": [
+            60,
+            540,
+            440,
+            330
+          ]
+        },
+        {
+          "id": "drip_pipe",
+          "label": "Dripping feed pipe",
+          "rect": [
+            860,
+            690,
+            180,
+            180
+          ]
+        },
+        {
+          "id": "hanging_lantern",
+          "label": "Hanging lantern",
+          "rect": [
+            1285,
+            175,
+            140,
+            300
+          ]
+        }
+      ],
+      "backgroundAsset": "env.14_cistern_interior"
+    },
+    "15_trade_post": {
+      "hotspots": [
+        {
+          "id": "balance_scale",
+          "label": "Hanging balance scale",
+          "rect": [
+            905,
+            400,
+            210,
+            150
+          ]
+        },
+        {
+          "id": "scrap_salvage",
+          "label": "Scrap salvage pile",
+          "rect": [
+            400,
+            550,
+            350,
+            260
+          ]
+        },
+        {
+          "id": "stall_counter",
+          "label": "Stall counter",
+          "rect": [
+            915,
+            625,
+            510,
+            250
+          ]
+        },
+        {
+          "id": "stall_shelves",
+          "label": "Shelves of cloth and goods",
+          "rect": [
+            1315,
+            405,
+            400,
+            280
+          ]
+        },
+        {
+          "id": "fuel_drums",
+          "label": "Fuel drums",
+          "rect": [
+            1600,
+            650,
+            240,
+            240
+          ]
+        }
+      ],
+      "backgroundAsset": "env.15_trade_post"
+    },
+    "16_line_checkpoint": {
+      "hotspots": [
+        {
+          "id": "signpost",
+          "label": "Blank signpost",
+          "rect": [
+            540,
+            170,
+            245,
+            170
+          ]
+        },
+        {
+          "id": "supply_tent",
+          "label": "Checkpoint supply tent",
+          "rect": [
+            10,
+            345,
+            620,
+            510
+          ]
+        },
+        {
+          "id": "concrete_barrier",
+          "label": "Concrete barrier",
+          "rect": [
+            555,
+            680,
+            420,
+            320
+          ]
+        },
+        {
+          "id": "spike_strip",
+          "label": "Spike strip",
+          "rect": [
+            940,
+            735,
+            720,
+            110
+          ]
+        },
+        {
+          "id": "floodlight_tower",
+          "label": "Floodlight tower",
+          "rect": [
+            1590,
+            90,
+            280,
+            580
+          ]
+        }
+      ],
+      "backgroundAsset": "env.16_line_checkpoint"
+    },
+    "17_rail_yard": {
+      "hotspots": [
+        {
+          "id": "shipping_containers",
+          "label": "Stacked shipping containers",
+          "rect": [
+            0,
+            455,
+            425,
+            310
+          ]
+        },
+        {
+          "id": "boxcars",
+          "label": "Abandoned boxcars",
+          "rect": [
+            730,
+            465,
+            1185,
+            420
+          ]
+        },
+        {
+          "id": "tanker_car",
+          "label": "Rusted tanker car",
+          "rect": [
+            1025,
+            650,
+            450,
+            300
+          ]
+        },
+        {
+          "id": "loading_crane",
+          "label": "Loading crane",
+          "rect": [
+            1170,
+            15,
+            480,
+            570
+          ]
+        },
+        {
+          "id": "switching_shed",
+          "label": "Brick switching shed",
+          "rect": [
+            1655,
+            295,
+            260,
+            280
+          ]
+        }
+      ],
+      "backgroundAsset": "env.17_rail_yard"
+    },
+    "18_quarry": {
+      "hotspots": [
+        {
+          "id": "conveyor_skeleton",
+          "label": "Rusted conveyor skeleton",
+          "rect": [
+            0,
+            290,
+            660,
+            430
+          ]
+        },
+        {
+          "id": "dragline_excavator",
+          "label": "Dragline excavator",
+          "rect": [
+            640,
+            350,
+            360,
+            335
+          ]
+        },
+        {
+          "id": "cut_terraces",
+          "label": "Cut stone terraces",
+          "rect": [
+            1000,
+            320,
+            915,
+            250
+          ]
+        },
+        {
+          "id": "stone_piles",
+          "label": "Gravel and stone piles",
+          "rect": [
+            700,
+            680,
+            545,
+            220
+          ]
+        },
+        {
+          "id": "survey_flags",
+          "label": "Survey flags",
+          "rect": [
+            240,
+            630,
+            140,
+            230
+          ]
+        }
+      ],
+      "backgroundAsset": "env.18_quarry"
+    },
+    "19_storm_shelter": {
+      "hotspots": [
+        {
+          "id": "supply_shelves",
+          "label": "Preserved-food shelves",
+          "rect": [
+            0,
+            400,
+            530,
+            580
+          ]
+        },
+        {
+          "id": "escape_hatch",
+          "label": "Open escape hatch",
+          "rect": [
+            1100,
+            0,
+            430,
+            290
+          ]
+        },
+        {
+          "id": "escape_ladder",
+          "label": "Escape ladder",
+          "rect": [
+            1290,
+            255,
+            170,
+            500
+          ]
+        },
+        {
+          "id": "folding_chair",
+          "label": "Folding chair",
+          "rect": [
+            675,
+            630,
+            270,
+            320
+          ]
+        },
+        {
+          "id": "battery_lantern",
+          "label": "Battery lantern",
+          "rect": [
+            940,
+            740,
+            135,
+            190
+          ]
+        }
+      ],
+      "backgroundAsset": "env.19_storm_shelter"
+    },
+    "20_river_crossing": {
+      "hotspots": [
+        {
+          "id": "west_bridge_span",
+          "label": "West bridge ruin",
+          "rect": [
+            65,
+            270,
+            445,
+            295
+          ]
+        },
+        {
+          "id": "east_bridge_span",
+          "label": "East bridge ruin",
+          "rect": [
+            1120,
+            255,
+            470,
+            325
+          ]
+        },
+        {
+          "id": "wooden_dock",
+          "label": "Driftwood dock",
+          "rect": [
+            770,
+            530,
+            940,
+            300
+          ]
+        },
+        {
+          "id": "barrels_and_nets",
+          "label": "Barrels and fishing nets",
+          "rect": [
+            1075,
+            655,
+            500,
+            255
+          ]
+        },
+        {
+          "id": "marker_post",
+          "label": "Striped marker post",
+          "rect": [
+            1680,
+            415,
+            140,
+            525
+          ]
+        }
+      ],
+      "backgroundAsset": "env.20_river_crossing"
     }
   }
 }

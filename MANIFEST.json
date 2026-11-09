@@ -54,6 +54,46 @@
       "type": "image",
       "src": "assets/env/10_night_campfire.png"
     },
+    "env.11_mess_hall": {
+      "type": "image",
+      "src": "assets/env/11_mess_hall.png"
+    },
+    "env.12_sleeping_quarters": {
+      "type": "image",
+      "src": "assets/env/12_sleeping_quarters.png"
+    },
+    "env.13_radio_room": {
+      "type": "image",
+      "src": "assets/env/13_radio_room.png"
+    },
+    "env.14_cistern_interior": {
+      "type": "image",
+      "src": "assets/env/14_cistern_interior.png"
+    },
+    "env.15_trade_post": {
+      "type": "image",
+      "src": "assets/env/15_trade_post.png"
+    },
+    "env.16_line_checkpoint": {
+      "type": "image",
+      "src": "assets/env/16_line_checkpoint.png"
+    },
+    "env.17_rail_yard": {
+      "type": "image",
+      "src": "assets/env/17_rail_yard.png"
+    },
+    "env.18_quarry": {
+      "type": "image",
+      "src": "assets/env/18_quarry.png"
+    },
+    "env.19_storm_shelter": {
+      "type": "image",
+      "src": "assets/env/19_storm_shelter.png"
+    },
+    "env.20_river_crossing": {
+      "type": "image",
+      "src": "assets/env/20_river_crossing.png"
+    },
     "ui.nine_slice_panel": {
       "type": "image",
       "src": "assets/ui/01_nine_slice_panel.png"
@@ -554,6 +594,186 @@
       "start": [
         960,
         835
+      ]
+    },
+    "11_mess_hall": {
+      "title": "Mess Hall",
+      "backgroundAsset": "env.11_mess_hall",
+      "groundLine": [
+        [
+          0,
+          850
+        ],
+        [
+          1920,
+          850
+        ]
+      ],
+      "start": [
+        960,
+        850
+      ]
+    },
+    "12_sleeping_quarters": {
+      "title": "Sleeping Quarters",
+      "backgroundAsset": "env.12_sleeping_quarters",
+      "groundLine": [
+        [
+          0,
+          840
+        ],
+        [
+          1920,
+          840
+        ]
+      ],
+      "start": [
+        960,
+        840
+      ]
+    },
+    "13_radio_room": {
+      "title": "Radio Room",
+      "backgroundAsset": "env.13_radio_room",
+      "groundLine": [
+        [
+          0,
+          880
+        ],
+        [
+          1920,
+          880
+        ]
+      ],
+      "start": [
+        960,
+        880
+      ]
+    },
+    "14_cistern_interior": {
+      "title": "Cistern Interior",
+      "backgroundAsset": "env.14_cistern_interior",
+      "groundLine": [
+        [
+          0,
+          850
+        ],
+        [
+          1920,
+          850
+        ]
+      ],
+      "start": [
+        960,
+        850
+      ]
+    },
+    "15_trade_post": {
+      "title": "Trade Post",
+      "backgroundAsset": "env.15_trade_post",
+      "groundLine": [
+        [
+          0,
+          860
+        ],
+        [
+          1920,
+          860
+        ]
+      ],
+      "start": [
+        960,
+        860
+      ]
+    },
+    "16_line_checkpoint": {
+      "title": "Line Checkpoint",
+      "backgroundAsset": "env.16_line_checkpoint",
+      "groundLine": [
+        [
+          0,
+          850
+        ],
+        [
+          1920,
+          850
+        ]
+      ],
+      "start": [
+        960,
+        850
+      ]
+    },
+    "17_rail_yard": {
+      "title": "Rail Yard",
+      "backgroundAsset": "env.17_rail_yard",
+      "groundLine": [
+        [
+          0,
+          860
+        ],
+        [
+          1920,
+          860
+        ]
+      ],
+      "start": [
+        960,
+        860
+      ]
+    },
+    "18_quarry": {
+      "title": "The Quarry",
+      "backgroundAsset": "env.18_quarry",
+      "groundLine": [
+        [
+          0,
+          880
+        ],
+        [
+          1920,
+          880
+        ]
+      ],
+      "start": [
+        960,
+        880
+      ]
+    },
+    "19_storm_shelter": {
+      "title": "Storm Shelter",
+      "backgroundAsset": "env.19_storm_shelter",
+      "groundLine": [
+        [
+          0,
+          880
+        ],
+        [
+          1920,
+          880
+        ]
+      ],
+      "start": [
+        960,
+        880
+      ]
+    },
+    "20_river_crossing": {
+      "title": "River Crossing",
+      "backgroundAsset": "env.20_river_crossing",
+      "groundLine": [
+        [
+          0,
+          870
+        ],
+        [
+          1920,
+          870
+        ]
+      ],
+      "start": [
+        960,
+        870
       ]
     }
   },
