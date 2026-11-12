@@ -9,7 +9,8 @@ label act1_day1_dawn:
     $ water = 5 + water
     scene black
     show alice work neutral at center
-    "Day 1 — dawn. Alice had a pump bolt in one hand and a bucket under the leak that was not there."
+    "Day 1 — dawn. The yard woke in stages: a shutter, a kettle, then the first bucket striking stone. The colony kept no bell. It kept a rota, a slate, and a habit of listening for the cistern to sound wrong."
+    "Alice had a pump bolt in one hand and a bucket under a leak that was not there."
     if coldopen_labour:
         "Alice" "You offered labour at the gate. Good. The pump heard you."
     elif coldopen_water:
@@ -18,6 +19,7 @@ label act1_day1_dawn:
         "Alice" "You wait well. Let's find out if you can work while you wait."
     else:
         "Alice" "The gate is done talking. The pump isn't."
+    "Alice" "This tank has outlived two governments and a flood of bad decisions. It can manage one more mouth."
     "Alice" "Help me seat a replacement seal. Sophia counted four scrap's worth of sound metal in the bins."
     menu:
         "Replace the seal. (Costs 4 scrap; partial repair tonight.)" if scrap >= 4:
@@ -37,7 +39,7 @@ label act1_day1_dawn:
 label act1_day1_day:
     scene black
     show tory idle neutral at right
-    "Day — the scrap yard. Sorted metal lay beyond the south wall, close enough to see and far enough to make carrying it hurt."
+    "Day — the scrap yard. Beyond the south wall the old depot's yard lay in heaps: sheet metal, bedframes, cable, the ribs of a bus. Everything in the colony had been somebody else's finished job, and most of it was still waiting to be finished again."
     "Tory" "Two ways. I go, you come back with less. You go alone, you come back with more. Usually."
     menu:
         "Take Tory. (Gain 4 scrap; no injury chance.)":
@@ -66,6 +68,7 @@ label act1_day1_evening:
     scene black
     show denice work neutral at center
     "Evening — a colonist sat beside Denice's scanner with one hand wrapped in stained cloth. The fever reading held steady at the edge of red."
+    "Meds were the one stock nobody argued about. You did not trade them. You counted the doses and hoped the count was wrong in your favour."
     "Denice" "Infected laceration. I have one med dose that can buy the fever down. Or clean cloth, boiled water, and more time."
     menu:
         "Assist Denice. (Costs 1 med.)" if meds >= 1:
@@ -85,6 +88,8 @@ label act1_day1_evening:
 label act1_day1_night:
     scene black
     show alice work neutral at right
+    "Water was the only number the colony said out loud every night."
+    "The yard had stopped staring at his arm by the second day. Two colonists had asked, politely, whether it hurt. He told them it did, which was true, and which closed the subject faster than anything else he had tried."
     if pump_spent:
         $ water += 2
         "Night — the repaired seal held when Alice lifted the handle. The pump produced a thin, uneven stream, enough to add two water to the cistern before the handle stiffened again."
@@ -100,6 +105,7 @@ label act1_day2_dawn:
     show alice idle angry at left
     show sophia work neutral at right
     "Day 2 — dawn. The breakfast queue used less water, and everyone noticed. Alice stood at the cistern with one finger on the untouched reserve mark."
+    "The Cut were the caravans that ran sealed cans along the old roads. They were not kind and not cruel. They were punctual, and they remembered every price anyone had ever paid them."
     "Sophia" "Stores read [water] water and [scrap] scrap. Three answers. None is free, and none closes the colony tomorrow."
     menu:
         "Cut rations. (Save 4 water; the colony goes thirsty.)":
@@ -195,6 +201,8 @@ label act1_day2_night_alice:
     "Alice folded a bucket cloth while he held the torn edge straight. She talked through every stitch, mostly about buckets, once about him holding still."
     # Routine beat 2: checking the jars.
     "They turned the water jars so their chalk marks faced the wall. Alice tapped each lid, said good night to the levels, and left the last jar for morning."
+    # Routine beat 3: what the cistern remembers.
+    "She told him, without looking up, that the tank had been full when the colony took the yard, and that the people who filled it had written every level in a book. The book was in her bunk. She had read it until the pages softened. Nobody else was allowed to touch it."
     return
 
 
@@ -205,6 +213,8 @@ label act1_day2_night_denice:
     "Denice cleaned the scanner contacts with a dry swab. He held the lamp. She asked whether the light was steady, then whether he always held his breath when asked that."
     # Routine beat 2: keeping the radio schedule.
     "They listened through the scheduled radio silence. Denice marked the time, switched the set off, and left whatever she had heard in the static unspoken."
+    # Routine beat 3: what the radio is for.
+    "The colony's radio was the only thing that reached past the next ridge. The Cut used it. So did the Line, on a frequency Denice had never been able to fully lock. She did not say which one she was more afraid of hearing from."
     return
 
 
@@ -215,6 +225,8 @@ label act1_day2_night_sophia:
     "Sophia read the next day's column while he rubbed old pencil marks from the slate. She stated the cost of lamp oil, then turned the lamp one notch lower."
     # Routine beat 2: mending the ledger.
     "They stitched a loose ledger page back into place. Sophia put the better pencil beside his hand and kept the stub for herself without mentioning it."
+    # Routine beat 3: what the ledger keeps.
+    "Every colonist had a line in the book: what they ate, what they were owed, what they had brought in. Sophia said a ledger was a promise you could check. She added, very quietly, that it was also the only record of who had come in at a gate and who had been sent back out."
     return
 
 
@@ -225,6 +237,8 @@ label act1_day2_night_tory:
     "Tory counted six crossbow bolts onto a cloth, cleaned them, and counted six back into the case. He kept the oil tin from tipping."
     # Routine beat 2: sharing the watch.
     "They oiled the gate hinge together. Tory counted two people on the wall, left the crossbow unloaded, and let the quiet finish its shift."
+    # Routine beat 3: what the wall cost.
+    "She had stood a wall for the Line before she stood one for herself. She did not explain the difference, except to say that the Line counted bodies and this wall counted names, and that the names were the reason she slept."
     return
 
 
@@ -235,4 +249,6 @@ label act1_day2_night_sable:
     "Sable sorted screws from a salvage tin at reckless speed while he caught the ones she flicked toward the wrong pile. She called his aim tragic and moved the tin closer."
     # Routine beat 2: airing bedrolls.
     "They shook dust from two bedrolls over the wall. Sable said the road home had been boring, then laughed too quickly and admitted the ravine had only been a little on fire."
+    # Routine beat 3: what the roads are like.
+    "Sable could tell a road by its dead trucks. The old highways had been the first things the wars broke and the last things anyone repaired. She knew which ones still had water under them, and she had never once told anyone how much that knowledge had cost her to get."
     return

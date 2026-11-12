@@ -100,3 +100,10 @@ Remaining items not verified by this engine pass: real audio/video drivers, wind
 - Game integration: `game/areas.rpy` now covers all twenty field areas, split into `outdoors` (21–30) and `indoors` (31–40) groups. `area_survey` offers the two groups first, then the areas in each. The areas are still not part of the day loop.
 - Correction to the 2026-11-12 areas 21–30 addendum: the game copies were first placed in `game/images/env/`. `tools/validate.py` scans that folder for stale layer frames and fails on it, and `tools/imagesrpy.py` would misread it as a character. The copies, including the earlier ten, now live in `game/env/`, and `game/areas.rpy` points there. With this change, `python3 tools/validate.py --whole-project` reports the same 27 pre-existing errors as before and adds none.
 - Not verified: Ren'Py lint and the headless playthrough were not run, because the engine build dependencies are not present in this sandbox. Lint `game/areas.rpy` with `./run.sh . lint --error-code` before merging.
+
+## Addendum — 2026-11-12 (Act I worldbuilding and storytelling)
+
+- Expanded the cold open (`game/script.rpy`), `game/act1.rpy`, `game/act1_day3.rpy`, and `game/act1_close.rpy` with setting detail (the post-war plumbing, the Line and the Cut, the cistern's history, probation, meds, and the colony's rota), extra companion routine beats, a named Line officer (Marrow), and a manifest hook that leaves the protagonist's name blank in the Line's file.
+- Logic check: for each file, the non-prose lines (`$` changes, conditions, menus and their option labels, `show`/`call`/`jump`/`return`, labels) were compared against the previous version and match exactly. The menu labels that `game/tests/playthrough.rpy` selects by text are unchanged, and none appears in the new narration.
+- Not verified: the engine playthrough and Ren'Py lint were not run, because the engine build is not present in this sandbox. Run `./run.sh . test ashfall` and `./run.sh . lint --error-code` before merging.
+- New canon is recorded in `docs/ACT1.md` as proposed canon for review.

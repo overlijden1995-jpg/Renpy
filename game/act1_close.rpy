@@ -13,6 +13,8 @@ label act1_close:
     show denice work neutral at right
     "Sable" "Toward us. Slow enough to arrive organized. Close enough that I ran the last hour and only mostly got lost."
     "She had under-reported the first sighting because saying patrol had made the walk home feel shorter. The stones on the step did not make it shorter now."
+    "Sable" "There's a manifest. Half of it is trucks and rations. The other half is a page with your name left blank and a long description underneath. Somebody has underlined the word stays."
+    "Tory" "Then they can ask him. He is standing right here."
     "Sable" "So. Fortify, let me look again before they close, or talk. Fast choice, but it is still a choice."
     menu:
         "Fortify the colony. (Costs 10 scrap; Tory approval +10.)" if scrap >= 10:
