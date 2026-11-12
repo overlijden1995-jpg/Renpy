@@ -31,6 +31,11 @@ python3 tools/validate.py --whole-project
 
 The first validator invocation failed because Pillow was absent. After installing Pillow and generating the ignored aligned/keyed intermediates, `python3 tools/validate.py` and `python3 tools/validate.py --whole-project` both returned `validation passed`. Runtime QA returned `passed: true` with 5 resource quests, the faction quest, the rescue quest, colony and dialogue round trips, and 3 save slots confirmed.
 
+## Addendum — 2026-11-09 (stops 11–20 and itinerary navigation)
+
+- Ten new background plates `assets/env/11_mess_hall.png` … `assets/env/20_river_crossing.png` (1920×1080, hand-painted cel-shaded style) were generated and registered in `MANIFEST.json` (assets `env.11_mess_hall` … `env.20_river_crossing`, plus twenty `scenes` entries in route order) and in `data/hotspots.json` (five inspectable hotspots per new scene; canvas 1920×1080 unchanged). `python3 tools/validate.py --whole-project` re-run after regenerating the ignored `assets/characters/aligned` and `assets/characters/keyed` intermediates: **validation passed** (manifest resolution, hotspot bounds and reachability, quest/dialogue runtime round-trips, hardcoded-path policy).
+- Field engine navigation switched from click-to-move walking (canvas pathfinding) to itinerary buttons: a numbered "Itinerary" sidebar (`#itineraryList`) travels to all twenty stops; the location dropdown and the on-canvas walker were removed. Click-to-inspect hotspots, wheel zoom, right-drag pan, the F1 debug overlay, the inventory strip, and three-slot save/load are unchanged. Legacy saves containing an `actor` position still load; the field is ignored and new saves omit it.
+
 ## Validation limits
 
 An actual Ren'Py playthrough from `label start` to `act2_stub`, including engine save, load, and rollback across the Day 2 water choice, remains unverified. The state-model check is supplemental only and does not replace those engine checks. Structural checks separately confirmed the exact fifteen canonical bond labels, the five-row roster, all sixty raw frame paths, valid manifest JSON, and generator output byte-identical to `game/definitions.rpy`.
