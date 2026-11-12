@@ -26,15 +26,18 @@ testsuite ashfall:
     setup:
         $ _test.screenshot_directory = "screenshots"
 
-    # The project has no main menu: the game boots straight into the story.
-    # Restart before every testcase so each one observes fresh default state.
-    # The session flag is consumed by the restart and restored afterwards, so
-    # the reboot cannot loop (renpy.session survives full_restart in-process).
+    # The project boots into the title screen (label main_menu in screens.rpy).
+    # Restart before every testcase so each one observes fresh default state,
+    # then click through the title screen into the story ("Start"). The check
+    # is based on whether the main menu is on screen, not a session flag:
+    # after full_restart the game re-enters this hook at the main menu, and
+    # MainMenu is insensitive there, so polling screen state is the only
+    # restart-safe condition.
     before testcase:
-        if eval renpy.session.pop("ashfall_reset", False):
+        if not screen "main_menu":
             run MainMenu(confirm=False)
-        else:
-            $ renpy.session["ashfall_reset"] = True
+            skip until screen "main_menu"
+        click "Start"
 
     teardown:
         exit
@@ -163,3 +166,42 @@ testsuite ashfall:
         assert eval (line_standing == -6)
         assert eval (act1_commit == "talks")
         advance until label act2_stub
+
+    testcase hud_overlay:
+        description "The HUD renders during play with the colony readout and flags low resources."
+
+        # Cold open: HUD up, water at the canteen mouthful (low), meds at 1 (low).
+        assert screen "hud" timeout 10
+        assert id "hud_day" timeout 10
+        assert id "hud_phase"
+        assert id "hud_water"
+        assert id "hud_scrap"
+        assert id "hud_food"
+        assert id "hud_meds"
+        assert eval (day == 1)
+        assert eval (phase == "dawn")
+        assert eval (water == 1)
+        assert eval (meds == 1)
+        assert id "hud_water_low" timeout 5
+        assert id "hud_meds_low"
+        assert not id "hud_scrap_low"
+        assert not id "hud_food_low"
+
+        # Choose the labour branch; the HUD stays up through dialogue.
+        advance until "Offer labour"
+        click "Offer labour"
+        assert screen "hud" timeout 5
+        assert eval (water == 1)
+        assert id "hud_water_low"
+
+        # Day 1, dawn: the cistern is replenished by the pump after
+        # the seal swap, and the water warning clears.
+        advance until "Replace the seal"
+        assert eval (water == 6)
+        click "Replace the seal"
+        assert eval (scrap == 8)
+        assert screen "hud" timeout 5
+        assert eval (water == 6)
+        assert not id "hud_water_low"
+        # Scrap dropped to 8, above the warning threshold of 4.
+        assert not id "hud_scrap_low"

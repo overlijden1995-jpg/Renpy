@@ -361,7 +361,13 @@ def package_flags(*packages: str) -> PackageFlags:
 
         for k, v in pc.items():
             for i in v:
-                if i not in rv[k]:
+                # Do not deduplicate libraries: with static libraries, ld
+                # resolves archives in command-line order and does not revisit
+                # one already passed, so a dependency may need to appear after
+                # the library that needs it. Repeated -l flags are harmless.
+                if k == "libraries":
+                    rv[k].append(i)
+                elif i not in rv[k]:
                     rv[k].append(i)
 
     return rv
