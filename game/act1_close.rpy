@@ -14,8 +14,6 @@ label act1_close:
     "Sable" "Toward us. Slow enough to arrive organized. Close enough that I ran the last hour and only mostly got lost."
     "She had under-reported the first sighting because saying patrol had made the walk home feel shorter. The stones on the step did not make it shorter now."
     "Sable" "So. Fortify, let me look again before they close, or talk. Fast choice, but it is still a choice."
-    $ act1_commit = "unresolved"
-    $ convoy_scout_risk = 0.0
     menu:
         "Fortify the colony. (Costs 10 scrap; Tory approval +10.)" if scrap >= 10:
             $ scrap -= 10
@@ -23,7 +21,7 @@ label act1_close:
             $ trust["tory"] += 10
             "Tory" "Ten scrap into the wall. Better than ten bodies under it."
             "Approval: Tory +10."
-        "Scout the convoy first. (Sable approval +10; 35% injury risk on the approach.)":
+        "Scout the convoy first. (Sable approval +10; 35%% injury risk on the approach.)":
             $ act1_commit = "scout"
             $ convoy_scout_risk = 0.35
             $ trust["sable"] += 10

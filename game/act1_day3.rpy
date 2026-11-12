@@ -1,31 +1,14 @@
 # Act I, Day 3: the Line levy and its consequences.
+# The colony engine owns the calendar; this file contains the scene content.
 
-label act1_day3:
-    $ day = 3
+label act1_day3_dawn:
+    # Levy stakes are derived from the colony's current position, so they
+    # are recomputed each time the dawn plays out.
     $ colony_value = scrap + water + food + meds
     $ raid_pressure = colony_value
     $ helping_companion = max(("alice", "denice", "sophia", "tory", "sable"), key=trust.get)
     $ helping_name = helping_companion.capitalize()
     $ helping_trust = trust[helping_companion]
-    $ line_resolution = "unresolved"
-    $ raid_triggered = False
-    $ wounded_companion = None
-    $ wounded_companion_return_day = None
-    $ med_loss = 0
-    $ food_loss = 0
-
-    $ phase = "dawn"
-    call phase_event
-    $ phase = "day"
-    call phase_event
-    $ phase = "evening"
-    call phase_event
-    $ phase = "night"
-    call phase_event
-    jump act1_close
-
-
-label act1_day3_dawn:
     scene black
     show tory idle neutral at left
     show denice work neutral at right

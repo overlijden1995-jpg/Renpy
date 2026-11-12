@@ -1,85 +1,12 @@
-# Act I story events. The cold open enters through colony_loop.
-
-label colony_loop:
-    jump act1_day1
-
-
-label act1_day1:
-    $ day = 1
-    $ scrap = 12
-    $ water = 6
-    $ meds = 1
-    $ food = 8
-    $ line_standing = 0
-    $ trust = {"alice": 0, "denice": 0, "sophia": 0, "tory": 0, "sable": 0}
-    $ companion_unavailable = {"alice": False, "denice": False, "sophia": False, "tory": False, "sable": False}
-    $ pump_spent = False
-    $ mc_injured = False
-    $ salvage_with_tory = False
-    $ salvage_yield = 0
-    $ colonist_hand = "untreated"
-
-    $ phase = "dawn"
-    call phase_event
-    $ phase = "day"
-    call phase_event
-    $ phase = "evening"
-    call phase_event
-    $ phase = "night"
-    call phase_event
-    jump act1_day2
-
-
-label act1_day2:
-    $ day = 2
-    $ colony_thirsty = False
-    $ cut_trade = False
-    $ cistern_below_reserve = False
-    $ water_crisis_plan = "unresolved"
-
-    $ phase = "dawn"
-    call phase_event
-    $ phase = "day"
-    call phase_event
-    $ phase = "evening"
-    call phase_event
-    $ phase = "night"
-    call phase_event
-    jump act1_day3
-
-
-label phase_event:
-    if day == 1:
-        if phase == "dawn":
-            call act1_day1_dawn
-        elif phase == "day":
-            call act1_day1_day
-        elif phase == "evening":
-            call act1_day1_evening
-        elif phase == "night":
-            call act1_day1_night
-    elif day == 2:
-        if phase == "dawn":
-            call act1_day2_dawn
-        elif phase == "day":
-            call act1_day2_day
-        elif phase == "evening":
-            call act1_day2_evening
-        elif phase == "night":
-            call act1_day2_night
-    elif day == 3:
-        if phase == "dawn":
-            call act1_day3_dawn
-        elif phase == "day":
-            call act1_day3_day
-        elif phase == "evening":
-            call act1_day3_evening
-        elif phase == "night":
-            call act1_day3_night
-    return
-
+# Act I story events. The cold open enters through colony_loop (colony.rpy).
+# The colony engine owns the calendar and the phase dispatch; these labels
+# contain the scene content only.
 
 label act1_day1_dawn:
+    # Carry the stranger's canteen into the cistern baseline: five colony
+    # water plus whatever of his mouthful he kept (zero if he handed it
+    # over at the gate).
+    $ water = 5 + water
     scene black
     show alice work neutral at center
     "Day 1 — dawn. Alice had a pump bolt in one hand and a bucket under the leak that was not there."
@@ -121,7 +48,7 @@ label act1_day1_day:
             "Tory watched the approaches while he loaded four scrap. She fired nothing. They both came back through the gate."
             "Tory" "Four scrap. Two bodies home. Good yield."
             "Trust: Tory +10."
-        "Go alone. (Gain 7 scrap; 25% chance of injury.)":
+        "Go alone. (Gain 7 scrap; 25%% chance of injury.)":
             $ salvage_with_tory = False
             $ salvage_yield = 7
             $ scrap += 7
