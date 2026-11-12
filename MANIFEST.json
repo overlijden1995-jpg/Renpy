@@ -453,6 +453,46 @@
     "env.30_seed_bank": {
       "type": "image",
       "src": "assets/env/30_seed_bank.png"
+    },
+    "env.31_post_office": {
+      "type": "image",
+      "src": "assets/env/31_post_office.png"
+    },
+    "env.32_old_hospital_ward": {
+      "type": "image",
+      "src": "assets/env/32_old_hospital_ward.png"
+    },
+    "env.33_public_library": {
+      "type": "image",
+      "src": "assets/env/33_public_library.png"
+    },
+    "env.34_hotel_lobby": {
+      "type": "image",
+      "src": "assets/env/34_hotel_lobby.png"
+    },
+    "env.35_bakery_kitchen": {
+      "type": "image",
+      "src": "assets/env/35_bakery_kitchen.png"
+    },
+    "env.36_public_baths": {
+      "type": "image",
+      "src": "assets/env/36_public_baths.png"
+    },
+    "env.37_substation_control": {
+      "type": "image",
+      "src": "assets/env/37_substation_control.png"
+    },
+    "env.38_root_cellar": {
+      "type": "image",
+      "src": "assets/env/38_root_cellar.png"
+    },
+    "env.39_tailor_workshop": {
+      "type": "image",
+      "src": "assets/env/39_tailor_workshop.png"
+    },
+    "env.40_abandoned_cinema": {
+      "type": "image",
+      "src": "assets/env/40_abandoned_cinema.png"
     }
   },
   "scenes": {
@@ -994,6 +1034,186 @@
       "start": [
         960,
         860
+      ]
+    },
+    "31_post_office": {
+      "title": "Post Office",
+      "backgroundAsset": "env.31_post_office",
+      "groundLine": [
+        [
+          0,
+          860
+        ],
+        [
+          1920,
+          860
+        ]
+      ],
+      "start": [
+        960,
+        860
+      ]
+    },
+    "32_old_hospital_ward": {
+      "title": "Old Hospital Ward",
+      "backgroundAsset": "env.32_old_hospital_ward",
+      "groundLine": [
+        [
+          0,
+          880
+        ],
+        [
+          1920,
+          880
+        ]
+      ],
+      "start": [
+        960,
+        880
+      ]
+    },
+    "33_public_library": {
+      "title": "Public Library",
+      "backgroundAsset": "env.33_public_library",
+      "groundLine": [
+        [
+          0,
+          870
+        ],
+        [
+          1920,
+          870
+        ]
+      ],
+      "start": [
+        960,
+        870
+      ]
+    },
+    "34_hotel_lobby": {
+      "title": "Hotel Lobby",
+      "backgroundAsset": "env.34_hotel_lobby",
+      "groundLine": [
+        [
+          0,
+          860
+        ],
+        [
+          1920,
+          860
+        ]
+      ],
+      "start": [
+        960,
+        860
+      ]
+    },
+    "35_bakery_kitchen": {
+      "title": "Bakery Kitchen",
+      "backgroundAsset": "env.35_bakery_kitchen",
+      "groundLine": [
+        [
+          0,
+          850
+        ],
+        [
+          1920,
+          850
+        ]
+      ],
+      "start": [
+        960,
+        850
+      ]
+    },
+    "36_public_baths": {
+      "title": "Public Baths",
+      "backgroundAsset": "env.36_public_baths",
+      "groundLine": [
+        [
+          0,
+          840
+        ],
+        [
+          1920,
+          840
+        ]
+      ],
+      "start": [
+        960,
+        840
+      ]
+    },
+    "37_substation_control": {
+      "title": "Substation Control",
+      "backgroundAsset": "env.37_substation_control",
+      "groundLine": [
+        [
+          0,
+          870
+        ],
+        [
+          1920,
+          870
+        ]
+      ],
+      "start": [
+        960,
+        870
+      ]
+    },
+    "38_root_cellar": {
+      "title": "Root Cellar",
+      "backgroundAsset": "env.38_root_cellar",
+      "groundLine": [
+        [
+          0,
+          860
+        ],
+        [
+          1920,
+          860
+        ]
+      ],
+      "start": [
+        960,
+        860
+      ]
+    },
+    "39_tailor_workshop": {
+      "title": "Tailor's Workshop",
+      "backgroundAsset": "env.39_tailor_workshop",
+      "groundLine": [
+        [
+          0,
+          870
+        ],
+        [
+          1920,
+          870
+        ]
+      ],
+      "start": [
+        960,
+        870
+      ]
+    },
+    "40_abandoned_cinema": {
+      "title": "Abandoned Cinema",
+      "backgroundAsset": "env.40_abandoned_cinema",
+      "groundLine": [
+        [
+          0,
+          850
+        ],
+        [
+          1920,
+          850
+        ]
+      ],
+      "start": [
+        960,
+        850
       ]
     }
   },
