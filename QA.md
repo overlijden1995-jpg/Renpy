@@ -9,7 +9,7 @@
 | Character frame anchors | **PASS** | `tools/validate.py` compares foot-midline anchors across base frames; measured maximum drift is below the 6 px limit for all six characters. Alice 0.5 px; Denice 0 px; MC 0.5 px; Sable 0.5 px; Sophia 1.118 px; Tory 0 px. |
 | Manifest assets | **PASS** | All 92 declared assets resolve to project-contained files and their image data verifies. No duplicate asset paths or unresolved manifest IDs were reported. |
 | Sprite-frame requirement | **PASS** | Raw source count is 60: Alice 10, Denice 10, MC 10, Sable 10, Sophia 10, and Tory 10. `spriteFrames.expectedCount` is 60, `assetIds` contains 60 IDs, and all 60 unique files exist. The additional twelve blush overlays remain available through `assets` and are excluded from this raw-source contract. |
-| Act 1 playthrough to act break | **PASS (Ren'Py engine, headless)** | `./run.sh . test ashfall` runs the Ren'Py 8.6 test suite in `game/tests/playthrough.rpy`: `playthrough_to_act2` (full Act 1 to the act break) and `save_load_rollback_day2` (engine save at the Day 2 water crisis, engine load into the rations branch, rollback to the crisis menu, the reserve branch, the raid, act break). 2/2 testcases, 4/4 hooks, 49/49 assertions pass. See the 2026-11-09 engine-evidence addendum. |
+| Act 1 playthrough to act break | **PASS (Ren'Py engine, headless)** | `./run.sh . test ashfall` runs the Ren'Py 8.6 test suite in `game/tests/playthrough.rpy`: `playthrough_to_act2` (full Act 1 to the act break), `save_load_rollback_day2` (engine save at the Day 2 water crisis, engine load into the rations branch, rollback to the crisis menu, the reserve branch, the raid, act break), and `hud_overlay` (HUD render + low-resource warnings). 3/3 testcases, 5/5 hooks, 73/73 assertions pass. See the 2026-11-09 engine-evidence addendum. |
 | Act break canon state | **PASS (static and state model)** | `probation` has one assignment, `$ probation = True`, and remained true at the modeled act break. A dialogue-string scan of `game/*.rpy` found zero references to Mara, Vesper, Ren, Iona, Brick, Tamsin, or Juno. |
 | Ren'Py lint | **PASS** | `./run.sh . lint --error-code` exits 0: 170 dialogue blocks, 2,904 words, 16,280 characters. Requires the Python 3.12 uv environment (`uv sync`); the sandbox system Python 3.11 is not sufficient. |
 | Hotspots | **PASS (static reachability)** | 10 scenes and 45 hotspot rectangles validated. Every scene background resolves through a manifest asset ID; rectangles are in the 1920×1080 canvas, and each hotspot center maps inside the view at zoom 1.0, 1.25, and 1.8. |
@@ -27,12 +27,14 @@ python3 tools/tickalign.py --input assets/characters/source --output assets/char
 python3 tools/alphakey.py --input assets/characters/aligned --output assets/characters/keyed --tolerance 40
 python3 tools/validate.py --whole-project
 ./run.sh .
-source /home/user/renpy-deps/env.sh && \
-  export PKG_CONFIG=/home/user/renpy-deps/prefix/bin/pkg-config-keep \
-         SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy RENPY_RENDERER=sw \
-         SDL_NO_SIGNAL_HANDLERS=1 SDL_QUIT_ON_LAST_WINDOW_CLOSE=0 RENPY_PERFORMANCE_TEST=0 && \
-  env "renpy.pygame_AVOID_GL=1" ./run.sh . test ashfall
+source /home/user/renpy-deps/env.sh   # exports SDL_VIDEODRIVER/AUDIODRIVER=dummy,
+                                       # RENPY_RENDERER=sw, SDL_NO_SIGNAL_HANDLERS=1,
+                                       # SDL_QUIT_ON_LAST_WINDOW_CLOSE=0, RENPY_PERFORMANCE_TEST=0,
+                                       # PKG_CONFIG_PATH + PATH with prefix/bin (pkg-config = pkgconf)
+env "renpy.pygame_AVOID_GL=1" ./run.sh . test ashfall
 ```
+
+Note: `PKG_CONFIG` no longer needs (or accepts) the former `pkg-config-keep` shim; the from-source `prefix/bin` is on `PATH` and its `pkg-config` is the pkgconf binary.
 
 The first validator invocation failed because Pillow was absent. After installing Pillow and generating the ignored aligned/keyed intermediates, `python3 tools/validate.py` and `python3 tools/validate.py --whole-project` both returned `validation passed`. Runtime QA returned `passed: true` with 5 resource quests, the faction quest, the rescue quest, colony and dialogue round trips, and 3 save slots confirmed.
 
@@ -53,18 +55,17 @@ Environment (built this session, outside the repo):
 
 - `uv sync` provides Python 3.12.16; compiled Ren'Py extension modules were built against a from-source prefix at `/home/user/renpy-deps/prefix` (SDL 3.4.20 with dummy/offscreen video, FFmpeg, HarfBuzz, Freetype rebuilt with Brotli so `.woff2` fonts — the engine's DejaVu substitutes — load, zlib, OpenSSL).
 - Freetype without Brotli raised `renpy.text.hbfont.FreetypeError: 2: b'unknown file format'` on every Say; after the Brotli rebuild the suite boots and renders.
+- SDL 3 was initially linked **statically** into every Ren'Py extension module. Each module then carried its own copy of the file-scope `SDL_surface_magic`, and with `sys.getdlopenflags() == 2` (RTLD_NOW, no RTLD_GLOBAL) the copies never interpose, so `SDL_SurfaceValid` failed across modules and `SDL_BlitSurfaceScaled` returned false — a hard crash at `renpy/pygame/transform.pyx` during the main menu. Fix (outside the repo): SDL 3.4.20 and SDL3_image 3.4.8 were rebuilt with `BUILD_SHARED_LIBS=ON` into the prefix, all Ren'Py extension `.so` files were rebuilt, and every module now resolves one shared `libSDL3.so.0` via `DT_RUNPATH=/home/user/renpy-deps/prefix/lib`. The static `.a` files remain in the prefix but are no longer used.
+- The `before testcase` hook was changed from a `renpy.session` flag to a screen-state check (`if not screen "main_menu"`), because `full_restart` re-enters the hook at the main menu where the `MainMenu` action is insensitive and previously deadlocked the suite with a 5 s timeout after every reboot.
 
 Headless invocation (all one shell):
 
 ```sh
-source /home/user/renpy-deps/env.sh
-export PKG_CONFIG=/home/user/renpy-deps/prefix/bin/pkg-config-keep
-export SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy RENPY_RENDERER=sw \
-       SDL_NO_SIGNAL_HANDLERS=1 SDL_QUIT_ON_LAST_WINDOW_CLOSE=0 RENPY_PERFORMANCE_TEST=0
+source /home/user/renpy-deps/env.sh   # brings in the SDL3 dummy/sw stack and the prefix on PATH
 env "renpy.pygame_AVOID_GL=1" ./run.sh . test ashfall
 ```
 
-Result: **exit 0 — test suites 2/2 passed, hooks 4/4, assertions 49/49, ~11 s.** `./run.sh . lint --error-code` exits 0 (above). Save directory is isolated via `config.save_directory = "ashfall-1"`; the engine save/load assertions use save slot 7.
+Result: **exit 0 — test suites 2/2 passed, 3/3 testcases (`playthrough_to_act2`, `save_load_rollback_day2`, `hud_overlay`), 5/5 hooks, 73/73 assertions, ~15 s.** `./run.sh . lint --error-code` exits 0 (above). Save directory is isolated via `config.save_directory = "ashfall-1"`; the engine save/load assertions use save slot 7.
 
 What the engine verified (not just modeled):
 
@@ -79,7 +80,7 @@ Engine-driven bug fixed this session (in the game, not the harness):
 Harness findings worth recording (Ren'Py behavior, not bugs in this project):
 
 - The engine test runner only advances on drawn frames; once text finishes revealing a static scene performs no redraws, so the suite starves without a `config.needs_redraw_callbacks` hook (present in `game/tests/playthrough.rpy`; no-op outside tests).
-- This project has no screens (`game/screens.rpy`, `game/gui.rpy` are empty): dialogue uses the engine's legacy layout, and menu choices are matched by text, not `screen "choice"` (which raises `ValueError`). The legacy fallback works; a custom `confirm` screen does not exist, so SDL quit/SIGTERM paths reach the engine's yesno fallback and raise `AttributeError: 'Layout' object has no attribute 'yesno_prompt'`. Flagging this as a genuine gap for real players (window close); out of scope to add GUI screens here.
+- Custom screens now exist in `game/screens.rpy` (say/choice/HUD/quick menu/main menu/game menu/save/load/preferences/history/confirm) with `game/gui.rpy` (palette, plate-bordered frames, baked exact-size UI plates). Menu choices are still matched by text in tests; `screen "choice"` remains unused. `hud_overlay` in `game/tests/playthrough.rpy` asserts the HUD renders, shows day/phase/resource readouts, and flags low Water/Meds.
 - Reaching the end of `label start` silently reboots into a fresh game (normal Ren'Py end-of-start behavior); assertions on stores therefore cannot observe post-`act = 2` state. The suite uses `advance until label act2_stub` to prove the act break instead.
 
 Remaining items not verified by this engine pass: real audio/video drivers, windowed/interactive UI, Android/iOS, long-term save compatibility, and any path past `act2_stub` (act 2 content is out of scope).
