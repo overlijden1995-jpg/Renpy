@@ -1,6 +1,6 @@
 # Whole-project QA report
 
-**Status: PASS for derived assets and reference runtime; BLOCKED for the Ren'Py engine playthrough.** The former 72/80 sprite-count blocker is retracted because the derived raw-source count passes: 6 characters × 10 frames = 60 frames. The twelve derived blush overlays remain declared assets but are not counted as raw source frames. See `docs/CANON.md`.
+**Status: PASS for derived assets, reference runtime, lint, and the Ren'Py engine playthrough (headless).** The former 72/80 sprite-count blocker is retracted because the derived raw-source count passes: 6 characters × 10 frames = 60 frames. The twelve derived blush overlays remain declared assets but are not counted as raw source frames. See `docs/CANON.md`.
 
 ## Results
 
@@ -9,9 +9,9 @@
 | Character frame anchors | **PASS** | `tools/validate.py` compares foot-midline anchors across base frames; measured maximum drift is below the 6 px limit for all six characters. Alice 0.5 px; Denice 0 px; MC 0.5 px; Sable 0.5 px; Sophia 1.118 px; Tory 0 px. |
 | Manifest assets | **PASS** | All 92 declared assets resolve to project-contained files and their image data verifies. No duplicate asset paths or unresolved manifest IDs were reported. |
 | Sprite-frame requirement | **PASS** | Raw source count is 60: Alice 10, Denice 10, MC 10, Sable 10, Sophia 10, and Tory 10. `spriteFrames.expectedCount` is 60, `assetIds` contains 60 IDs, and all 60 unique files exist. The additional twelve blush overlays remain available through `assets` and are excluded from this raw-source contract. |
-| Act 1 playthrough to act break | **BLOCKED (Ren'Py); PASS (state model only)** | `./run.sh .` could not launch because the required Python 3.12 environment is unavailable. A non-engine state model saved before the Day 2 water choice, loaded the Cut-trade state (9 scrap, 14 water), rolled back to the pre-choice state (12 scrap, 8 water), chose below-reserve, stalled the Line, fortified, and reached `act = 2` with `probation = True`. This is not represented as an engine playthrough or engine save/load/rollback. |
+| Act 1 playthrough to act break | **PASS (Ren'Py engine, headless)** | `./run.sh . test ashfall` runs the Ren'Py 8.6 test suite in `game/tests/playthrough.rpy`: `playthrough_to_act2` (full Act 1 to the act break) and `save_load_rollback_day2` (engine save at the Day 2 water crisis, engine load into the rations branch, rollback to the crisis menu, the reserve branch, the raid, act break). 2/2 testcases, 4/4 hooks, 49/49 assertions pass. See the 2026-11-09 engine-evidence addendum. |
 | Act break canon state | **PASS (static and state model)** | `probation` has one assignment, `$ probation = True`, and remained true at the modeled act break. A dialogue-string scan of `game/*.rpy` found zero references to Mara, Vesper, Ren, Iona, Brick, Tamsin, or Juno. |
-| Ren'Py lint | **BLOCKED** | `./run.sh . lint --error-code` prints `Please use 'uv sync' to creat the virtual environment.` `uv sync` could not obtain the required Python 3.12 runtime; the sandbox provides Python 3.11 and no compiled Ren'Py extension modules. |
+| Ren'Py lint | **PASS** | `./run.sh . lint --error-code` exits 0: 170 dialogue blocks, 2,904 words, 16,280 characters. Requires the Python 3.12 uv environment (`uv sync`); the sandbox system Python 3.11 is not sufficient. |
 | Hotspots | **PASS (static reachability)** | 10 scenes and 45 hotspot rectangles validated. Every scene background resolves through a manifest asset ID; rectangles are in the 1920×1080 canvas, and each hotspot center maps inside the view at zoom 1.0, 1.25, and 1.8. |
 | Quest completion | **PASS (reference runtime)** | Runtime QA completed all seven quests through game-model/dialogue events: five resource bottlenecks, the faction delivery, and the rescue. |
 | Reference save/load round trips | **PASS** | Colony snapshots restore byte-for-data-equivalent state; dialogue flags and unlocked bond-scene state round-trip; all three save slots round-trip and invalid slot 4 is rejected. |
@@ -27,6 +27,11 @@ python3 tools/tickalign.py --input assets/characters/source --output assets/char
 python3 tools/alphakey.py --input assets/characters/aligned --output assets/characters/keyed --tolerance 40
 python3 tools/validate.py --whole-project
 ./run.sh .
+source /home/user/renpy-deps/env.sh && \
+  export PKG_CONFIG=/home/user/renpy-deps/prefix/bin/pkg-config-keep \
+         SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy RENPY_RENDERER=sw \
+         SDL_NO_SIGNAL_HANDLERS=1 SDL_QUIT_ON_LAST_WINDOW_CLOSE=0 RENPY_PERFORMANCE_TEST=0 && \
+  env "renpy.pygame_AVOID_GL=1" ./run.sh . test ashfall
 ```
 
 The first validator invocation failed because Pillow was absent. After installing Pillow and generating the ignored aligned/keyed intermediates, `python3 tools/validate.py` and `python3 tools/validate.py --whole-project` both returned `validation passed`. Runtime QA returned `passed: true` with 5 resource quests, the faction quest, the rescue quest, colony and dialogue round trips, and 3 save slots confirmed.
@@ -38,4 +43,43 @@ The first validator invocation failed because Pillow was absent. After installin
 
 ## Validation limits
 
-An actual Ren'Py playthrough from `label start` to `act2_stub`, including engine save, load, and rollback across the Day 2 water choice, remains unverified. The state-model check is supplemental only and does not replace those engine checks. Structural checks separately confirmed the exact fifteen canonical bond labels, the five-row roster, all sixty raw frame paths, valid manifest JSON, and generator output byte-identical to `game/definitions.rpy`.
+The engine playthrough now runs end to end headlessly (see addendum). It has not been exercised on real audio/video hardware or in a windowed session, and the suite intentionally covers only Act 1. Structural checks separately confirmed the exact fifteen canonical bond labels, the five-row roster, all sixty raw frame paths, valid manifest JSON, and generator output byte-identical to `game/definitions.rpy`.
+
+## Addendum — 2026-11-09 (engine evidence: headless playthrough)
+
+Item: run the Ren'Py engine end to end and attach the evidence to this report (previously BLOCKED).
+
+Environment (built this session, outside the repo):
+
+- `uv sync` provides Python 3.12.16; compiled Ren'Py extension modules were built against a from-source prefix at `/home/user/renpy-deps/prefix` (SDL 3.4.20 with dummy/offscreen video, FFmpeg, HarfBuzz, Freetype rebuilt with Brotli so `.woff2` fonts — the engine's DejaVu substitutes — load, zlib, OpenSSL).
+- Freetype without Brotli raised `renpy.text.hbfont.FreetypeError: 2: b'unknown file format'` on every Say; after the Brotli rebuild the suite boots and renders.
+
+Headless invocation (all one shell):
+
+```sh
+source /home/user/renpy-deps/env.sh
+export PKG_CONFIG=/home/user/renpy-deps/prefix/bin/pkg-config-keep
+export SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy RENPY_RENDERER=sw \
+       SDL_NO_SIGNAL_HANDLERS=1 SDL_QUIT_ON_LAST_WINDOW_CLOSE=0 RENPY_PERFORMANCE_TEST=0
+env "renpy.pygame_AVOID_GL=1" ./run.sh . test ashfall
+```
+
+Result: **exit 0 — test suites 2/2 passed, hooks 4/4, assertions 49/49, ~11 s.** `./run.sh . lint --error-code` exits 0 (above). Save directory is isolated via `config.save_directory = "ashfall-1"`; the engine save/load assertions use save slot 7.
+
+What the engine verified (not just modeled):
+
+- `playthrough_to_act2`: cold open (labour branch) to `act2_stub` — water/food/scrap/meds arithmetic across the colony phase engine (dawn/evening food, night water upkeep), the Day 2 water-crisis trade, the Day 3 levy menu (outer menu + submenu), and the act break at `act2_stub` after "Open talks". `probation` observed `True`; `act1_commit == "talks"`; `line_standing == -2`; engine-confirmed `act = 2` is set inside `act1_close.rpy` after the branch dialogue.
+- `save_load_rollback_day2`: `FileSave(7)` at the Day 2 crisis menu, trade branch checked through Day 3, engine `FileLoad(7)` back into the crisis menu (scrap/water/cut_trade restore), "Cut rations" branch, engine `Rollback()` to the pre-choice state, "Draw the cistern" reserve branch, refusal raid path (`raid_triggered`, `wounded_companion == "alice"`, `food_loss == 1`), act break.
+- State defaults (`game/state.rpy`) and the phase engine (`game/colony.rpy`) behave as coded under engine rollback (including the Day 2 -> Day 3 night-upkeep boundary).
+
+Engine-driven bug fixed this session (in the game, not the harness):
+
+- Menu labels containing a bare `%` crashed the menu system with `TypeError: %c requires int or char` because menu text is `%`-substituted by the engine. `game/act1.rpy` "25% chance" -> `25%%`, `game/act1_close.rpy` "35% injury risk" -> `35%%`.
+
+Harness findings worth recording (Ren'Py behavior, not bugs in this project):
+
+- The engine test runner only advances on drawn frames; once text finishes revealing a static scene performs no redraws, so the suite starves without a `config.needs_redraw_callbacks` hook (present in `game/tests/playthrough.rpy`; no-op outside tests).
+- This project has no screens (`game/screens.rpy`, `game/gui.rpy` are empty): dialogue uses the engine's legacy layout, and menu choices are matched by text, not `screen "choice"` (which raises `ValueError`). The legacy fallback works; a custom `confirm` screen does not exist, so SDL quit/SIGTERM paths reach the engine's yesno fallback and raise `AttributeError: 'Layout' object has no attribute 'yesno_prompt'`. Flagging this as a genuine gap for real players (window close); out of scope to add GUI screens here.
+- Reaching the end of `label start` silently reboots into a fresh game (normal Ren'Py end-of-start behavior); assertions on stores therefore cannot observe post-`act = 2` state. The suite uses `advance until label act2_stub` to prove the act break instead.
+
+Remaining items not verified by this engine pass: real audio/video drivers, windowed/interactive UI, Android/iOS, long-term save compatibility, and any path past `act2_stub` (act 2 content is out of scope).

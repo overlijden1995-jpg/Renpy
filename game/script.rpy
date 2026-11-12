@@ -3,10 +3,7 @@ label start:
 
 
 label p17_cold_open:
-    $ coldopen_labour = False
-    $ coldopen_water = False
-    $ coldopen_silence = False
-    $ water = 1
+    # (Game state defaults live in state.rpy.)
 
     # 1. Wasteland road.
     scene black
@@ -43,7 +40,6 @@ label p17_cold_open:
     "Behind her, someone shifted a barrier. The crossbow remained exactly where it had been."
 
     # 6. Sophia's slate.
-    hide sophia
     show sophia work neutral at center
     "Sophia arrived with a slate and a pencil stub. She wrote before she looked at him. The pencil stopped while she took his measure, then moved again."
     "Sophia" "One body. One ration. One bed. One problem."
