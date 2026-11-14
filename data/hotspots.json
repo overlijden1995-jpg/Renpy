@@ -1054,6 +1054,1106 @@
         }
       ],
       "backgroundAsset": "env.20_river_crossing"
+    },
+    "21_orchard_ruin": {
+      "hotspots": [
+        {
+          "id": "dead_orchard",
+          "label": "Dead orchard rows",
+          "rect": [
+            0,
+            80,
+            760,
+            700
+          ]
+        },
+        {
+          "id": "ruined_barn",
+          "label": "Collapsed barn",
+          "rect": [
+            1120,
+            365,
+            390,
+            210
+          ]
+        },
+        {
+          "id": "irrigation_channel",
+          "label": "Dry irrigation channel",
+          "rect": [
+            140,
+            560,
+            1600,
+            520
+          ]
+        },
+        {
+          "id": "sluice_gate",
+          "label": "Channel sluice gate",
+          "rect": [
+            1540,
+            585,
+            200,
+            110
+          ]
+        },
+        {
+          "id": "far_orchard",
+          "label": "Far orchard line",
+          "rect": [
+            1490,
+            410,
+            240,
+            130
+          ]
+        }
+      ],
+      "backgroundAsset": "env.21_orchard_ruin"
+    },
+    "22_grain_silo": {
+      "hotspots": [
+        {
+          "id": "silo_bank",
+          "label": "Corroded silo bank",
+          "rect": [
+            160,
+            0,
+            870,
+            710
+          ]
+        },
+        {
+          "id": "conveyor_gantry",
+          "label": "Broken conveyor gantry",
+          "rect": [
+            760,
+            220,
+            1160,
+            260
+          ]
+        },
+        {
+          "id": "loading_dock",
+          "label": "Cracked loading dock",
+          "rect": [
+            0,
+            670,
+            1300,
+            260
+          ]
+        },
+        {
+          "id": "sandbag_stack",
+          "label": "Sandbag stack",
+          "rect": [
+            520,
+            790,
+            290,
+            150
+          ]
+        },
+        {
+          "id": "pallet_stack",
+          "label": "Stacked pallets",
+          "rect": [
+            1300,
+            930,
+            300,
+            130
+          ]
+        }
+      ],
+      "backgroundAsset": "env.22_grain_silo"
+    },
+    "23_fuel_depot": {
+      "hotspots": [
+        {
+          "id": "fuel_tanks",
+          "label": "Rusted fuel tanks",
+          "rect": [
+            400,
+            460,
+            670,
+            300
+          ]
+        },
+        {
+          "id": "hand_pump",
+          "label": "Hand-crank fuel pump",
+          "rect": [
+            1175,
+            555,
+            210,
+            185
+          ]
+        },
+        {
+          "id": "gate_fence",
+          "label": "Fence gate",
+          "rect": [
+            965,
+            700,
+            650,
+            182
+          ]
+        },
+        {
+          "id": "spilled_drums",
+          "label": "Oil drums",
+          "rect": [
+            1490,
+            560,
+            280,
+            420
+          ]
+        },
+        {
+          "id": "perimeter_fence",
+          "label": "Perimeter fence",
+          "rect": [
+            100,
+            410,
+            1720,
+            220
+          ]
+        }
+      ],
+      "backgroundAsset": "env.23_fuel_depot"
+    },
+    "24_schoolhouse": {
+      "hotspots": [
+        {
+          "id": "collapsed_wing",
+          "label": "Collapsed classroom wing",
+          "rect": [
+            525,
+            250,
+            490,
+            570
+          ]
+        },
+        {
+          "id": "bell_tower",
+          "label": "Bell tower",
+          "rect": [
+            1445,
+            30,
+            210,
+            350
+          ]
+        },
+        {
+          "id": "blackboard",
+          "label": "Blackboard wall",
+          "rect": [
+            1273,
+            520,
+            310,
+            135
+          ]
+        },
+        {
+          "id": "student_desks",
+          "label": "Student desks",
+          "rect": [
+            955,
+            660,
+            540,
+            160
+          ]
+        },
+        {
+          "id": "swing_set",
+          "label": "Playground swing frame",
+          "rect": [
+            105,
+            580,
+            510,
+            390
+          ]
+        }
+      ],
+      "backgroundAsset": "env.24_schoolhouse"
+    },
+    "25_solar_array": {
+      "hotspots": [
+        {
+          "id": "solar_field",
+          "label": "Cracked solar field",
+          "rect": [
+            0,
+            300,
+            1500,
+            360
+          ]
+        },
+        {
+          "id": "equipment_shed",
+          "label": "Equipment shed",
+          "rect": [
+            415,
+            515,
+            440,
+            295
+          ]
+        },
+        {
+          "id": "fallen_blade",
+          "label": "Fallen turbine blade",
+          "rect": [
+            1225,
+            230,
+            470,
+            580
+          ]
+        },
+        {
+          "id": "wind_turbine",
+          "label": "Wind turbine tower",
+          "rect": [
+            1640,
+            75,
+            170,
+            360
+          ]
+        },
+        {
+          "id": "broken_panels",
+          "label": "Broken panel frames",
+          "rect": [
+            0,
+            575,
+            370,
+            505
+          ]
+        }
+      ],
+      "backgroundAsset": "env.25_solar_array"
+    },
+    "26_dam_spillway": {
+      "hotspots": [
+        {
+          "id": "spillway_chute",
+          "label": "Dry spillway chute",
+          "rect": [
+            180,
+            340,
+            520,
+            620
+          ]
+        },
+        {
+          "id": "dam_wall",
+          "label": "Cracked dam wall",
+          "rect": [
+            680,
+            340,
+            850,
+            470
+          ]
+        },
+        {
+          "id": "control_tower",
+          "label": "Control tower",
+          "rect": [
+            1010,
+            360,
+            110,
+            230
+          ]
+        },
+        {
+          "id": "catwalk",
+          "label": "Maintenance catwalk",
+          "rect": [
+            680,
+            490,
+            850,
+            330
+          ]
+        },
+        {
+          "id": "reservoir",
+          "label": "Muddy reservoir",
+          "rect": [
+            980,
+            290,
+            560,
+            120
+          ]
+        }
+      ],
+      "backgroundAsset": "env.26_dam_spillway"
+    },
+    "27_bus_depot": {
+      "hotspots": [
+        {
+          "id": "bus_one",
+          "label": "Rusted coach bus",
+          "rect": [
+            205,
+            455,
+            400,
+            260
+          ]
+        },
+        {
+          "id": "bus_two",
+          "label": "Coach bus under canopy",
+          "rect": [
+            570,
+            460,
+            690,
+            310
+          ]
+        },
+        {
+          "id": "repair_pit",
+          "label": "Repair pit",
+          "rect": [
+            1095,
+            665,
+            455,
+            180
+          ]
+        },
+        {
+          "id": "oil_drums",
+          "label": "Oil drums",
+          "rect": [
+            810,
+            715,
+            195,
+            130
+          ]
+        },
+        {
+          "id": "service_bus",
+          "label": "Service bus",
+          "rect": [
+            1660,
+            450,
+            260,
+            470
+          ]
+        }
+      ],
+      "backgroundAsset": "env.27_bus_depot"
+    },
+    "28_chapel_hall": {
+      "hotspots": [
+        {
+          "id": "chapel_door",
+          "label": "Chapel door",
+          "rect": [
+            680,
+            465,
+            170,
+            380
+          ]
+        },
+        {
+          "id": "noticeboard",
+          "label": "Noticeboard",
+          "rect": [
+            263,
+            563,
+            290,
+            300
+          ]
+        },
+        {
+          "id": "stove",
+          "label": "Wood stove",
+          "rect": [
+            1340,
+            600,
+            130,
+            130
+          ]
+        },
+        {
+          "id": "benches",
+          "label": "Wooden benches",
+          "rect": [
+            905,
+            635,
+            540,
+            220
+          ]
+        },
+        {
+          "id": "lit_windows",
+          "label": "Lantern-lit windows",
+          "rect": [
+            875,
+            447,
+            350,
+            205
+          ]
+        }
+      ],
+      "backgroundAsset": "env.28_chapel_hall"
+    },
+    "29_lookout_ridge": {
+      "hotspots": [
+        {
+          "id": "watch_hut",
+          "label": "Timber watch hut",
+          "rect": [
+            200,
+            160,
+            485,
+            735
+          ]
+        },
+        {
+          "id": "flag_pole",
+          "label": "Signal flag pole",
+          "rect": [
+            640,
+            120,
+            200,
+            240
+          ]
+        },
+        {
+          "id": "lone_tree",
+          "label": "Wind-bent tree",
+          "rect": [
+            720,
+            230,
+            470,
+            420
+          ]
+        },
+        {
+          "id": "valley_road",
+          "label": "Winding valley road",
+          "rect": [
+            1200,
+            540,
+            470,
+            430
+          ]
+        },
+        {
+          "id": "ruined_town",
+          "label": "Ruined town below",
+          "rect": [
+            930,
+            540,
+            420,
+            245
+          ]
+        }
+      ],
+      "backgroundAsset": "env.29_lookout_ridge"
+    },
+    "30_seed_bank": {
+      "hotspots": [
+        {
+          "id": "vault_door",
+          "label": "Sealed vault door",
+          "rect": [
+            1047,
+            330,
+            392,
+            465
+          ]
+        },
+        {
+          "id": "planter_beds",
+          "label": "Raised planter beds",
+          "rect": [
+            85,
+            635,
+            860,
+            445
+          ]
+        },
+        {
+          "id": "seed_crates",
+          "label": "Seed crates",
+          "rect": [
+            1353,
+            649,
+            423,
+            330
+          ]
+        },
+        {
+          "id": "air_vents",
+          "label": "Air vent stacks",
+          "rect": [
+            1065,
+            20,
+            240,
+            230
+          ]
+        },
+        {
+          "id": "hillside_cut",
+          "label": "Cut hillside",
+          "rect": [
+            590,
+            70,
+            630,
+            300
+          ]
+        }
+      ],
+      "backgroundAsset": "env.30_seed_bank"
+    },
+    "31_post_office": {
+      "hotspots": [
+        {
+          "id": "pigeonhole_wall",
+          "label": "Pigeonhole mail wall",
+          "rect": [
+            100,
+            170,
+            1090,
+            490
+          ]
+        },
+        {
+          "id": "service_counter",
+          "label": "Service counter",
+          "rect": [
+            415,
+            600,
+            1290,
+            470
+          ]
+        },
+        {
+          "id": "parcel_sacks",
+          "label": "Sacks of undelivered post",
+          "rect": [
+            675,
+            725,
+            690,
+            345
+          ]
+        },
+        {
+          "id": "brass_railing",
+          "label": "Brass railing",
+          "rect": [
+            955,
+            450,
+            650,
+            190
+          ]
+        },
+        {
+          "id": "side_doorway",
+          "label": "Side doorway",
+          "rect": [
+            1790,
+            410,
+            130,
+            330
+          ]
+        }
+      ],
+      "backgroundAsset": "env.31_post_office"
+    },
+    "32_old_hospital_ward": {
+      "hotspots": [
+        {
+          "id": "front_bed",
+          "label": "Iron bed, front",
+          "rect": [
+            37,
+            600,
+            870,
+            470
+          ]
+        },
+        {
+          "id": "iv_stands",
+          "label": "Drip stands",
+          "rect": [
+            270,
+            300,
+            430,
+            390
+          ]
+        },
+        {
+          "id": "barred_windows",
+          "label": "Shuttered windows",
+          "rect": [
+            0,
+            0,
+            540,
+            570
+          ]
+        },
+        {
+          "id": "back_beds",
+          "label": "Beds along the far wall",
+          "rect": [
+            660,
+            535,
+            560,
+            365
+          ]
+        },
+        {
+          "id": "swing_door",
+          "label": "Swing door",
+          "rect": [
+            1469,
+            343,
+            147,
+            405
+          ]
+        }
+      ],
+      "backgroundAsset": "env.32_old_hospital_ward"
+    },
+    "33_public_library": {
+      "hotspots": [
+        {
+          "id": "dome_skylight",
+          "label": "Dome skylight",
+          "rect": [
+            795,
+            0,
+            715,
+            275
+          ]
+        },
+        {
+          "id": "left_shelves",
+          "label": "Left bookshelves",
+          "rect": [
+            0,
+            428,
+            465,
+            505
+          ]
+        },
+        {
+          "id": "right_shelves",
+          "label": "Right bookshelves",
+          "rect": [
+            1708,
+            392,
+            212,
+            685
+          ]
+        },
+        {
+          "id": "reading_tables",
+          "label": "Reading tables",
+          "rect": [
+            1050,
+            830,
+            700,
+            245
+          ]
+        },
+        {
+          "id": "back_stacks",
+          "label": "Back stacks",
+          "rect": [
+            612,
+            575,
+            860,
+            190
+          ]
+        }
+      ],
+      "backgroundAsset": "env.33_public_library"
+    },
+    "34_hotel_lobby": {
+      "hotspots": [
+        {
+          "id": "reception_desk",
+          "label": "Reception desk",
+          "rect": [
+            270,
+            343,
+            575,
+            540
+          ]
+        },
+        {
+          "id": "chandelier",
+          "label": "Cracked chandelier",
+          "rect": [
+            716,
+            0,
+            263,
+            367
+          ]
+        },
+        {
+          "id": "grand_staircase",
+          "label": "Grand staircase",
+          "rect": [
+            1029,
+            49,
+            820,
+            894
+          ]
+        },
+        {
+          "id": "boarded_windows",
+          "label": "Boarded windows",
+          "rect": [
+            0,
+            135,
+            227,
+            527
+          ]
+        },
+        {
+          "id": "lounge_sofa",
+          "label": "Lounge sofa",
+          "rect": [
+            1169,
+            612,
+            220,
+            135
+          ]
+        }
+      ],
+      "backgroundAsset": "env.34_hotel_lobby"
+    },
+    "35_bakery_kitchen": {
+      "hotspots": [
+        {
+          "id": "brick_oven",
+          "label": "Brick oven",
+          "rect": [
+            129,
+            25,
+            557,
+            820
+          ]
+        },
+        {
+          "id": "work_table",
+          "label": "Rolling table",
+          "rect": [
+            680,
+            600,
+            740,
+            392
+          ]
+        },
+        {
+          "id": "copper_pans",
+          "label": "Copper pans",
+          "rect": [
+            686,
+            263,
+            380,
+            252
+          ]
+        },
+        {
+          "id": "wood_stove",
+          "label": "Wood stove",
+          "rect": [
+            1555,
+            165,
+            257,
+            730
+          ]
+        },
+        {
+          "id": "flour_sacks",
+          "label": "Flour sacks",
+          "rect": [
+            0,
+            588,
+            453,
+            482
+          ]
+        }
+      ],
+      "backgroundAsset": "env.35_bakery_kitchen"
+    },
+    "36_public_baths": {
+      "hotspots": [
+        {
+          "id": "pool",
+          "label": "Tiled swimming pool",
+          "rect": [
+            200,
+            630,
+            1480,
+            450
+          ]
+        },
+        {
+          "id": "changing_cubicles",
+          "label": "Changing cubicles",
+          "rect": [
+            0,
+            410,
+            1022,
+            365
+          ]
+        },
+        {
+          "id": "puddle",
+          "label": "Rainwater puddle",
+          "rect": [
+            894,
+            771,
+            649,
+            160
+          ]
+        },
+        {
+          "id": "arched_skylight",
+          "label": "Arched skylight",
+          "rect": [
+            367,
+            0,
+            1213,
+            340
+          ]
+        },
+        {
+          "id": "far_doorway",
+          "label": "Far doorway",
+          "rect": [
+            1065,
+            355,
+            588,
+            245
+          ]
+        }
+      ],
+      "backgroundAsset": "env.36_public_baths"
+    },
+    "37_substation_control": {
+      "hotspots": [
+        {
+          "id": "gauge_panel",
+          "label": "Gauge panel",
+          "rect": [
+            116,
+            355,
+            295,
+            330
+          ]
+        },
+        {
+          "id": "control_levers",
+          "label": "Control levers",
+          "rect": [
+            239,
+            661,
+            288,
+            115
+          ]
+        },
+        {
+          "id": "monitor_bank",
+          "label": "Dead monitors",
+          "rect": [
+            563,
+            441,
+            826,
+            195
+          ]
+        },
+        {
+          "id": "switch_desk",
+          "label": "Switch desk",
+          "rect": [
+            918,
+            625,
+            535,
+            115
+          ]
+        },
+        {
+          "id": "window_view",
+          "label": "Window to the road",
+          "rect": [
+            1488,
+            184,
+            432,
+            661
+          ]
+        }
+      ],
+      "backgroundAsset": "env.37_substation_control"
+    },
+    "38_root_cellar": {
+      "hotspots": [
+        {
+          "id": "preserve_shelves",
+          "label": "Preserve shelves",
+          "rect": [
+            0,
+            86,
+            478,
+            696
+          ]
+        },
+        {
+          "id": "potato_sacks",
+          "label": "Potato sacks",
+          "rect": [
+            147,
+            808,
+            318,
+            272
+          ]
+        },
+        {
+          "id": "staircase",
+          "label": "Cellar staircase",
+          "rect": [
+            937,
+            282,
+            458,
+            649
+          ]
+        },
+        {
+          "id": "produce_crates",
+          "label": "Produce crates",
+          "rect": [
+            514,
+            606,
+            245,
+            312
+          ]
+        },
+        {
+          "id": "hanging_lantern",
+          "label": "Hanging lantern",
+          "rect": [
+            1592,
+            178,
+            135,
+            312
+          ]
+        }
+      ],
+      "backgroundAsset": "env.38_root_cellar"
+    },
+    "39_tailor_workshop": {
+      "hotspots": [
+        {
+          "id": "cutting_table",
+          "label": "Cutting table",
+          "rect": [
+            478,
+            649,
+            838,
+            431
+          ]
+        },
+        {
+          "id": "dress_form",
+          "label": "Dress form",
+          "rect": [
+            227,
+            355,
+            233,
+            725
+          ]
+        },
+        {
+          "id": "sewing_machines",
+          "label": "Treadle sewing machines",
+          "rect": [
+            1268,
+            539,
+            652,
+            541
+          ]
+        },
+        {
+          "id": "fabric_shelves",
+          "label": "Fabric shelves",
+          "rect": [
+            1065,
+            98,
+            855,
+            390
+          ]
+        },
+        {
+          "id": "pin_cushion",
+          "label": "Pin cushion",
+          "rect": [
+            1065,
+            740,
+            130,
+            90
+          ]
+        }
+      ],
+      "backgroundAsset": "env.39_tailor_workshop"
+    },
+    "40_abandoned_cinema": {
+      "hotspots": [
+        {
+          "id": "screen",
+          "label": "Blank screen",
+          "rect": [
+            1163,
+            422,
+            325,
+            215
+          ]
+        },
+        {
+          "id": "left_seating",
+          "label": "Left seating",
+          "rect": [
+            0,
+            514,
+            1016,
+            560
+          ]
+        },
+        {
+          "id": "right_seating",
+          "label": "Right seating",
+          "rect": [
+            1408,
+            833,
+            512,
+            247
+          ]
+        },
+        {
+          "id": "chandelier",
+          "label": "Loose chandelier",
+          "rect": [
+            961,
+            0,
+            202,
+            306
+          ]
+        },
+        {
+          "id": "projection_door",
+          "label": "Projection booth door",
+          "rect": [
+            1561,
+            612,
+            141,
+            110
+          ]
+        }
+      ],
+      "backgroundAsset": "env.40_abandoned_cinema"
     }
   }
 }

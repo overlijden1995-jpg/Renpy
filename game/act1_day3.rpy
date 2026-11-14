@@ -14,18 +14,19 @@ label act1_day3_dawn:
     show denice work neutral at right
     "Day 3 — dawn. Tory watched the road through the gate slit and counted without raising her voice."
     "Tory" "Six bodies. Water-militia marks. The Line."
-    "Their officer stopped beyond bow range with five carriers behind her. Every carrier had a rifle and an empty water can."
+    "Their officer stopped beyond bow range with five carriers behind her. Every carrier had a rifle and an empty water can. The officer wore the Line's grey and no insignia that anyone at the wall could name, which was itself a kind of insignia."
+    "Marrow" "I'm Marrow. I speak for the river pumps. You have water and I have a schedule. Let's be quick and let's be fair about it."
 
     if line_standing >= 10:
-        "Line officer" "Your standing buys a table, not exemption. We can negotiate the measure before we discuss collection."
+        "Marrow" "Your standing buys a table, not exemption. We can negotiate the measure before we discuss collection."
     else:
-        "Line officer" "Levy first. Six water or eight scrap. Refusal gets an answer tonight."
-    "Line officer" "Your colony got worth taking. That is why the Line came."
+        "Marrow" "Levy first. Six water or eight scrap. Refusal gets an answer tonight."
+    "Marrow" "Your colony got worth taking. That is why the Line came. We do not come to places that are dying quietly."
 
     if cut_trade:
         "The Cut caravan scout from the previous evening stood beside the Line carriers, close enough for the officer to notice his ledger."
         "Cut scout" "They already met one water price this week. Check the seal count before you set another."
-        "Line officer" "Cut paper does not pay a Line levy. It does prove you know how to trade."
+        "Marrow" "Cut paper does not pay a Line levy. It does prove you know how to trade."
         "Tory" "Six Line. One Cut scout. Everybody still breathing."
 
     menu:
@@ -35,7 +36,7 @@ label act1_day3_dawn:
                     $ water -= 6
                     $ line_resolution = "paid_water"
                     $ line_standing += 2
-                    "Sophia measured six water into the Line's cans. The officer signed the slate and made no apology."
+                    "Sophia measured six water into the Line's cans. Marrow signed the slate and made no apology."
                 "Pay 8 scrap." if scrap >= 8:
                     $ scrap -= 8
                     $ line_resolution = "paid_scrap"
@@ -47,7 +48,7 @@ label act1_day3_dawn:
             $ line_resolution = "refused"
             $ line_standing -= 2
             $ raid_triggered = True
-            "Line officer" "Then keep your cans. We will collect after dark."
+            "Marrow" "Then keep your cans. We will collect after dark."
             "Tory" "Six leave. More may come back. Raid pressure: [raid_pressure]."
         "Stall with [helping_name]. (Trust [helping_trust]/10; failure: -1 Line standing and the same night raid.)":
             if helping_trust >= 10:
@@ -55,13 +56,13 @@ label act1_day3_dawn:
                 $ line_standing += 1
                 $ raid_triggered = False
                 "[helping_name] stepped beside the officer with exact stores, names, and collection times. The answer was specific enough to be believed."
-                "Line officer" "One day. I return for the measure tomorrow."
+                "Marrow" "One day. I return for the measure tomorrow."
             else:
                 $ line_resolution = "stall_failed"
                 $ line_standing -= 1
                 $ raid_triggered = True
                 "[helping_name] tried to slow the officer with questions about weights and collection times. With only [helping_trust] trust, the help came late and the gaps showed."
-                "Line officer" "You do not know your own stores well enough to bargain. Tonight, then."
+                "Marrow" "You do not know your own stores well enough to bargain. Tonight, then."
     return
 
 
@@ -69,7 +70,7 @@ label act1_day3_day:
     scene black
     if line_resolution in ("paid_water", "paid_scrap"):
         show sophia work neutral at center
-        "Day — six Line bodies marched back down the road with the levy. Sophia struck the payment from the slate in plain sight."
+        "Day — six Line bodies marched back down the road with the levy. Sophia struck the payment from the slate in plain sight, so the whole yard could see the number go down."
         if line_resolution == "paid_water":
             "Six empty spaces stood in the water rack. The colony was poorer, intact, and under no night-raid order."
         else:
@@ -116,7 +117,7 @@ label act1_day3_night_raid:
     "Denice" "Contact. Four low, two standing. North side. Thirty metres and closing."
     "Tory stayed on the wall, crossbow braced against the steel. Her shots were flat reports in the dark, each one answered by Denice's corrected range."
     "Tory" "Two climbing. Four carrying. Count them, not the noise."
-    "The Line reached the stores before the wall held. The raiders withdrew with torn packaging behind them, and nobody pursued past the light."
+    "The Line reached the stores before the wall held. The raiders withdrew with torn packaging behind them, and nobody pursued past the light. Marrow's carriers did not come back for them. Nobody on the wall was surprised by that."
 
     $ med_loss = min(meds, 1 + raid_pressure // 60)
     $ food_loss = min(max(0, food - 1), 1 + raid_pressure // 40)

@@ -84,3 +84,26 @@ Harness findings worth recording (Ren'Py behavior, not bugs in this project):
 - Reaching the end of `label start` silently reboots into a fresh game (normal Ren'Py end-of-start behavior); assertions on stores therefore cannot observe post-`act = 2` state. The suite uses `advance until label act2_stub` to prove the act break instead.
 
 Remaining items not verified by this engine pass: real audio/video drivers, windowed/interactive UI, Android/iOS, long-term save compatibility, and any path past `act2_stub` (act 2 content is out of scope).
+
+## Addendum — 2026-11-12 (areas 21–30)
+
+- Ten new background plates `assets/env/21_orchard_ruin.png` … `assets/env/30_seed_bank.png` (1920×1080, hand-painted cel-shaded style, no characters or legible text). Each was generated at 1376×768, center-cropped to 16:9, and upscaled to 1920×1080 with a light sharpen, so they are softer than the original 1920×1080 plates and may be worth regenerating at native resolution.
+- Registered in `MANIFEST.json` (assets `env.21_orchard_ruin` … `env.30_seed_bank`, plus ten `scenes` entries appended in route order) and in `data/hotspots.json` (five hotspots per scene).
+- Game integration: copies in `game/images/env/`; `game/areas.rpy` declares `bg <area>` images, a per-area table with titles and narration, the `visit_area` label, and a repeatable `area_survey` menu. The areas are not yet part of the day loop, because that would change the menu flow that `game/tests/playthrough.rpy` depends on.
+- `python3 tools/validate.py --whole-project` reports the same 27 pre-existing errors as before this change (missing git-ignored `aligned`/`keyed` intermediates and stale `ui/` frames under `game/images`). It adds no new errors. The new hotspot rectangles pass bounds and zoom reachability checks.
+- Not verified: Ren'Py lint and the headless playthrough were not run in this session, because the engine build dependencies (`renpy-deps`) are not present. `game/areas.rpy` should be linted with `./run.sh . lint --error-code` before merging.
+- Note: `tools/imagesrpy.py` treats every subfolder of `game/images/` as a character. `game/images/env/` (like the existing `ui/`) will break that generator, so `game/definitions.rpy` must not be regenerated from the images root without fixing the tool.
+
+## Addendum — 2026-11-12 (interior areas 31–40)
+
+- Ten interior plates `assets/env/31_post_office.png` … `assets/env/40_abandoned_cinema.png` (1920×1080, same generation, crop, and sharpen process as areas 21–30, with the same softness caveat). Registered in `MANIFEST.json` (assets `env.31_post_office` … `env.40_abandoned_cinema`, plus ten route-ordered scene entries) and in `data/hotspots.json` (five hotspots per scene).
+- Game integration: `game/areas.rpy` now covers all twenty field areas, split into `outdoors` (21–30) and `indoors` (31–40) groups. `area_survey` offers the two groups first, then the areas in each. The areas are still not part of the day loop.
+- Correction to the 2026-11-12 areas 21–30 addendum: the game copies were first placed in `game/images/env/`. `tools/validate.py` scans that folder for stale layer frames and fails on it, and `tools/imagesrpy.py` would misread it as a character. The copies, including the earlier ten, now live in `game/env/`, and `game/areas.rpy` points there. With this change, `python3 tools/validate.py --whole-project` reports the same 27 pre-existing errors as before and adds none.
+- Not verified: Ren'Py lint and the headless playthrough were not run, because the engine build dependencies are not present in this sandbox. Lint `game/areas.rpy` with `./run.sh . lint --error-code` before merging.
+
+## Addendum — 2026-11-12 (Act I worldbuilding and storytelling)
+
+- Expanded the cold open (`game/script.rpy`), `game/act1.rpy`, `game/act1_day3.rpy`, and `game/act1_close.rpy` with setting detail (the post-war plumbing, the Line and the Cut, the cistern's history, probation, meds, and the colony's rota), extra companion routine beats, a named Line officer (Marrow), and a manifest hook that leaves the protagonist's name blank in the Line's file.
+- Logic check: for each file, the non-prose lines (`$` changes, conditions, menus and their option labels, `show`/`call`/`jump`/`return`, labels) were compared against the previous version and match exactly. The menu labels that `game/tests/playthrough.rpy` selects by text are unchanged, and none appears in the new narration.
+- Not verified: the engine playthrough and Ren'Py lint were not run, because the engine build is not present in this sandbox. Run `./run.sh . test ashfall` and `./run.sh . lint --error-code` before merging.
+- New canon is recorded in `docs/ACT1.md` as proposed canon for review.
